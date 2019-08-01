@@ -9,12 +9,16 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import blud.Blud;
+import blud.core.Renderable.RenderContext;
+import blud.core.Updateable.UpdateContext;
+import blud.core.input.Input;
+import blud.core.scene.Scene;
 import blud.util.Util;
 
-public class Engine implements Renderable, Updateable, Runnable {
-	private static final Engine
-		ENGINE = new Engine();
-	private static final int
+public class Engine implements Runnable {
+	public static final Engine
+		INSTANCE = new Engine();
+	protected static final int
 		NUM_BUFFERS = 2,
 		WINDOW_W = 512,
 		WINDOW_H = 512,
@@ -28,11 +32,14 @@ public class Engine implements Renderable, Updateable, Runnable {
 	protected final Window
 		window = new Window(this);
 	
+	protected Scene
+		scene;
+	
 	protected boolean
 		running;
 	protected Thread
 		thread;
-	protected float
+	protected long
 		fps,
 		tps;	
 	
@@ -41,52 +48,80 @@ public class Engine implements Renderable, Updateable, Runnable {
 	}
 	
 	public static void init() {
-		if(!ENGINE.running) {
-			ENGINE.thread = new Thread(ENGINE);
-			ENGINE.running = true;
-			ENGINE.thread.start();
+		if(!INSTANCE.running) {
+			INSTANCE.thread = new Thread(INSTANCE);
+			INSTANCE.running = true;
+			INSTANCE.thread.start();
 		}
 	}
 	
 	public static void exit() {
-		if( ENGINE.running) {
-			ENGINE.running = false;
+		if( INSTANCE.running) {
+			INSTANCE.running = false;
 		}
+	}
+	
+	public static void setScene(Scene scene) {
+		if(INSTANCE.scene != null)
+			INSTANCE.scene.onDetach();
+		INSTANCE.scene = scene;
+		if(INSTANCE.scene != null)
+			INSTANCE.scene.onAttach();
+	}
+	
+	public void mouseMoved(int x, int y) {
+		if(this.scene != null)
+			this.scene.onMouseMoved(x, y);
+	}
+	
+	public void wheelMoved(int wheel) {
+		if(this.scene != null)
+			this.scene.onWheelMoved(wheel);
+	}
+	
+	public void keyDnAction(int key) {
+		if(this.scene != null)
+			this.scene.onKeyDnAction(key);
+	}
+	
+	public void keyUpAction(int key) {
+		if(this.scene != null)
+			this.scene.onKeyUpAction(key);
+	}
+	
+	public void btnDnAction(int btn, int x, int y) {
+		if(this.scene != null)
+			this.scene.onBtnDnAction(btn, x, y);
+	}
+	
+	public void btnUpAction(int btn, int x, int y) {
+		if(this.scene != null)
+			this.scene.onBtnUpAction(btn, x, y);
 	}
 	
 	public void onInit() {
 		this.window.onInit();
 		this.canvas.onInit();
+		if(this.scene != null)
+			this.scene.onInit();
 	}
 	
 	public void onExit() {
+		if(this.scene != null)
+			this.scene.onExit();
 		this.canvas.onExit();
 		this.window.onExit();
 	}
 	
 	private void render(float dt) {
-		canvas.render(dt, this);
+		if(this.scene != null)
+			this.canvas.render(dt, this.scene);
 	}
 	
 	private void update(float dt) {
-		canvas.update(dt, this);
-	}
-
-
-	@Override
-	public void render(RenderContext context) {
-		context.g2D.setColor(Color.WHITE);
-		context.g2D.fillRect(
-				0,
-				0,
-				context.canvas_w,
-				context.canvas_h
-				);
-	}
-
-	@Override
-	public void update(UpdateContext context) {
-		
+		Input.INSTANCE.poll();
+		if(this.scene != null)
+			this.canvas.update(dt, this.scene);
 	}
 	
 	private static final long
@@ -187,6 +222,14 @@ public class Engine implements Renderable, Updateable, Runnable {
 			this.component = new java.awt.Canvas();
 			this.render_context = new RenderContext();
 			this.update_context = new UpdateContext();
+			
+			this.component.setFocusable(true);
+			this.component.setFocusTraversalKeysEnabled(false);
+			
+			this.component.addKeyListener(Input.INSTANCE);
+			this.component.addMouseListener(Input.INSTANCE);
+			this.component.addMouseWheelListener(Input.INSTANCE);
+			this.component.addMouseMotionListener(Input.INSTANCE);
 			
 			Dimension size = new Dimension(
 						WINDOW_W,
