@@ -105,27 +105,31 @@ public class Grid implements Renderable, Updateable {
 			else
 				update_player_vision(
 						entity.player_vision_value,
-						entity.player_vision_dropoff,
-						entity.player_vision_direction
+						entity.player_vision_dropoff
 						);
 	}
 	
-	protected void update_player_vision(
-			float player_vision_value,
-			float player_vision_dropoff
-			) {
-		
+	protected void update_player_vision(float value, float dropoff, Vector2f direction) {
+		if(value > 0 && this.player_vision <= value) {
+			this.player_vision = value;			
+			if((value -= dropoff) > 0) {
+				if(north != null && (north.entity == null || north.entity.player_vision_transparency)) north.update_player_vision(value, dropoff);
+				if(south != null && (south.entity == null || south.entity.player_vision_transparency)) south.update_player_vision(value, dropoff);
+				if(east != null && (east.entity == null || east.entity.player_vision_transparency)) east.update_player_vision(value, dropoff);
+				if(west != null && (west.entity == null || west.entity.player_vision_transparency)) west.update_player_vision(value, dropoff);
+			}
+		}
 	}
 	
-	protected void update_player_vision(
-			float player_vision_value,
-			float player_vision_dropoff,
-			Vector2f player_vision_direction
-			) {
-		if(player_vision_direction != null) {
-			
-		} else {
-			
+	protected void update_player_vision(float value, float dropoff) {
+		if(value > 0 && this.player_vision <= value) {
+			this.player_vision = value;
+			if((value -= dropoff) > 0) {
+				if(north != null && (north.entity == null || north.entity.player_vision_transparency)) north.update_player_vision(value, dropoff);
+				if(south != null && (south.entity == null || south.entity.player_vision_transparency)) south.update_player_vision(value, dropoff);
+				if(east != null && (east.entity == null || east.entity.player_vision_transparency)) east.update_player_vision(value, dropoff);
+				if(west != null && (west.entity == null || west.entity.player_vision_transparency)) west.update_player_vision(value, dropoff);
+			}
 		}
 	}
 	

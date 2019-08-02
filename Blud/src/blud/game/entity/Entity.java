@@ -8,10 +8,11 @@ public abstract class Entity extends blud.game.level.Object {
 	public float
 		player_vision_value,
 		player_vision_dropoff,
-		player_vision_transparency,
 		entity_vision_value,
-		entity_vision_dropoff,
-		entity_vision_transparency;
+		entity_vision_dropoff;
+	public boolean
+		player_vision_transparency = true,
+		entity_vision_transparency = true;
 	public Vector2f
 		player_vision_direction,
 		entity_vision_direction;
