@@ -1,11 +1,14 @@
 package blud.game.level;
 
+import java.util.Random;
+
 import blud.core.scene.Scene;
 import blud.game.entity.Entity;
 import blud.game.entity.entities.Entities;
 import blud.game.sprite.Sprite;
 import blud.game.tile.Tile;
 import blud.game.tile.tiles.Tiles;
+import blud.game.wall.walls.Debug;
 import blud.game.wall.walls.Walls;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
@@ -33,11 +36,17 @@ public class Level extends Scene {
 	protected final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	
+	protected static final Random
+		random = new Random();
+	
 	public Level() {
 		background.setShadowTransparency(1f);
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++)
+			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j] = new Grid(this, i, j);
+				if(random.nextBoolean())
+					grid[i][j].entity = new Debug(i, j);
+			}
 	}	
 	
 	public Grid at(Vector2f local) {
@@ -120,6 +129,14 @@ public class Level extends Scene {
 				grid[i][j].player_vision = 0f;
 				grid[i][j].entity_vision = 0f;
 			}
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].update_entity_vision();
+				grid[i][j].update_player_vision();
+			}
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++)
+				grid[i][j].update(context);				
 	}
 	
 	public void save(String path) {

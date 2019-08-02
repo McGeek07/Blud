@@ -5,6 +5,10 @@ import blud.geom.Vector;
 
 public abstract class Tile extends blud.game.level.Object {
 	
+	public Tile(Sprite... sprites) {
+		super(sprites);
+	}
+	
 	public Tile(Vector local, Sprite... sprites) {
 		super(local, sprites);
 	}

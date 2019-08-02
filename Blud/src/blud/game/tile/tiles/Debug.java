@@ -1,16 +1,16 @@
-package blud.game.wall.walls;
+package blud.game.tile.tiles;
 
 import blud.game.sprite.Sprite;
-import blud.game.wall.Wall;
+import blud.game.tile.Tile;
 
-public class Debug extends Wall {
+public class Debug extends Tile {
 	
 	public Debug() {
-		super(Sprite.get("wall"));
+		super(Sprite.get("tile"));
 	}
 	
 	public Debug(float i, float j) {
-		super(i, j, Sprite.get("wall"));
+		super(i, j, Sprite.get("tile"));
 	}
 
 	@Override

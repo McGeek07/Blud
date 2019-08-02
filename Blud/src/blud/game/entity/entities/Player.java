@@ -1,6 +1,7 @@
-package blud.game.entity;
+package blud.game.entity.entities;
 
 import blud.game.Game;
+import blud.game.entity.Entity;
 import blud.game.sprite.Sprite;
 
 public class Player extends Entity{

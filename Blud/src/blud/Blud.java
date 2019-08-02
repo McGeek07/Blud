@@ -15,11 +15,13 @@ public class Blud {
 		Sprite.load("bg1", 64, 64);
 		Sprite.load("bg2", 64, 64);
 		
-		Sprite.load("cursor_r", 13, 14);
-		Sprite.load("cursor_g", 13, 14);
-		Sprite.load("cursor_b", 13, 14);
-		Sprite.load("cursor_w", 13, 14);
+		Sprite.load("Player", 11, 12);
+		Sprite.load("cursor_r", 11, 12);
+		Sprite.load("cursor_g", 11, 12);
+		Sprite.load("cursor_b", 11, 12);
+		Sprite.load("cursor_w", 11, 12);
 		Sprite.load("debug", 11, 12);
+		Sprite.load("tile", 11, 12);
 		Sprite.load("wall", 11, 12);
 		
 		Engine.setScene(new Editor());

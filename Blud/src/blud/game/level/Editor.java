@@ -66,8 +66,12 @@ public class Editor extends Level {
 				debug.render(context);
 				context = context.pull();
 				grid[i][j].render(context);
+				if(
+						i == brush.cursor.x() &&
+						j == brush.cursor.y()
+						)
+					brush.render(context);
 			}
-		brush.render(context);
 	}
 	
 	@Override
@@ -80,6 +84,18 @@ public class Editor extends Level {
 			Vector.add(camera, 0, + 1);
 		if(Input.isKeyDn(Logic.OR, Input.KEY_D, Input.KEY_R_ARROW ))
 			Vector.add(camera, + 1, 0);
+		if(Input.isKeyDnAction(Input.KEY_TAB))
+			brush.nextMode();
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++)
+				if(grid[i][j].entity != null)
+					if(
+						i - brush.cursor.x() >= 0 && i - brush.cursor.x() < 2 &&
+						j - brush.cursor.y() >= 0 && j - brush.cursor.y() < 2)
+						grid[i][j].entity.setSpriteTransparency(.5f);
+					else
+						grid[i][j].entity.setSpriteTransparency( 0f);
+							
 		context = context.push();
 		brush.update(context);		
 		context = context.pull();
@@ -114,8 +130,8 @@ public class Editor extends Level {
 			TILE = 0,
 			WALL = 1,
 			ENTITY = 2,
-			CURSOR_W = 13,
-			CURSOR_H = 14;
+			CURSOR_W = 11,
+			CURSOR_H = 12;
 		protected final Vector2f.Mutable
 			cursor = new Vector2f.Mutable();
 		protected final Sprite.Group
@@ -132,17 +148,19 @@ public class Editor extends Level {
 			mode;
 		
 		protected blud.game.level.Object
-			brush = WALLS.get("Debug");
+			brush;
 		
 		public Brush() {
+			this.setMode(WALL);
 			sprite.loop(3, 4f);
+			sprite.setSpriteTransparency(.2f);
 		}
 
 
 		@Override
 		public void render(RenderContext context) {
-			if(brush != null && brush instanceof Tile) {
-				brush.setSpriteTransparency(.25f);
+			if(brush != null) {
+				brush.setSpriteTransparency(0f);
 				brush.render(context);
 			}
 			context = context.push();
@@ -156,10 +174,6 @@ public class Editor extends Level {
 					);
 			sprite.render(context);
 			context = context.pull();
-			if(brush != null && brush instanceof Entity) {
-				brush.setSpriteTransparency(.25f);
-				brush.render(context);
-			}
 		}
 
 		@Override
@@ -193,12 +207,64 @@ public class Editor extends Level {
 			setMode(mode);
 		}
 		
+		public void nextBrush() {
+			switch(mode) {
+				case TILE: 
+					tile ++; 
+					if(tile >= tiles.length) 
+						tile = 0; 
+					brush = tiles[tile]; 
+					break;
+				case WALL: 
+					wall ++; 
+					if(wall >= walls.length) 
+						wall = 0; 
+					brush = walls[wall]; 
+					break;
+				case ENTITY: 
+					entity ++; 
+					if(entity >= entities.length) 
+						entity = 0; 
+					brush = entities[entity]; 
+					break;
+			}
+		}
+		
+		public void prevBrush() {
+			switch(mode) {
+				case TILE: 
+					tile --; 
+					if(tile < 0) 
+						tile = tiles.length - 1; 
+					brush = tiles[tile]; 
+					break;
+				case WALL: 
+					wall --; 
+					if(wall < 0) 
+						wall = walls.length - 1; 
+					brush = walls[wall]; 
+					break;
+				case ENTITY: 
+					entity --; 
+					if(entity < 0) 
+						entity = entities.length - 1; 
+					brush = entities[entity]; 
+					break;
+			}
+		}
+		
 		public void setMode(int mode) {
 			this.mode = mode;
 			switch(this.mode) {
-				case TILE:
-				case WALL:
-				case ENTITY:
+				case TILE: brush = tiles[tile]; break;
+				case WALL: brush = walls[wall]; break;
+				case ENTITY: brush = entities[entity]; break;
+			}
+		}
+		
+		public void paint() {
+			switch(mode) {
+			case TILE:
 			}
 		}
 	}

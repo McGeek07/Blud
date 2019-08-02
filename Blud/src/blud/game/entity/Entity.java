@@ -19,13 +19,13 @@ public abstract class Entity extends blud.game.level.Object {
 		player_vision_direction,
 		entity_vision_direction;
 	
-	int currentHealth;
-	int maxHealth;
-	int visibility;
-	boolean needLight;
-	boolean visibleThroughWalls;
-	Vector2f orientation;
-	int strength;
+	protected int currentHealth;
+	protected int maxHealth;
+	protected int visibility;
+	protected boolean needLight;
+	protected boolean visibleThroughWalls;
+	protected Vector2f orientation;
+	protected int strength;
 	
 	public Entity(Sprite... sprites) {
 		super(sprites);
