@@ -75,4 +75,17 @@ public abstract class Vector implements Copyable<Vector>, Serializable {
 		a.Y -= y;
 		return a;
 	}
+	
+	public static Vector2f mul(Vector2f a, Vector2f b) {
+		return new Vector2f(
+				a.X * b.X,
+				a.Y * b.Y
+				);
+	}	
+	public static Vector2f div(Vector2f a, Vector2f b) {
+		return new Vector2f(
+				a.X / b.X,
+				a.Y / b.Y
+				);
+	}
 }

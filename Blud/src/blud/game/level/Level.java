@@ -103,8 +103,10 @@ public class Level extends Scene {
 	@Override
 	public void onUpdate(UpdateContext context) {
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j].update(context);
+			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].player_vision = 0f;
+				grid[i][j].entity_vision = 0f;
+			}
 	}
 	
 	public void save(String path) {

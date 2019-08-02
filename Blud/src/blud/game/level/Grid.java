@@ -92,5 +92,44 @@ public class Grid implements Renderable, Updateable {
 			this.tile.update(context);
 		if(this.entity != null)
 			this.entity.update(context);
-	}	
+	}
+	
+	protected void update_player_vision() {
+		if(entity != null && entity.player_vision_value > 0)
+			if(entity.player_vision_direction != null)
+				update_player_vision(
+						entity.player_vision_value,
+						entity.player_vision_dropoff,
+						entity.player_vision_direction
+						);
+			else
+				update_player_vision(
+						entity.player_vision_value,
+						entity.player_vision_dropoff,
+						entity.player_vision_direction
+						);
+	}
+	
+	protected void update_player_vision(
+			float player_vision_value,
+			float player_vision_dropoff
+			) {
+		
+	}
+	
+	protected void update_player_vision(
+			float player_vision_value,
+			float player_vision_dropoff,
+			Vector2f player_vision_direction
+			) {
+		if(player_vision_direction != null) {
+			
+		} else {
+			
+		}
+	}
+	
+	protected void update_entity_vision() {
+		
+	}
 }
