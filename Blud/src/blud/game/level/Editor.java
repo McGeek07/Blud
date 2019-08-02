@@ -162,7 +162,8 @@ public class Editor extends Level {
 		
 		public Brush() {
 			this.setMode(WALL);
-			sprite.loop(3, 4f);
+			sprite.loop(0, 4f);
+			sprite.loop(1, 4f);
 			sprite.setSpriteTransparency(.2f);
 		}
 
@@ -194,11 +195,16 @@ public class Editor extends Level {
 					mouse.Y() > 0 && mouse.Y() < LEVEL_H
 					) {
 				cursor.set(mouse);
+				int 
+					i = cursor.x(),
+					j = cursor.y();
 				if(brush != null)
-					brush.setLocal(
-							cursor.x(),
-							cursor.y()
-							);
+					brush.setLocal(i, j);
+				switch(mode) {
+					case TILE: if(grid[i][j].tile != null) sprite.setSprite(0); else sprite.setSprite(1); break;
+					case WALL: if(grid[i][j].entity != null) sprite.setSprite(0); else sprite.setSprite(1); break;
+					case ENTITY: if(grid[i][j].entity != null) sprite.setSprite(0); else sprite.setSprite(1); break;
+				}
 			}			
 			sprite.update(context);
 		}
