@@ -21,14 +21,15 @@ public class Grid implements Renderable, Updateable {
 		south_west;	
 	public float
 		light_level;
+	
+	public Tile
+		tile;
+	public Entity
+		entity;
 
 	protected final Vector2f.Mutable
 		local = new Vector2f.Mutable(),
 		pixel = new Vector2f.Mutable();
-	protected Tile
-		tile;
-	protected Entity
-		entity;
 	
 	public Grid(Level level, int i, int j) {
 		this.level = level;
