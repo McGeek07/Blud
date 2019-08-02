@@ -20,7 +20,8 @@ public class Grid implements Renderable, Updateable {
 		south_east,
 		south_west;	
 	public float
-		light_level;
+		player_vision,
+		entity_vision;
 	
 	public Tile
 		tile;
