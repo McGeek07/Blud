@@ -96,34 +96,33 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	public void pollBtns() {
 		for(int i = 0; i < NUM_BTNS; i ++) {
 			if(btn_buffer[i])
-				if(btn_buffer[i])
-					switch(btns[i]) {
-						case BTN_DN: case BTN_DN_ACTION:
-							btns[i] = BTN_DN;
-							break;
-						case BTN_UP: case BTN_UP_ACTION:
-							btns[i] = BTN_DN_ACTION;
-							Engine.INSTANCE.btnDnAction(
-									i,
-									mouse.x(),
-									mouse.y()
-									);
-							break;
-					}
-				else
-					switch(btns[i]) {
-						case BTN_DN: case BTN_DN_ACTION:
-							btns[i] = BTN_UP_ACTION;
-							Engine.INSTANCE.btnUpAction(
-									i,
-									mouse.x(),
-									mouse.y()
-									);
-							break;
-						case BTN_UP: case BTN_UP_ACTION:
-							btns[i] = BTN_UP;
-							break;		
-					}
+				switch(btns[i]) {
+					case BTN_DN: case BTN_DN_ACTION:
+						btns[i] = BTN_DN;
+						break;
+					case BTN_UP: case BTN_UP_ACTION:
+						btns[i] = BTN_DN_ACTION;
+						Engine.INSTANCE.btnDnAction(
+								i,
+								mouse.x(),
+								mouse.y()
+								);
+						break;
+				}
+			else
+				switch(btns[i]) {
+					case BTN_DN: case BTN_DN_ACTION:
+						btns[i] = BTN_UP_ACTION;
+						Engine.INSTANCE.btnUpAction(
+								i,
+								mouse.x(),
+								mouse.y()
+								);
+						break;
+					case BTN_UP: case BTN_UP_ACTION:
+						btns[i] = BTN_UP;
+						break;		
+				}
 		}
 	}
 	

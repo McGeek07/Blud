@@ -86,6 +86,16 @@ public class Editor extends Level {
 			Vector.add(camera, + 1, 0);
 		if(Input.isKeyDnAction(Input.KEY_TAB))
 			brush.nextMode();
+		if(Input.isWheelUp())
+			brush.nextBrush();
+		if(Input.isWheelDn())
+			brush.prevBrush();
+		
+		if(Input.isBtnDnAction(Input.BTN_1))
+			brush.paint();
+		if(Input.isBtnDnAction(Input.BTN_3))
+			brush.erase();
+		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				if(grid[i][j].entity != null)
@@ -263,8 +273,37 @@ public class Editor extends Level {
 		}
 		
 		public void paint() {
+			try {
+				int
+					i = cursor.x(),
+					j = cursor.y();
+				switch(mode) {
+					case TILE: 
+						grid[i][j].tile = (Tile)brush.getClass().newInstance(); 
+						grid[i][j].tile.setLocal(cursor.x(), cursor.y());
+						break;
+					case WALL:
+						grid[i][j].entity = (Wall)brush.getClass().newInstance(); 
+						grid[i][j].entity.setLocal(cursor.x(), cursor.y());
+						break;
+					case ENTITY:
+						grid[i][j].entity = (Entity)brush.getClass().newInstance(); 
+						grid[i][j].entity.setLocal(cursor.x(), cursor.y());
+						break;
+				}				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}			
+		}
+		
+		public void erase() {
+			int
+				i = cursor.x(),
+				j = cursor.y();
 			switch(mode) {
-			case TILE:
+				case TILE: grid[i][j].tile = null; break;
+				case WALL: grid[i][j].entity = null; break;
+				case ENTITY: grid[i][j].entity = null; break;
 			}
 		}
 	}

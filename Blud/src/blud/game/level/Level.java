@@ -42,11 +42,8 @@ public class Level extends Scene {
 	public Level() {
 		background.setShadowTransparency(1f);
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j] = new Grid(this, i, j);
-				if(random.nextBoolean())
-					grid[i][j].entity = new Debug(i, j);
-			}
+			for(int j = 0; j < LEVEL_H; j ++)
+				grid[i][j] = new Grid(this, i, j);			
 	}	
 	
 	public Grid at(Vector2f local) {
