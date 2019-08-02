@@ -40,6 +40,19 @@ public class Level extends Scene {
 				grid[i][j] = new Grid(this, i, j);
 	}	
 	
+	public Grid at(Vector2f local) {
+		return at(local.X(), local.Y());
+	}
+	
+	public Grid at(float i, float j) {
+		if(
+				i > 0 && i < LEVEL_W &&
+				j > 0 && j < LEVEL_H
+				)
+			return grid[(int)i][(int)j];
+		return null;
+	}
+	
 	public void add(Tile tile) {
 		int
 			i = tile.local.x(),
