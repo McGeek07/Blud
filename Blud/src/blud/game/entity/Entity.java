@@ -5,6 +5,8 @@ import blud.geom.Vector;
 import blud.geom.Vector2f;
 
 public abstract class Entity extends blud.game.level.Object {
+	
+	//lighting attributes
 	public float
 		player_vision_value,
 		player_vision_dropoff,
@@ -22,6 +24,7 @@ public abstract class Entity extends blud.game.level.Object {
 	boolean needLight;
 	boolean visibleThroughWalls;
 	Vector2f orientation;
+	int strength;
 	
 	public Entity(Sprite... sprites) {
 		super(sprites);
@@ -36,11 +39,23 @@ public abstract class Entity extends blud.game.level.Object {
 	}		
 	
 	public void move(Entity character) {
-		setLocal(Vector.add(local, blud.game.Game.EAST));
+		if(grid.entity instanceof blud.game.wall.Wall) {
+			
+		}else if(grid.entity != null) {
+			fight(character, grid.entity);
+		}else {
+			character.setLocal(Vector.add(local, orientation));
+		}
 	}
 	
 	public void fight(Entity attacker, Entity defender ) {
-		
+		Vector2f battle = Vector2f.mul(attacker.orientation, defender.orientation);
+		if(battle.X() < 0 || battle.Y() < 0) {
+			takeDamage(defender, attacker.strength);
+			takeDamage(attacker, defender.strength);
+		}else {
+			takeDamage(defender, attacker.strength);
+		}
 	}
 	
 	public void takeDamage(Entity character, int damageAmount) {
