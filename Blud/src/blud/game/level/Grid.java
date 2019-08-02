@@ -8,7 +8,7 @@ import blud.game.tile.Tile;
 import blud.geom.Vector2f;
 
 public class Grid implements Renderable, Updateable {	
-	protected final Level
+	protected Level
 		level;
 	protected final Vector2f.Mutable
 		local = new Vector2f.Mutable(),

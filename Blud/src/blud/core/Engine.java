@@ -13,6 +13,7 @@ import blud.core.Renderable.RenderContext;
 import blud.core.Updateable.UpdateContext;
 import blud.core.input.Input;
 import blud.core.scene.Scene;
+import blud.geom.Vector2f;
 import blud.util.Util;
 
 public class Engine implements Runnable {
@@ -24,8 +25,8 @@ public class Engine implements Runnable {
 		WINDOW_H = 512,
 		CANVAS_W = 64,
 		CANVAS_H = 64,
-		FPS = 24,
-		TPS = 24;
+		FPS = 30,
+		TPS = 30;
 	
 	protected final Canvas
 		canvas = new Canvas(this);
@@ -67,6 +68,26 @@ public class Engine implements Runnable {
 		INSTANCE.scene = scene;
 		if(INSTANCE.scene != null)
 			INSTANCE.scene.onAttach();
+	}
+	
+	public static Vector2f windowToCanvas(Vector2f v) {
+		return windowToCanvas(v.X(), v.Y());
+	}
+	
+	public static Vector2f windowToCanvas(float x, float y) {
+		x = (x - INSTANCE.canvas.canvas_w / 2) / INSTANCE.canvas.scale + CANVAS_W / 2;
+		y = (y - INSTANCE.canvas.canvas_h / 2) / INSTANCE.canvas.scale + CANVAS_H / 2;
+		return new Vector2f(x, y);
+	}
+	
+	public static Vector2f canvasToWindow(Vector2f v) {
+		return canvasToWindow(v.X(), v.Y());
+	}
+	
+	public static Vector2f canvasToWindow(float x, float y) {
+		x = (x - CANVAS_W / 2) * INSTANCE.canvas.scale + INSTANCE.canvas.canvas_w / 2;
+		y = (y - CANVAS_H / 2) * INSTANCE.canvas.scale + INSTANCE.canvas.canvas_h / 2;
+		return new Vector2f(x, y);
 	}
 	
 	public void mouseMoved(int x, int y) {
@@ -127,6 +148,7 @@ public class Engine implements Runnable {
 	private static final long
 		ONE_SECOND = 1000000000L;
 
+	@SuppressWarnings("unused")
 	@Override
 	public void run() {
 		try {
@@ -158,8 +180,8 @@ public class Engine implements Runnable {
 					f_ct ++;
 				}				
 				if(elapsed >= ONE_SECOND) {
-					System.out.println(this.fps = f_ct);
-					System.out.println(this.tps = t_ct);
+					System.out.println("FPS: " + (this.fps = f_ct));
+					System.out.println("TPS: " + (this.tps = t_ct));
 					elapsed = 0;
 					f_ct = 0;
 					t_ct = 0;
@@ -217,6 +239,12 @@ public class Engine implements Runnable {
 			canvas_gfx;	
 		protected Engine
 			engine;
+		
+		protected int
+			canvas_w,
+			canvas_h;
+		protected float
+			scale;
 		
 		public Canvas(Engine engine) {
 			this.component = new java.awt.Canvas();
@@ -276,18 +304,13 @@ public class Engine implements Runnable {
 			renderable.render(this.render_context);			
 			this.canvas_gfx.dispose();
 			
-			int 				
-				canvas_w = this.component.getWidth() ,
-				canvas_h = this.component.getHeight();
-			float scale = Util.min(
+			canvas_w = this.component.getWidth() ;
+			canvas_h = this.component.getHeight();
+			scale = Util.min(
 					(float)canvas_w / CANVAS_W,
 					(float)canvas_h / CANVAS_H
 					);
 			
-
-//			this.buffer_gfx.setColor(Color.WHITE);
-//			this.buffer_gfx.drawLine(canvas_w / 2, 0, canvas_w / 2, canvas_h);
-//			this.buffer_gfx.drawLine(0, canvas_h / 2, canvas_w, canvas_h / 2);
 			this.buffer_gfx.translate(
 					canvas_w / 2,
 					canvas_h / 2

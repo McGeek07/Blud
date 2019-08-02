@@ -6,16 +6,21 @@ import blud.game.Game;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
-import blud.util.Copyable;
 
-public abstract class Object implements Renderable, Updateable, Copyable<Object> {	
-	protected final Sprite.Group
+public abstract class Object implements Renderable, Updateable {	
+	protected Sprite.Group
 		sprites;
 	protected Vector2f.Mutable
 		local = new Vector2f.Mutable(),
 		pixel = new Vector2f.Mutable();
 	protected Grid
 		grid;
+	protected int
+		type;
+	
+	public Object(Sprite... sprites) {
+		this(0f, 0f, sprites);
+	}
 	
 	public Object(Vector local, Sprite... sprites) {
 		this(local.X(), local.Y(), sprites);
@@ -68,8 +73,8 @@ public abstract class Object implements Renderable, Updateable, Copyable<Object>
 	public void render(RenderContext context) {
 		context = context.push();
 		context.g2D.translate(
-				pixel.x(),
-				pixel.y()
+				pixel.x() - Game.SPRITE_W / 2,
+				pixel.y() - Game.SPRITE_H / 2
 				);
 		this.sprites.render(context);
 		context = context.pull();

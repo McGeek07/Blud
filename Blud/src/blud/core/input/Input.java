@@ -237,9 +237,14 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	@Override
 	public void keyPressed(KeyEvent ke) {
 		switch(ke.getKeyCode()) {
-			case KeyEvent.VK_ESCAPE: key_buffer[KEY_ESCAPE] = true; break;
-			case KeyEvent.VK_ENTER : key_buffer[KEY_RETURN] = true; break;				
-			case KeyEvent.VK_SPACE : key_buffer[KEY_SPACE] = true; break;				
+			case KeyEvent.VK_ESCAPE	: key_buffer[KEY_ESCAPE] 	= true; break;
+			case KeyEvent.VK_ENTER 	: key_buffer[KEY_RETURN] 	= true; break;
+			case KeyEvent.VK_TAB	: key_buffer[KEY_TAB] 		= true; break;
+			case KeyEvent.VK_UP		: key_buffer[KEY_UP_ARROW] 	= true; break;
+			case KeyEvent.VK_DOWN	: key_buffer[KEY_DN_ARROW] 	= true; break;
+			case KeyEvent.VK_LEFT	: key_buffer[KEY_L_ARROW] 	= true; break;
+			case KeyEvent.VK_RIGHT	: key_buffer[KEY_R_ARROW] 	= true; break;
+			case KeyEvent.VK_SPACE 	: key_buffer[KEY_SPACE] 	= true; break;
 			case KeyEvent.VK_0 : key_buffer[KEY_0] = true; break;
 			case KeyEvent.VK_1 : key_buffer[KEY_1] = true; break;
 			case KeyEvent.VK_2 : key_buffer[KEY_2] = true; break;
@@ -283,9 +288,14 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	@Override
 	public void keyReleased(KeyEvent ke) {
 		switch(ke.getKeyCode()) {
-			case KeyEvent.VK_ESCAPE: key_buffer[KEY_ESCAPE] = false; break;
-			case KeyEvent.VK_ENTER : key_buffer[KEY_RETURN] = false; break;				
-			case KeyEvent.VK_SPACE : key_buffer[KEY_SPACE] = false; break;				
+			case KeyEvent.VK_ESCAPE	: key_buffer[KEY_ESCAPE] 	= false; break;
+			case KeyEvent.VK_ENTER 	: key_buffer[KEY_RETURN] 	= false; break;
+			case KeyEvent.VK_TAB	: key_buffer[KEY_TAB] 		= false; break;
+			case KeyEvent.VK_UP		: key_buffer[KEY_UP_ARROW] 	= false; break;
+			case KeyEvent.VK_DOWN	: key_buffer[KEY_DN_ARROW] 	= false; break;
+			case KeyEvent.VK_LEFT	: key_buffer[KEY_L_ARROW] 	= false; break;
+			case KeyEvent.VK_RIGHT	: key_buffer[KEY_R_ARROW] 	= false; break;
+			case KeyEvent.VK_SPACE 	: key_buffer[KEY_SPACE] 	= false; break;
 			case KeyEvent.VK_0 : key_buffer[KEY_0] = false; break;
 			case KeyEvent.VK_1 : key_buffer[KEY_1] = false; break;
 			case KeyEvent.VK_2 : key_buffer[KEY_2] = false; break;
@@ -359,19 +369,19 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 
 	@Override
 	public void mouseDragged(MouseEvent me) {
-		mouse_buffer.set(
+		mouse_buffer.set(Engine.windowToCanvas(
 				me.getX(),
 				me.getY()
-				);
+				));
 		me.consume();
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent me) {
-		mouse_buffer.set(
+		mouse_buffer.set(Engine.windowToCanvas(
 				me.getX(),
 				me.getY()
-				);
+				));
 		me.consume();
 	}
 
@@ -382,8 +392,14 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	}
 	
 	public static final int
-		KEY_ESCAPE = 0,
-		KEY_RETURN = 1,
+		KEY_ESCAPE 	= 0,
+		KEY_RETURN 	= 10,			
+		KEY_TAB 	= 20,
+		
+		KEY_UP_ARROW = 1,
+		KEY_DN_ARROW = 4,
+		KEY_L_ARROW = 2,
+		KEY_R_ARROW = 8,
 		
 		KEY_SPACE = ' ',
 		

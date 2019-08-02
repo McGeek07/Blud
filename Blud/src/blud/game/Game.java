@@ -5,18 +5,21 @@ import blud.geom.Vector2f;
 public class Game {
 	public static final int
 		TILE_W = 6,
-		TILE_H = 6;
+		TILE_H = 6,
+		SPRITE_W = 11,
+		SPRITE_H = 12;
 	
 	public static final Vector2f localToPixel(Vector2f local) {
 		return localToPixel(local.X(), local.Y());
 	}
 	
 	public static final Vector2f localToPixel(float i, float j) {
-		i *= TILE_W;
-		j *= TILE_H;
+		float 
+			x = i * TILE_W,
+			y = j * TILE_H;
 		return new Vector2f(
-				(i - j)    ,
-				(i + j) / 2
+				(x - y)    ,
+				(x + y) / 2
 				);
 	}
 	
@@ -25,11 +28,12 @@ public class Game {
 	}
 	
 	public static final Vector2f pixelToLocal(float x, float y) {
-		x = (2 * y + x) / 2;
-		y = (2 * y - x) / 2;
+		float
+			i = (2 * y + x) / 2,
+			j = (2 * y - x) / 2;
 		return new Vector2f(
-				x / TILE_W,
-				y / TILE_H
+				i / TILE_W,
+				j / TILE_H
 				);
 	}
 }

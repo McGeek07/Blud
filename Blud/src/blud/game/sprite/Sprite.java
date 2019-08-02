@@ -25,7 +25,7 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		frame,
 		speed,
 		sprite_transparency,
-		shadow_transparency;
+		shadow_transparency = 1f;
 	protected int
 		mode;
 	
@@ -50,6 +50,18 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	
 	public BufferedImage getShadowFrame() {
 		return shadow_frames[(int)frame];
+	}
+	
+	public void nextFrame() {
+		frame ++;
+		if(frame >= sprite_frames.length)
+			frame = 0f;
+	}
+	
+	public void prevFrame() {
+		frame --;
+		if(frame < 0)
+			frame = sprite_frames.length - 1;
 	}
 	
 	public void setFrame(float frame) {
@@ -100,10 +112,12 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 
 	@Override
 	public void render(RenderContext context) {
+		context = context.push();
 		context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - sprite_transparency));
 		context.g2D.drawImage(sprite_frames[(int)frame], null, 0,  0);
 		context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - shadow_transparency));
 		context.g2D.drawImage(shadow_frames[(int)frame], null, 0,  0);
+		context = context.pull();
 	}
 	
 	@Override
@@ -141,12 +155,12 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 			return sprites[sprite];
 		}
 		
-		public BufferedImage getSpriteFrame() {
-			return this.getSprite().getSpriteFrame();
+		public void nextFrame() {
+			this.getSprite().nextFrame();
 		}
 		
-		public BufferedImage getShadowFrame() {
-			return this.getSprite().getShadowFrame();
+		public void prevFrame() {
+			this.getSprite().prevFrame();
 		}
 		
 		public void setFrame(float frame) {
@@ -158,15 +172,18 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		}
 		
 		public void setTransparency(float transparency) {
-			this.getSprite().setTransparency(transparency);
+			for(int i = 0; i < sprites.length; i ++)
+				sprites[i].setTransparency(transparency);
 		}
 		
 		public void setSpriteTransparency(float transparency) {
-			this.getSprite().setSpriteTransparency(transparency);
+			for(int i = 0; i < sprites.length; i ++)
+				sprites[i].setSpriteTransparency(transparency);
 		}
 		
 		public void setShadowTransparency(float transparency) {
-			this.getSprite().setShadowTransparency(transparency);
+			for(int i = 0; i < sprites.length; i ++)
+				sprites[i].setShadowTransparency(transparency);
 		}
 		
 		public void play() {
@@ -179,6 +196,20 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		
 		public void stop() {
 			this.getSprite().stop();
+		}
+		
+		public Sprite nextSprite() {
+			sprite ++;
+			if(sprite >= sprites.length)
+				sprite = 0;
+			return sprites[sprite];
+		}
+		
+		public Sprite prevSprite() {
+			sprite --;
+			if(sprite < 0)
+				sprite = sprites.length - 1;
+			return sprites[sprite];
 		}
 		
 		public Sprite setSprite(int sprite) {

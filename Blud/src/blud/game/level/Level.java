@@ -1,37 +1,43 @@
 package blud.game.level;
 
-import java.awt.Color;
-import java.util.Random;
-
-import blud.core.input.Input;
 import blud.core.scene.Scene;
 import blud.game.entity.Entity;
+import blud.game.entity.entities.Entities;
+import blud.game.sprite.Sprite;
 import blud.game.tile.Tile;
+import blud.game.tile.tiles.Tiles;
+import blud.game.wall.walls.Walls;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 
-public class Level extends Scene {
+public class Level extends Scene {	
 	public static final int
 		LEVEL_W = 16,
 		LEVEL_H = 16;
+	public static final Entities
+		ENTITIES = new Entities();
+	public static final Tiles
+		TILES = new Tiles();
+	public static final Walls
+		WALLS = new Walls();
+	
+	protected final Sprite.Group
+		background = new Sprite.Group(
+				Sprite.get("bg1"),
+				Sprite.get("bg2")
+				);
 	protected final Grid[][]
 		grid = new Grid
 				[LEVEL_W]
-				[LEVEL_H];
-	
-	private Vector2f.Mutable
-		focus = new Vector2f.Mutable();
-	
-	private Random
-		random = new Random();
+				[LEVEL_H];	
+	protected final Vector2f.Mutable
+		camera = new Vector2f.Mutable();
 	
 	public Level() {
+		background.setShadowTransparency(1f);
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
+			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Grid(this, i, j);
-				grid[i][j].tile = new Tile.Debug(i, j);
-				grid[i][j].tile.setShadowTransparency(1f);
-			}
 	}	
 	
 	public void add(Tile tile) {
@@ -84,55 +90,28 @@ public class Level extends Scene {
 	
 	@Override
 	public void onRender(RenderContext context) {
-		context.g2D.setColor(Color.WHITE);
-		context.g2D.fillRect(
-				0,
-				0,
-				context.canvas_w,
-				context.canvas_h
-				);
-		if(Input.isKeyDn(Input.KEY_W))
-			focus.setY(focus.Y() - 1);
-		if(Input.isKeyDn(Input.KEY_A))
-			focus.setX(focus.X() - 1);
-		if(Input.isKeyDn(Input.KEY_S))
-			focus.setY(focus.Y() + 1);
-		if(Input.isKeyDn(Input.KEY_D))
-			focus.setX(focus.X() + 1);
+		background.render(context);
 		context.g2D.translate(
-				context.canvas_w / 2 - focus.X(),
-				context.canvas_h / 2 - focus.Y()
-				);
-		
+				context.canvas_w / 2 - camera.X(),
+				context.canvas_h / 2 - camera.Y()
+				);	
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
+			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j].render(context);
-			}
-		
-//		for(int i = 0; i < LEVEL_W; i ++)
-//			for(int j = 0; j < LEVEL_H; j ++) {
-//				context.g2D.setColor( new Color(
-//								(float)i / LEVEL_W,
-//								(float)j / LEVEL_H,
-//								((i + j) & 1) == 0 ? 1f : 0f
-//								));
-//				for(float x = 0; x < Tile.TILE_W; x ++)
-//					for(float y = 0; y < Tile.TILE_H; y ++) {
-//						float
-//							tx = i + (x / Tile.TILE_W),
-//							ty = j + (y / Tile.TILE_H);
-//						Vector2f
-//							pixel = Tile.localToPixel(
-//									tx,
-//									ty
-//									);
-//						context.g2D.fillRect(pixel.x(), pixel.y(), 1, 1);
-//					}				
-//			}
 	}
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++)
+				grid[i][j].update(context);
+	}
+	
+	public void save(String path) {
+		
+	}
+	
+	public void load(String path) {
 		
 	}
 }
