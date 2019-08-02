@@ -4,8 +4,6 @@ import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 
 public abstract class Entity extends blud.game.level.Object {
-	protected float
-		transparency;
 	
 	public Entity(Sprite... sprites) {
 		super(sprites);

@@ -15,8 +15,6 @@ public abstract class Object implements Renderable, Updateable {
 		pixel = new Vector2f.Mutable();
 	protected Grid
 		grid;
-	protected int
-		type;
 	
 	public Object(Sprite... sprites) {
 		this(0f, 0f, sprites);

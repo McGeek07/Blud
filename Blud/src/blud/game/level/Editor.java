@@ -132,7 +132,7 @@ public class Editor extends Level {
 			mode;
 		
 		protected blud.game.level.Object
-			brush;
+			brush = WALLS.get("Debug");
 		
 		public Brush() {
 			sprite.loop(3, 4f);
