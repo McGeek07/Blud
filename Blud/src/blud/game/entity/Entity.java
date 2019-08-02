@@ -1,5 +1,18 @@
 package blud.game.entity;
 
-public class Entity {
+import blud.game.sprite.Sprite;
+import blud.geom.Vector;
 
+public abstract class Entity extends blud.game.level.Object {
+	protected float
+		transparency;
+	
+	public Entity(Vector local, Sprite... sprites) {
+		super(local, sprites);
+	}
+	
+	public Entity(float i, float j, Sprite... sprites) {
+		super(i, j, sprites);
+	}
+		
 }

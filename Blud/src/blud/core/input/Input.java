@@ -51,7 +51,7 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	
 	public void pollMouse() {
 		if(!this.mouse.equals(this.mouse_buffer)) {
-			this.mouse.set(   this.mouse_buffer);
+			this.mouse.set(   this.mouse_buffer);			
 			Engine.INSTANCE.mouseMoved(
 					mouse.x(),
 					mouse.y()

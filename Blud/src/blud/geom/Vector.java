@@ -29,5 +29,50 @@ public abstract class Vector implements Copyable<Vector>, Serializable {
 					this.Z() == v.Z();
 		}
 		return false;
+	}
+	
+	public static final Vector2f add(Vector2f a, Vector2f b) {
+		return new Vector2f(
+				a.X + b.X,
+				a.Y + b.Y
+				);
 	}	
+	public static final Vector2f add(Vector2f a, float x, float y) {
+		return new Vector2f(
+				a.X + x,
+				a.Y + y
+				);
+	}	
+	public static final Vector2f sub(Vector2f a, Vector2f b) {
+		return new Vector2f(
+				a.X - b.X,
+				a.Y - b.Y
+				);
+	}	
+	public static final Vector2f sub(Vector2f a, float x, float y) {
+		return new Vector2f(
+				a.X - x,
+				a.Y - y
+				);
+	}	
+	public static Vector2f.Mutable add(Vector2f.Mutable a, Vector2f b) {
+		a.X += b.X;
+		a.Y += b.Y;
+		return a;
+	}	
+	public static Vector2f.Mutable add(Vector2f.Mutable a, float x, float y) {
+		a.X += x;
+		a.Y += y;
+		return a;
+	}	
+	public static Vector2f.Mutable sub(Vector2f.Mutable a, Vector2f b) {
+		a.X -= b.X;
+		a.Y -= b.Y;
+		return a;
+	}	
+	public static Vector2f.Mutable sub(Vector2f.Mutable a, float x, float y) {
+		a.X -= x;
+		a.Y -= y;
+		return a;
+	}
 }
