@@ -8,19 +8,23 @@ import blud.game.tile.Tile;
 import blud.geom.Vector2f;
 
 public class Grid implements Renderable, Updateable {	
-	protected Level
+	public Level
 		level;
-	protected final Vector2f.Mutable
-		local = new Vector2f.Mutable(),
-		pixel = new Vector2f.Mutable();
-	protected Grid
+	public Grid
 		north,
 		south,
 		east,
-		west;
-	
-	protected float
-		light;	
+		west,
+		north_east,
+		north_west,
+		south_east,
+		south_west;	
+	public float
+		light_level;
+
+	protected final Vector2f.Mutable
+		local = new Vector2f.Mutable(),
+		pixel = new Vector2f.Mutable();
 	protected Tile
 		tile;
 	protected Entity
@@ -31,42 +35,45 @@ public class Grid implements Renderable, Updateable {
 		this.local.set(i, j);
 		this.pixel.set(Game.localToPixel(i, j));
 		
-		if(j > 0) {
-			north = level.grid[i][j - 1];
-			if(north != null)
-				north.south = this;
+		boolean
+			north = false,
+			south = false;		
+		if(north = j < Level.LEVEL_H - 1) {
+			this.north = level.grid[i][j + 1];
+			if(this.north != null)
+				this.north.south = this;
 		}
-		if(j < Level.LEVEL_H - 1) {
-			south = level.grid[i][j + 1];
-			if(south != null)
-				south.north = this;
-		}
-		if(i > 0) {
-			west = level.grid[i - 1][j];
-			if(west != null)
-				west.east = this;
+		if(south = j > 0) {
+			this.south = level.grid[i][j - 1];
+			if(this.south != null)
+				this.south.north = this;
 		}
 		if(i < Level.LEVEL_W - 1) {
 			east = level.grid[i + 1][j];
+			if(north)
+				north_east = level.grid[i + 1][j + 1];
+			if(south)
+				south_east = level.grid[i + 1][j - 1];
 			if(east != null)
 				east.west = this;
+			if(north_east != null)
+				north_east.south_west = this;
+			if(south_east != null)
+				south_east.north_west = this;
+		}
+		if(i > 0) {
+			west = level.grid[i - 1][j];
+			if(north)
+				north_west = level.grid[i - 1][j + 1];
+			if(south)
+				south_west = level.grid[i - 1][j - 1];
+			if(west != null)
+				west.east = this;
+			if(north_west != null)
+				north_west.south_east = this;
+			if(south_west != null)
+				south_west.north_east = this;
 		}		
-	}
-	
-	public Grid north() {
-		return north;
-	}
-	
-	public Grid south() {
-		return south;
-	}
-	
-	public Grid east() {
-		return east;
-	}
-	
-	public Grid west() {
-		return west;
 	}
 
 	@Override

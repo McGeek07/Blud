@@ -15,6 +15,5 @@ public abstract class Entity extends blud.game.level.Object {
 	
 	public Entity(float i, float j, Sprite... sprites) {
 		super(i, j, sprites);
-	}
-		
+	}		
 }
