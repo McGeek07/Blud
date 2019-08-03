@@ -411,13 +411,15 @@ public class Editor extends Level {
 				switch(mode) {
 					case TILE: 
 					case TRAP:
-						grid[i][j].tile = (Tile)brush.getClass().newInstance(); 
-						grid[i][j].tile.setLocal(cursor.x()   ,    cursor.y());
+						Tile t = (Tile)brush.getClass().newInstance(); 
+						t.setLocal(cursor.x(), cursor.y());
+						grid[i][j].setTile(t);
 						break;
 					case UNIT: 
 					case WALL:
-						grid[i][j].unit = (Unit)brush.getClass().newInstance(); 
-						grid[i][j].unit.setLocal(cursor.x()   ,    cursor.y());
+						Unit u = (Unit)brush.getClass().newInstance(); 
+						u.setLocal(cursor.x(), cursor.y());
+						grid[i][j].setUnit(u);
 						break;
 				}				
 			} catch (Exception ex) {

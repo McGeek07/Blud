@@ -35,7 +35,7 @@ public abstract class Unit extends Entity {
 		damage,
 		priority;
 	public float
-		speed;
+		speed = .1f;
 	private int
 		steps;
 	
@@ -166,6 +166,7 @@ public abstract class Unit extends Entity {
 					Game.DIRECTION[unit.facing].Y() * unit.speed
 						);
 			Vector.add(unit.local, move);
+			unit.setLocal(unit.local);
 			if(
 					Math.abs(unit.local.X() - unit.grid.local.X()) >= 1 ||
 					Math.abs(unit.local.Y() - unit.grid.local.Y()) >= 1

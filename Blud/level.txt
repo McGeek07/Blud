@@ -50,7 +50,7 @@ grid:<2.0, 15.0>&DebugTile&DebugWall
 grid:<3.0, 0.0>&DebugTile&DebugWall
 grid:<3.0, 1.0>&DebugTile&
 grid:<3.0, 2.0>&DebugTile&
-grid:<3.0, 3.0>&DebugTile&
+grid:<3.0, 3.0>&DebugTile&Player
 grid:<3.0, 4.0>&DebugTile&
 grid:<3.0, 5.0>&DebugTile&
 grid:<3.0, 6.0>&DebugTile&
