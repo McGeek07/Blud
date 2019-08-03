@@ -24,10 +24,10 @@ public class Game {
 			new Vector2f(-1f,  1f) //NORTH_WEST
 		};		
 	public static final int
-		TILE_W = 6,
-		TILE_H = 6,
-		SPRITE_W = 11,
-		SPRITE_H = 12;
+		TILE_W = 8,
+		TILE_H = 8,
+		SPRITE_W = 15,
+		SPRITE_H = 16;
 	
 	public static final Vector2f localToPixel(Vector2f local) {
 		return localToPixel(local.X(), local.Y());

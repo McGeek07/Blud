@@ -7,8 +7,6 @@ public class DebugWall extends Wall {
 	
 	public DebugWall() {
 		super(Sprites.get("DebugWall"));
-		this.blocksPlayerVision = true;
-		this.blocksEntityVision = true;
 	}
 
 	@Override

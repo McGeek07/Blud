@@ -20,7 +20,8 @@ public class Blud {
 		Sprites.load("DebugTile", 11, 12);
 		Sprites.load("DebugTrap", 11, 12);
 		Sprites.load("DebugUnit", 11, 12);
-		Sprites.load("DebugWall", 11, 12);
+		Sprites.load("DebugWall", 15, 16);
+		Sprites.load("Player", 11, 12);
 	
 		Engine.setScene(new Editor("level.txt"));
 		Engine.init();

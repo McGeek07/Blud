@@ -8,7 +8,7 @@ public class DebugUnit extends Unit {
 	public DebugUnit() {
 		super(Sprites.get("DebugUnit"));
 		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 3f;
+		this.playerVisionRange = 6f;
 		this.entityVisionLevel = 1f;
 		this.entityVisionRange = 8f;
 	}

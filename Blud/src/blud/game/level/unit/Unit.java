@@ -1,7 +1,6 @@
 package blud.game.level.unit;
 
 import blud.game.level.entity.Entity;
-import blud.game.level.grid.Grid;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 
@@ -64,8 +63,7 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void move(int direction) {
-		Grid move = grid.neighbors[direction];
-		if(move != null) {
+		if(canMove) {
 			
 		}
 	}
