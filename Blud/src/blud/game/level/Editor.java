@@ -65,7 +65,7 @@ public class Editor extends Level {
 			else
 				this.units.add(unit);
 		load(this.file = file);
-		debug = Sprites.get("debug");
+		debug = Sprites.get("Debug");
 		brush = new Brush();
 	}	
 	
@@ -246,10 +246,10 @@ public class Editor extends Level {
 			cursor = new Vector2f.Mutable();
 		protected final Sprite.Group
 			sprite = new Sprite.Group(
-					Sprites.get("cursor_r"),
-					Sprites.get("cursor_g"),
-					Sprites.get("cursor_b"),
-					Sprites.get("cursor_w")
+					Sprites.get("CursorR"),
+					Sprites.get("CursorG"),
+					Sprites.get("CursorB"),
+					Sprites.get("CursorW")
 					);
 		protected int
 			tile,
