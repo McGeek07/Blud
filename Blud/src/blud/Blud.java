@@ -21,7 +21,7 @@ public class Blud {
 		Sprites.load("DebugTrap", 15, 16);
 		Sprites.load("DebugUnit", 15, 16);
 		Sprites.load("DebugWall", 15, 16);
-		Sprites.load("Player", 11, 12);
+		Sprites.load("Player", 15, 16);
 		Sprites.load("StoneWall", 15, 16);
 		Sprites.load("StoneTile", 11, 12);
 		Sprites.load("HellSprite", 64, 64);
