@@ -6,7 +6,7 @@ import blud.game.sprite.sprites.Sprites;
 public class StoneWall extends Wall{
 
 	public StoneWall() {
-		super(Sprites.get("DebugWall"));
+		super(Sprites.get("StoneWall"));
 		this.blocksPlayerVision = true;
 		this.blocksEntityVision = true;
 	}
