@@ -31,7 +31,7 @@ public class Level extends Scene {
 		camera = new Vector2f.Mutable();
 	protected float
 		playerVisionFloor =  0f,
-		entityVisionFloor = .5f;
+		entityVisionFloor = .25f;
 	
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
@@ -45,8 +45,8 @@ public class Level extends Scene {
 	
 	public Grid at(float i, float j) {
 		if(
-				i > 0 && i < LEVEL_W &&
-				j > 0 && j < LEVEL_H
+				i >= 0 && i < LEVEL_W &&
+				j >= 0 && j < LEVEL_H
 				)
 			return grid[(int)i][(int)j];
 		return null;

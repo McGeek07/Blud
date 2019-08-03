@@ -20,7 +20,6 @@ import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
-import blud.geom.Vector2f.Mutable;
 import blud.util.Logic;
 
 public class Editor extends Level {

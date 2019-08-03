@@ -10,9 +10,7 @@ public class Blud {
 		VERSION = new Version("Blud", 0, 0, 7);
 	
 	public static void main(String[] args) {
-		System.out.println(VERSION);
-		
-		
+		System.out.println(VERSION);		
 		
 		Sprites.load("cursor_r", 11, 12);
 		Sprites.load("cursor_g", 11, 12);

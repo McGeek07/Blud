@@ -45,8 +45,28 @@ public class Grid implements Renderable, Updateable {
 		}
 	}
 	
-	public boolean isEmpty() {
-		return unit == null;
+	public void setTile(Tile tile) {
+		if(this.tile != null)
+			this.tile.grid = null;
+		this.tile = tile;
+		if(this.tile != null)
+			this.tile.grid = this;
+	}
+	
+	public void setUnit(Unit unit) {
+		if(this.unit != null)
+			this.unit.grid = null;
+		this.unit = unit;
+		if(this.unit != null)
+			this.unit.grid = this;
+	}
+	
+	public boolean hasTile() {
+		return tile != null;
+	}
+	
+	public boolean hasUnit() {
+		return unit != null;
 	}
 	
 	public boolean blocksPlayerVision() {
