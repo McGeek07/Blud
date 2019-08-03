@@ -23,7 +23,7 @@ public class Blud {
 		Sprites.load("DebugWall", 15, 16);
 		Sprites.load("Player", 15, 16);
 		Sprites.load("StoneWall", 15, 16);
-		Sprites.load("StoneTile", 11, 12);
+		Sprites.load("StoneTile", 15, 16);
 		Sprites.load("HellSprite", 64, 64);
 	
 		Engine.setScene(new Editor("level.txt"));
