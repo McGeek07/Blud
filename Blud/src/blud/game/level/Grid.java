@@ -83,6 +83,11 @@ public class Grid implements Renderable, Updateable {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return "" + local + "=" + (tile != null ? tile.getName(): "") + "," + (entity != null ? entity.getName() : "");
+	}
+	
 	protected void updatePlayerVision() {
 		if(entity != null && entity.playerVisionLevel > 0)
 			updatePlayerVision(

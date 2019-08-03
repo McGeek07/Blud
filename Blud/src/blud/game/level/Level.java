@@ -27,11 +27,8 @@ public class Level extends Scene {
 	public static final Walls
 		WALLS = new Walls();
 	
-	protected final Sprite.Group
-		background = new Sprite.Group(
-				Sprite.get("bg1"),
-				Sprite.get("bg2")
-				);
+	protected Sprite
+		background;
 	protected final Grid[][]
 		grid = new Grid
 				[LEVEL_W]
@@ -112,7 +109,8 @@ public class Level extends Scene {
 	
 	@Override
 	public void onRender(RenderContext context) {
-		background.render(context);
+		if(background != null)
+			background.render(context);
 		context.g2D.translate(
 				context.canvas_w / 2 - camera.X(),
 				context.canvas_h / 2 - camera.Y()
@@ -124,6 +122,8 @@ public class Level extends Scene {
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
+		if(background != null)
+			background.update(context);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j].playerVision = minPlayerVision;

@@ -30,6 +30,9 @@ public class Blud {
 		for(int i = 0; i < Level.LEVEL_W; i ++)
 			for(int j = 0; j < Level.LEVEL_H; j ++)
 				level.add(new blud.game.tile.tiles.Debug(i, j));
+		
+		blud.game.tile.tiles.Debug debug = new blud.game.tile.tiles.Debug();
+		System.out.println(debug.getName());
 	
 		Engine.setScene(level);
 		Engine.init();

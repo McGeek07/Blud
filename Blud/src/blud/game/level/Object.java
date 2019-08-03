@@ -87,6 +87,10 @@ public abstract class Object implements Renderable, Updateable {
 		this.onUpdate(context);
 	}
 	
+	public String getName() {
+		return getClass().getSimpleName();
+	}
+	
 	public abstract void onRender(RenderContext context);
 	public abstract void onUpdate(UpdateContext context);
 }
