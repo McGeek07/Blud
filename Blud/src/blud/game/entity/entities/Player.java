@@ -12,6 +12,10 @@ public class Player extends Entity{
 		this.maxHealth = 3;
 		this.orientation = Game.SOUTH;
 		this.sprites.setSprite(0);
+		this.entity_vision_direction = this.orientation;
+		this.entity_vision_dropoff = 1.0f;
+		this.entity_vision_transparency = false;
+		this.entity_vision_value = 0f;
 		sprites.play(0, 4f);
 	}
 	
@@ -26,6 +30,11 @@ public class Player extends Entity{
 	public void onUpdate(UpdateContext context) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getName() {
+		return "Player";
 	}
 
 }

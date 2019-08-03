@@ -1,5 +1,9 @@
 package blud.game.level;
 
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.core.input.Input;
@@ -14,6 +18,7 @@ import blud.game.wall.walls.Walls;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 import blud.util.Logic;
+import blud.util.Util;
 
 public class Editor extends Level {
 	protected final Tile[]
@@ -90,7 +95,8 @@ public class Editor extends Level {
 			brush.nextBrush();
 		if(Input.isWheelDn())
 			brush.prevBrush();
-		
+		if(Input.isKeyDnAction(Input.KEY_RETURN)) 
+			save("LevelSave.txt");
 		if(Input.isBtnDnAction(Input.BTN_1))
 			brush.paint();
 		if(Input.isBtnDnAction(Input.BTN_3))
@@ -111,6 +117,8 @@ public class Editor extends Level {
 		context = context.pull();
 	}
 	
+
+
 	public Vector2f getMousePixel(UpdateContext context) {
 		Vector2f mouse = Input.getMouse();
 		return new Vector2f(

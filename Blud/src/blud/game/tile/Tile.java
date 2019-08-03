@@ -5,6 +5,7 @@ import blud.geom.Vector;
 
 public abstract class Tile extends blud.game.level.Object {
 	
+	
 	public Tile(Sprite... sprites) {
 		super(sprites);
 	}
@@ -21,6 +22,7 @@ public abstract class Tile extends blud.game.level.Object {
 		
 		public Debug(float i, float j) {
 			super(i, j, Sprite.get("Tile"));
+					
 		}
 
 		@Override
@@ -36,4 +38,7 @@ public abstract class Tile extends blud.game.level.Object {
 		}	
 	}
 	
+	public String toString() {
+		return ""+this.local.x()+","+this.local.y()+",Tile";
+	}
 }

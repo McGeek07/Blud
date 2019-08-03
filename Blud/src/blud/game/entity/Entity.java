@@ -63,4 +63,9 @@ public abstract class Entity extends blud.game.level.Object {
 		character.currentHealth -= damageAmount;
 	}
 	
+	public abstract String getName();
+	
+	public String toString() {
+		return ""+this.local.x()+","+this.local.y()+","+this.getName();
+	}
 }

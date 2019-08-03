@@ -20,4 +20,10 @@ public class Debug extends Wall {
 	@Override
 	public void onUpdate(UpdateContext context) {
 	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "Wall";
+	}
 }

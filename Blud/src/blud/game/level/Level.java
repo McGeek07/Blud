@@ -1,17 +1,24 @@
 package blud.game.level;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import blud.core.scene.Scene;
 import blud.game.entity.Entity;
 import blud.game.entity.entities.Entities;
+import blud.game.entity.entities.Player;
 import blud.game.sprite.Sprite;
 import blud.game.tile.Tile;
 import blud.game.tile.tiles.Tiles;
+import blud.game.wall.Wall;
 import blud.game.wall.walls.Debug;
 import blud.game.wall.walls.Walls;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
+import blud.util.Util;
 
 public class Level extends Scene {	
 	public static final int
@@ -136,11 +143,42 @@ public class Level extends Scene {
 				grid[i][j].update(context);				
 	}
 	
-	public void save(String path) {
+	public void save(String path){
+		PrintWriter writer = Util.createPrintWriter(path, false);
 		
-	}
+		for(int i = 0; i < LEVEL_W; i++) {
+			for(int j = 0; j < LEVEL_H; j++) {
+				if(grid[i][j].tile != null) {
+					writer.println(grid[i][j].tile.toString());
+				}
+			}
+		}
+		for(int i = 0; i < LEVEL_W; i++) {
+			for(int j = 0; j < LEVEL_H; j++) {
+				if(grid[i][j].entity != null) {
+				writer.println(grid[i][j].entity.toString());
+				}
+			}
+		}
+		writer.close();
+}
 	
 	public void load(String path) {
+		List<String> objects = new ArrayList<String>();
+		Util.parseFromFile(path, objects);
 		
+		
+		for(String object: objects) {
+			int x = Integer.parseInt(object.substring(0, object.indexOf(",")));
+			int y = Integer.parseInt(object.substring(object.indexOf(",")+1, object.lastIndexOf(',')));
+			String type = object.substring(object.lastIndexOf(',')+1);
+			if(type == "Tile") {
+				grid[x][y].tile = new Tile.Debug(x, y);
+			}else if(type == "Wall") {
+				grid[x][y].entity = new Debug();
+			}else {
+				grid[x][y].entity = new Player();
+			}
+		}
 	}
 }
