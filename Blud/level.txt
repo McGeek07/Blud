@@ -1,5 +1,5 @@
-grid:<0.0, 0.0>&DebugTile&
-grid:<0.0, 1.0>&DebugTile&
+grid:<0.0, 0.0>&StoneTile&
+grid:<0.0, 1.0>&StoneTile&
 grid:<0.0, 2.0>&DebugTile&
 grid:<0.0, 3.0>&DebugTile&DebugWall
 grid:<0.0, 4.0>&DebugTile&
@@ -13,8 +13,8 @@ grid:<0.0, 12.0>&DebugTile&
 grid:<0.0, 13.0>&DebugTile&
 grid:<0.0, 14.0>&DebugTile&
 grid:<0.0, 15.0>&DebugTile&
-grid:<1.0, 0.0>&DebugTile&
-grid:<1.0, 1.0>&DebugTile&
+grid:<1.0, 0.0>&StoneTile&
+grid:<1.0, 1.0>&StoneTile&
 grid:<1.0, 2.0>&DebugTile&
 grid:<1.0, 3.0>&DebugTile&DebugWall
 grid:<1.0, 4.0>&DebugTile&
@@ -29,8 +29,8 @@ grid:<1.0, 12.0>&DebugTile&
 grid:<1.0, 13.0>&DebugTile&
 grid:<1.0, 14.0>&DebugTile&
 grid:<1.0, 15.0>&DebugTile&
-grid:<2.0, 0.0>&DebugTile&
-grid:<2.0, 1.0>&DebugTile&
+grid:<2.0, 0.0>&StoneTile&
+grid:<2.0, 1.0>&StoneTile&
 grid:<2.0, 2.0>&DebugTile&
 grid:<2.0, 3.0>&DebugTile&DebugWall
 grid:<2.0, 4.0>&DebugTile&DebugWall
@@ -45,8 +45,8 @@ grid:<2.0, 12.0>&DebugTile&
 grid:<2.0, 13.0>&DebugTile&
 grid:<2.0, 14.0>&DebugTile&
 grid:<2.0, 15.0>&DebugTile&
-grid:<3.0, 0.0>&DebugTile&
-grid:<3.0, 1.0>&DebugTile&
+grid:<3.0, 0.0>&StoneTile&
+grid:<3.0, 1.0>&StoneTile&
 grid:<3.0, 2.0>&DebugTile&
 grid:<3.0, 3.0>&DebugTile&
 grid:<3.0, 4.0>&DebugTile&
@@ -61,14 +61,14 @@ grid:<3.0, 12.0>&DebugTile&
 grid:<3.0, 13.0>&DebugTile&
 grid:<3.0, 14.0>&DebugTile&
 grid:<3.0, 15.0>&DebugTile&
-grid:<4.0, 0.0>&DebugTile&
+grid:<4.0, 0.0>&StoneTile&
 grid:<4.0, 1.0>&DebugTile&
 grid:<4.0, 2.0>&DebugTile&
 grid:<4.0, 3.0>&DebugTile&
 grid:<4.0, 4.0>&DebugTile&
 grid:<4.0, 5.0>&DebugTile&
-grid:<4.0, 6.0>&DebugTile&
-grid:<4.0, 7.0>&DebugTile&
+grid:<4.0, 6.0>&DebugTile&DebugWall
+grid:<4.0, 7.0>&DebugTile&DebugWall
 grid:<4.0, 8.0>&DebugTile&
 grid:<4.0, 9.0>&DebugTile&
 grid:<4.0, 10.0>&DebugTile&
@@ -84,7 +84,7 @@ grid:<5.0, 3.0>&DebugTile&DebugWall
 grid:<5.0, 4.0>&DebugTile&DebugWall
 grid:<5.0, 5.0>&DebugTile&DebugWall
 grid:<5.0, 6.0>&DebugTile&DebugWall
-grid:<5.0, 7.0>&DebugTile&
+grid:<5.0, 7.0>&DebugTile&Player
 grid:<5.0, 8.0>&DebugTile&
 grid:<5.0, 9.0>&DebugTile&
 grid:<5.0, 10.0>&DebugTile&
@@ -115,7 +115,7 @@ grid:<7.0, 2.0>&DebugTile&
 grid:<7.0, 3.0>&DebugTile&
 grid:<7.0, 4.0>&DebugTile&
 grid:<7.0, 5.0>&DebugTile&
-grid:<7.0, 6.0>&DebugTile&
+grid:<7.0, 6.0>&DebugTile&Player
 grid:<7.0, 7.0>&DebugTile&
 grid:<7.0, 8.0>&DebugTile&
 grid:<7.0, 9.0>&DebugTile&
@@ -125,6 +125,7 @@ grid:<7.0, 12.0>&DebugTile&
 grid:<7.0, 13.0>&DebugTile&
 grid:<7.0, 14.0>&DebugTile&
 grid:<7.0, 15.0>&DebugTile&
+grid:<8.0, 0.0>&StoneTile&
 grid:<8.0, 1.0>&DebugTile&
 grid:<8.0, 2.0>&DebugTile&
 grid:<8.0, 3.0>&DebugTile&

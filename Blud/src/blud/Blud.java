@@ -21,6 +21,9 @@ public class Blud {
 		Sprites.load("DebugTrap", 11, 12);
 		Sprites.load("DebugUnit", 11, 12);
 		Sprites.load("DebugWall", 11, 12);
+		Sprites.load("Player", 11, 12);
+		Sprites.load("StoneWall", 11, 12);
+		Sprites.load("StoneTile", 11, 12);
 	
 		Engine.setScene(new Editor("level.txt"));
 		Engine.init();
