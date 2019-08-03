@@ -30,9 +30,9 @@ public class Blud {
 //		Player player1 = new Player();
 //		player1.setLocal(0,0);
 		Level level1 = new Level();
-//		level1.load("LevelSave.txt");
+		level1.load("LevelSave.txt");
 //		level1.add(player1);
-//	
+	
 		Engine.setScene(level1);
 //		Engine.setScene(new Editor());
 		Engine.init();
