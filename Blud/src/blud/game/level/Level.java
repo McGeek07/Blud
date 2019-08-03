@@ -36,7 +36,7 @@ public class Level extends Scene {
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j] = new Grid(this, i, j);			
+				grid[i][j] = new Grid(this, i, j);		
 	}	
 	
 	public Grid at(Vector2f local) {
@@ -140,6 +140,8 @@ public class Level extends Scene {
 	
 	public void save(File file  ) {
 		try(PrintWriter out = Util.createPrintWriter(file, false)) {
+			if(background != null)
+				out.println("bg:" + background.name + "," + background.speed);
 			for(int i = 0; i < LEVEL_W; i ++)
 				for(int j = 0; j < LEVEL_H ; j ++)
 					if(grid[i][j].tile != null || grid[i][j].unit != null)
@@ -164,8 +166,12 @@ public class Level extends Scene {
 		for(String line: Util.parseFromFile(file, new LinkedList<String>())) {
 			line = line.trim();
 			if(line.startsWith("bg:")) {
-				String bg = line.substring("bg:".length()).trim();
-				background = Sprites.get(bg);
+				String[] temp = line.substring("bg:".length()).split("\\,");
+				String
+					name  = temp.length > 0 ? temp[0] : "",
+					speed = temp.length > 1 ? temp[1] : "";
+				background = Sprites.get(name);
+				background.loop(Util.stringToFloat(speed));
 			}
 			if(line.startsWith("grid:")) {
 				String[] 
@@ -177,12 +183,14 @@ public class Level extends Scene {
 				Grid grid = at(Vector2f.parseVector2f(local));
 				if(grid != null) {
 					if(!tile.isEmpty()) {
-						grid.tile = Tiles.load(tile);
-						grid.tile.setLocal(grid.local);
+						Tile t = Tiles.load(tile);
+						t.setLocal(grid.local);
+						grid.setTile(t);
 					}
 					if(!unit.isEmpty()) {
-						grid.unit = Units.load(unit);
-						grid.unit.setLocal(grid.local);
+						Unit u = Units.load(unit);
+						u.setLocal(grid.local);
+						grid.setUnit(u);
 					}
 				}
 			}			

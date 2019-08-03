@@ -15,7 +15,9 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	protected BufferedImage[]
 		sprite_frames,
 		shadow_frames;
-	protected float
+	public String
+		name;
+	public float
 		frame,
 		speed,
 		sprite_transparency,
@@ -25,15 +27,18 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	
 	public Sprite(Sprite sprite) {
 		this(
+				sprite.name,
 				sprite.sprite_frames,
 				sprite.shadow_frames
 				);
 	}
 	
 	public Sprite(
+			String name,
 			BufferedImage[] sprite_frames,
 			BufferedImage[] shadow_frames
 			) {
+		this.name = name;
 		this.sprite_frames = sprite_frames;
 		this.shadow_frames = shadow_frames;
 	}

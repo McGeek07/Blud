@@ -12,14 +12,15 @@ public class Sprites {
 	protected static final HashMap<String, Sprite>
  		SPRITES = new HashMap<>();
 	
-	public static final Sprite load(String id, int w, int h) {
+	public static final Sprite load(String name, int w, int h) {
 		try {
-			BufferedImage atlas = ImageIO.read(Sprite.class.getResource("sprites/" + id + ".png"));
+			BufferedImage atlas = ImageIO.read(Sprite.class.getResource("sprites/" + name + ".png"));
 			Sprite sprite = new Sprite(
+					name,
 					createSpriteFrames(atlas, w, h),
 					createShadowFrames(atlas, w, h)
 					);
-			SPRITES.put(id, sprite);
+			SPRITES.put(name, sprite);
 			return sprite;
 		} catch(IOException ioe) {
 			ioe.printStackTrace();

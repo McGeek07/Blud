@@ -1,5 +1,7 @@
 package blud.game.level.unit.units;
 
+import blud.core.input.Input;
+import blud.game.Game;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
 
@@ -11,15 +13,14 @@ public class Player extends Unit{
 	
 	@Override
 	public void onRender(RenderContext context) {
-		// TODO Auto-generated method stub
-		
 		
 	}
 
 	@Override
 	public void onUpdate(UpdateContext context) {
-		// TODO Auto-generated method stub
-		
+		grid.level.camera.set(Game.localToPixel(local));
+		if(Input.isKeyDnAction(Input.KEY_W))
+			actions.play(0);
 	}
 
 }

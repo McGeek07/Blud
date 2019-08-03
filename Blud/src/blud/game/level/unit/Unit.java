@@ -1,8 +1,12 @@
 package blud.game.level.unit;
 
+import blud.core.Updateable;
+import blud.game.Game;
 import blud.game.level.entity.Entity;
+import blud.game.level.grid.Grid;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
+import blud.geom.Vector2f;
 
 public abstract class Unit extends Entity {	
 	//vision attributes
@@ -30,8 +34,15 @@ public abstract class Unit extends Entity {
 		facing,
 		damage,
 		priority;
+	public float
+		speed;
 	private int
 		steps;
+	
+	protected Action.Group
+		actions = new Action.Group(
+				new MoveAction(this)
+				);
 		
 	
 	public Unit(Sprite... sprites) {
@@ -123,7 +134,118 @@ public abstract class Unit extends Entity {
 	
 	@Override
 	public void update(UpdateContext context) {
-		super.update(context);			
+		actions.update(context);
+		super.update(context);		
+	}
+	
+	public static class MoveAction extends Action<Unit> {
+		public MoveAction(Unit unit) {
+			super(unit);
+		}
+		
+		@Override
+		public void onPlay() {
+			Vector2f move = Vector.add(Game.DIRECTION[unit.facing], unit.local);			
+			Grid grid = unit.grid.level.at(move);
+			if(grid == null || grid.unit != null)
+				stop();
+		}
+		
+		@Override
+		public void onStop() {			
+			Grid grid = unit.grid.level.at(unit.local);
+			unit.setLocal(grid.local);
+			unit.grid.setUnit(null);
+			grid.setUnit(unit);
+		}
+
+		@Override
+		public void update(UpdateContext context) {
+			Vector2f move = new Vector2f (
+					Game.DIRECTION[unit.facing].X() * unit.speed,
+					Game.DIRECTION[unit.facing].Y() * unit.speed
+						);
+			Vector.add(unit.local, move);
+			if(
+					Math.abs(unit.local.X() - unit.grid.local.X()) >= 1 ||
+					Math.abs(unit.local.Y() - unit.grid.local.Y()) >= 1
+					)
+			stop();
+		}		
+	}
+	
+	public static abstract class Action<T extends Unit> implements Updateable {
+		public static final int
+			STOP = 0,
+			PLAY = 1;
+		protected T
+			unit;
+		protected int
+			mode;
+		
+		public Action(T unit) {
+			this.unit = unit;
+		}
+		
+		public void play() {
+			mode = PLAY;
+			this.onPlay();
+		}
+		
+		public void stop() {
+			mode = STOP;
+			this.onStop();
+		}
+		
+		public void onPlay() { }
+		public void onStop() { }
+		
+		public static class Group implements Updateable {
+			protected Action<?>[]
+				actions;
+			protected int
+				action;
+			
+			public Group(
+					Action<?>... actions
+					) {
+				this.actions = actions;
+			}
+			
+			public Action<?> getAction() {
+				return actions[action];
+			}
+			
+			public void play() {
+				if(getAction().mode == STOP)
+					getAction().play();
+			}
+			
+			public void stop() {
+				if(getAction().mode == PLAY)
+					getAction().stop();
+			}
+			
+			public Action<?> setAction(int action) {
+				return actions[this.action = action];
+			}
+			
+			public void play(int action) {
+				if(getAction().mode == STOP)
+					setAction(action).play();
+			}
+			
+			public void stop(int action) {
+				if(getAction().mode == STOP)
+					setAction(action).stop();
+			}
+
+			@Override
+			public void update(UpdateContext context) {
+				if(getAction().mode == PLAY)
+					getAction().update(context);
+			}			
+		}
 	}
 	
 	
