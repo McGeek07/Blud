@@ -5,9 +5,9 @@ import blud.util.Loader;
 
 public class Entities extends Loader<Entity> {
 	public static final String[]
-			NAMES = {
-				"Player"
-			};
+		NAMES = {
+			"Player"
+		};
 	public static final String
 		PACKAGE_NAME = "blud.game.entity.entities.";
 

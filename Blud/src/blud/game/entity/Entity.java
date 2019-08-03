@@ -6,18 +6,18 @@ import blud.geom.Vector2f;
 
 public abstract class Entity extends blud.game.level.Object {
 	
-	//lighting attributes
+	//vision attributes
 	public float
-		player_vision_value,
-		player_vision_dropoff,
-		entity_vision_value,
-		entity_vision_dropoff;
+		playerVisionLevel,
+		playerVisionRange,
+		entityVisionLevel,
+		entityVisionRange;
 	public boolean
-		player_vision_transparency = true,
-		entity_vision_transparency = true;
-	public Vector2f
-		player_vision_direction,
-		entity_vision_direction;
+		blocksPlayerVision,
+		blocksEntityVision;
+	public int
+		playerVisionDirection = -1,
+		entityVisionDirection = -1;
 	
 	protected int currentHealth;
 	protected int maxHealth;

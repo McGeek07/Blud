@@ -10,12 +10,12 @@ public class Player extends Entity{
 		super(Sprite.get("Player"));
 		this.currentHealth = 3;
 		this.maxHealth = 3;
-		this.orientation = Game.SOUTH;
+		this.orientation = Game.DIRECTION[Game.SOUTH];
 		this.sprites.setSprite(0);
-		this.entity_vision_direction = this.orientation;
-		this.entity_vision_dropoff = 0f;
-		this.entity_vision_transparency = false;
-		this.entity_vision_value = 1.0f;
+		this.entityVisionDirection = 0;
+		this.entityVisionRange = 0f;
+		this.blocksEntityVision = false;
+		this.entityVisionLevel = 1.0f;
 		sprites.play(0, 4f);
 	}
 	

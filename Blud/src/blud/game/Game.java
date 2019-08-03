@@ -1,18 +1,28 @@
 package blud.game;
 
-import blud.geom.Vector;
 import blud.geom.Vector2f;
 
 public class Game {
-	public static final Vector2f
-		NORTH = new Vector2f(0f,  1f),
-		SOUTH = new Vector2f(0f, -1f),
-		EAST = new Vector2f( 1f, 0f),
-		WEST = new Vector2f(-1f, 0f),
-		NORTH_EAST = Vector.add(NORTH, EAST),
-		NORTH_WEST = Vector.add(NORTH, WEST),
-		SOUTH_EAST = Vector.add(SOUTH, EAST),
-		SOUTH_WEST = Vector.add(SOUTH, WEST);		
+	public static final int
+		NORTH 	= 0,
+		NORTH_EAST = 1,
+		EAST 	= 2,
+		SOUTH_EAST = 3,
+		SOUTH 	= 4,
+		SOUTH_WEST = 5,		
+		WEST 	= 6,
+		NORTH_WEST = 7;
+	public static final Vector2f[]
+		DIRECTION = {
+			new Vector2f( 0f,  1f),//NORTH
+			new Vector2f( 1f,  1f),//NORTH EAST
+			new Vector2f( 1f,  0f),//EAST,
+			new Vector2f( 1f, -1f),//SOUTH_EAST
+			new Vector2f( 0f, -1f),//SOUTH
+			new Vector2f(-1f, -1f),//SOUTH_WEST
+			new Vector2f(-1f,  0f),//WEST
+			new Vector2f(-1f,  1f) //NORTH_WEST
+		};		
 	public static final int
 		TILE_W = 6,
 		TILE_H = 6,

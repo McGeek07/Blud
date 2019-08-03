@@ -1,10 +1,8 @@
 package blud.game.level;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import blud.core.scene.Scene;
 import blud.game.entity.Entity;
@@ -13,8 +11,6 @@ import blud.game.entity.entities.Player;
 import blud.game.sprite.Sprite;
 import blud.game.tile.Tile;
 import blud.game.tile.tiles.Tiles;
-import blud.game.wall.Wall;
-import blud.game.wall.walls.Debug;
 import blud.game.wall.walls.Walls;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
@@ -42,9 +38,9 @@ public class Level extends Scene {
 				[LEVEL_H];	
 	protected final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
-	
-	protected static final Random
-		random = new Random();
+	protected float
+		minPlayerVision,
+		minEntityVision = .5f;
 	
 	public Level() {
 		background.setShadowTransparency(1f);
@@ -130,13 +126,13 @@ public class Level extends Scene {
 	public void onUpdate(UpdateContext context) {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j].player_vision = 0f;
-				grid[i][j].entity_vision = 0f;
+				grid[i][j].playerVision = minPlayerVision;
+				grid[i][j].entityVision = minEntityVision;
 			}
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j].update_entity_vision();
-				grid[i][j].update_player_vision();
+				grid[i][j].updatePlayerVision();
+				grid[i][j].updateEntityVision();
 			}
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
@@ -173,9 +169,9 @@ public class Level extends Scene {
 			int y = Integer.parseInt(object.substring(object.indexOf(",")+1, object.lastIndexOf(',')));
 			String type = object.substring(object.lastIndexOf(',')+1);
 			if(type == "Tile") {
-				grid[x][y].tile = new Tile.Debug(x, y);
+				grid[x][y].tile = new blud.game.tile.tiles.Debug(x, y);
 			}else if(type == "Wall") {
-				grid[x][y].entity = new Debug();
+				grid[x][y].entity = new blud.game.wall.walls.Debug();
 			}else {
 				grid[x][y].entity = new Player();
 			}
