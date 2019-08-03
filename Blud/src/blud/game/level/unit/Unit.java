@@ -1,10 +1,10 @@
-package blud.game.entity;
+package blud.game.level.unit;
 
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 
-public abstract class Entity extends blud.game.level.Object {
+public abstract class Unit extends blud.game.level.entity.Entity {
 	
 	//vision attributes
 	public float
@@ -27,29 +27,29 @@ public abstract class Entity extends blud.game.level.Object {
 	protected Vector2f orientation;
 	protected int strength;
 	
-	public Entity(Sprite... sprites) {
+	public Unit(Sprite... sprites) {
 		super(sprites);
 	}
 	
-	public Entity(Vector local, Sprite... sprites) {
+	public Unit(Vector local, Sprite... sprites) {
 		super(local, sprites);
 	}
 	
-	public Entity(float i, float j, Sprite... sprites) {
+	public Unit(float i, float j, Sprite... sprites) {
 		super(i, j, sprites);
 	}		
 	
-	public void move(Entity character) {
-		if(grid.entity instanceof blud.game.wall.Wall) {
+	public void move(Unit character) {
+		if(grid.unit instanceof Wall) {
 			
-		}else if(grid.entity != null) {
-			fight(character, grid.entity);
+		}else if(grid.unit != null) {
+			fight(character, grid.unit);
 		}else {
 			character.setLocal(Vector.add(local, orientation));
 		}
 	}
 	
-	public void fight(Entity attacker, Entity defender ) {
+	public void fight(Unit attacker, Unit defender ) {
 		Vector2f battle = Vector2f.mul(attacker.orientation, defender.orientation);
 		if(battle.X() < 0 || battle.Y() < 0) {
 			takeDamage(defender, attacker.strength);
@@ -59,13 +59,7 @@ public abstract class Entity extends blud.game.level.Object {
 		}
 	}
 	
-	public void takeDamage(Entity character, int damageAmount) {
+	public void takeDamage(Unit character, int damageAmount) {
 		character.currentHealth -= damageAmount;
-	}
-	
-	public abstract String getName();
-	
-	public String toString() {
-		return ""+this.local.x()+","+this.local.y()+","+this.getName();
 	}
 }

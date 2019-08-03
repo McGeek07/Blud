@@ -1,119 +1,217 @@
 package blud.game.level;
 
+import java.awt.Color;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.core.input.Input;
 import blud.game.Game;
-import blud.game.entity.Entity;
-import blud.game.entity.entities.Entities;
+import blud.game.level.entity.Entity;
+import blud.game.level.tile.Tile;
+import blud.game.level.tile.Trap;
+import blud.game.level.tile.tiles.Tiles;
+import blud.game.level.unit.Unit;
+import blud.game.level.unit.Wall;
+import blud.game.level.unit.units.Units;
 import blud.game.sprite.Sprite;
-import blud.game.tile.Tile;
-import blud.game.tile.tiles.Tiles;
-import blud.game.wall.Wall;
-import blud.game.wall.walls.Walls;
+import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
+import blud.geom.Vector2f.Mutable;
 import blud.util.Logic;
 
 public class Editor extends Level {
-	protected final Tile[]
-		tiles;
-	protected final Wall[]
-		walls;
-	protected final Entity[]
-		entities;
-	
-	protected final Sprite
+	public static final int
+		EDIT = 0,
+		PLAY = 1,
+		GLOBAL_VISION = 0,
+		ENTITY_VISION = 1,
+		PLAYER_VISION = 2;
+	protected List<Tile>
+		tiles = new LinkedList<>(),
+		traps = new LinkedList<>();
+	protected List<Unit>
+		units = new LinkedList<>(),
+		walls = new LinkedList<>();
+	protected Sprite
 		debug;
-	protected final Brush
+	protected Brush
 		brush;
+	protected int
+		editor_mode,
+		vision_mode;
 	
-	public Editor() {
-		super();		
-		tiles = new Tile[Tiles.NAMES.length];
-		walls = new Wall[Walls.NAMES.length];
-		entities = new Entity[Entities.NAMES.length];
-		
-		for(int i = 0; i < tiles.length; i ++)
-			tiles[i] = TILES.get(Tiles.NAMES[i]);
-		for(int i = 0; i < walls.length; i ++)
-			walls[i] = WALLS.get(Walls.NAMES[i]);
-		for(int i = 0; i < entities.length; i ++)
-			entities[i] = ENTITIES.get(Entities.NAMES[i]);
-
-		debug = Sprite.get("debug");
+	protected File
+		file;
+	
+	public Editor(String path) {
+		this(new File(path));
+	}
+	
+	public Editor(File file  ) {
+		super();
+		List<Tile> tiles = Tiles.load(new LinkedList<Tile>());
+		List<Unit> units = Units.load(new LinkedList<Unit>());		
+		for(Tile tile: tiles)
+			if(tile instanceof Trap)
+				this.traps.add(tile);
+			else
+				this.tiles.add(tile);
+		for(Unit unit: units)
+			if(unit instanceof Wall)
+				this.walls.add(unit);
+			else
+				this.units.add(unit);
+		load(this.file = file);
+		debug = Sprites.get("debug");
 		brush = new Brush();
 	}	
 	
 	
 	@Override
 	public void onRender(RenderContext context) {
-		background.render(context);
+		context.g2D.setColor(Color.BLACK);
+		context.g2D.fillRect(
+				0,
+				0,
+				context.canvas_w,
+				context.canvas_h
+				);
+		if(background != null)
+			background.render(context);
 		context.g2D.translate(
 				context.canvas_w / 2 - camera.x(),
 				context.canvas_h / 2 - camera.y()
 				);
-		
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				debug.setFrame((i + j) & 1);
-				context = context.push();
-				Vector2f pixel = Game.localToPixel(i, j);
-				context.g2D.translate(
-						pixel.x() - Game.SPRITE_W / 2,
-						pixel.y() - Game.SPRITE_H / 2
-						);
-				debug.render(context);
-				context = context.pull();
-				grid[i][j].render(context);
-				if(
-						i == brush.cursor.x() &&
-						j == brush.cursor.y()
-						)
-					brush.render(context);
-			}
+		switch(editor_mode) {
+			case EDIT:
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						debug.setFrame((i + j) & 1);
+						context = context.push();
+						Vector2f pixel = Game.localToPixel(i, j);
+						context.g2D.translate(
+								pixel.x() - Game.SPRITE_W / 2,
+								pixel.y() - Game.SPRITE_H / 2
+								);
+						debug.render(context);
+						context = context.pull();
+						switch(vision_mode) {
+							case GLOBAL_VISION: grid[i][j].setShadowTransparency(1f); break;
+							case ENTITY_VISION: grid[i][j].setShadowTransparency(grid[i][j].entityVision); break;
+							case PLAYER_VISION: grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
+						}
+						grid[i][j].render(context);
+						if(
+								i == brush.cursor.x() &&
+								j == brush.cursor.y()
+								)
+							brush.render(context);
+					}
+				break;
+			case PLAY:
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						switch(vision_mode) {
+							case GLOBAL_VISION: grid[i][j].setShadowTransparency(1f); break;
+							case ENTITY_VISION: grid[i][j].setShadowTransparency(grid[i][j].entityVision); break;
+							case PLAYER_VISION: grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
+						}
+						grid[i][j].render(context);
+					}
+				break;
+		}		
 	}
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
-		if(Input.isKeyDn(Logic.OR, Input.KEY_W, Input.KEY_UP_ARROW))
-			Vector.add(camera, 0, - 1);
-		if(Input.isKeyDn(Logic.OR, Input.KEY_A, Input.KEY_L_ARROW ))
-			Vector.add(camera, - 1, 0);
-		if(Input.isKeyDn(Logic.OR, Input.KEY_S, Input.KEY_DN_ARROW))
-			Vector.add(camera, 0, + 1);
-		if(Input.isKeyDn(Logic.OR, Input.KEY_D, Input.KEY_R_ARROW ))
-			Vector.add(camera, + 1, 0);
-		if(Input.isKeyDnAction(Input.KEY_TAB))
-			brush.nextMode();
-		if(Input.isWheelUp())
-			brush.nextBrush();
-		if(Input.isWheelDn())
-			brush.prevBrush();
-		if(Input.isKeyDnAction(Input.KEY_RETURN)) 
-			save("LevelSave.txt");
-		if(Input.isBtnDnAction(Input.BTN_1))
-			brush.paint();
-		if(Input.isBtnDnAction(Input.BTN_3))
-			brush.erase();
-		
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++)
-				if(grid[i][j].entity != null)
-					if(
-						i - brush.cursor.x() >= 0 && i - brush.cursor.x() < 2 &&
-						j - brush.cursor.y() >= 0 && j - brush.cursor.y() < 2)
-						grid[i][j].entity.setSpriteTransparency(.5f);
-					else
-						grid[i][j].entity.setSpriteTransparency( 0f);
-							
-		context = context.push();
-		brush.update(context);		
-		context = context.pull();
+		if(background != null)
+			background.update(context);	
+		if(Input.isKeyDnAction(Input.KEY_1))
+			this.vision_mode = GLOBAL_VISION;
+		if(Input.isKeyDnAction(Input.KEY_2))
+			this.vision_mode = ENTITY_VISION;
+		if(Input.isKeyDnAction(Input.KEY_3))
+			this.vision_mode = PLAYER_VISION;
+		switch(editor_mode) {
+			case EDIT:				
+				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
+					editor_mode = PLAY;
+					save(this.file);	
+					return;
+				}
+				if(Input.isKeyDn(Logic.OR, Input.KEY_W, Input.KEY_UP_ARROW))
+					Vector.add(camera, 0, - 1);
+				if(Input.isKeyDn(Logic.OR, Input.KEY_A, Input.KEY_L_ARROW ))
+					Vector.add(camera, - 1, 0);
+				if(Input.isKeyDn(Logic.OR, Input.KEY_S, Input.KEY_DN_ARROW))
+					Vector.add(camera, 0, + 1);
+				if(Input.isKeyDn(Logic.OR, Input.KEY_D, Input.KEY_R_ARROW ))
+					Vector.add(camera, + 1, 0);
+				if(Input.isKeyDnAction(Input.KEY_TAB))
+					brush.nextMode();
+				if(Input.isWheelUp())
+					brush.nextBrush();
+				if(Input.isWheelDn())
+					brush.prevBrush();
+				if(Input.isBtnDn(Input.BTN_1))
+					brush.paint();
+				if(Input.isBtnDn(Input.BTN_3))
+					brush.erase();
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						grid[i][j].playerVision = playerVisionFloor;
+						grid[i][j].entityVision = entityVisionFloor;
+					}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						grid[i][j].updatePlayerVision();
+						grid[i][j].updateEntityVision();
+					}				
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++)
+						if(grid[i][j].unit != null)
+							if(
+								i - brush.cursor.x() >= 0 && i - brush.cursor.x() < 2 &&
+								j - brush.cursor.y() >= 0 && j - brush.cursor.y() < 2)
+								grid[i][j].unit.setSpriteTransparency(.5f);
+							else
+								grid[i][j].unit.setSpriteTransparency( 0f);									
+				context = context.push();
+				brush.update(context);		
+				context = context.pull();
+				break;
+			case PLAY:
+				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
+					editor_mode = EDIT;
+					load(this.file);
+					return;
+				}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						grid[i][j].playerVision = playerVisionFloor;
+						grid[i][j].entityVision = entityVisionFloor;
+					}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						grid[i][j].updatePlayerVision();
+						grid[i][j].updateEntityVision();
+					}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						grid[i][j].update(context);	
+					}
+		}		
 	}
 	
-
+	@Override
+	public void onExit() {
+		if(editor_mode == EDIT)
+			save(this.file);
+	}
 
 	public Vector2f getMousePixel(UpdateContext context) {
 		Vector2f mouse = Input.getMouse();
@@ -142,33 +240,33 @@ public class Editor extends Level {
 	public class Brush implements Renderable, Updateable {
 		public static final int
 			TILE = 0,
-			WALL = 1,
-			ENTITY = 2,
-			CURSOR_W = 11,
-			CURSOR_H = 12;
+			TRAP = 1,
+			UNIT = 2,
+			WALL = 3;
 		protected final Vector2f.Mutable
 			cursor = new Vector2f.Mutable();
 		protected final Sprite.Group
 			sprite = new Sprite.Group(
-					Sprite.get("cursor_r"),
-					Sprite.get("cursor_g"),
-					Sprite.get("cursor_b"),
-					Sprite.get("cursor_w")
+					Sprites.get("cursor_r"),
+					Sprites.get("cursor_g"),
+					Sprites.get("cursor_b"),
+					Sprites.get("cursor_w")
 					);
 		protected int
 			tile,
+			trap,
+			unit,
 			wall,
-			entity,
 			mode;
 		
-		protected blud.game.level.Object
+		protected Entity
 			brush;
 		
 		public Brush() {
-			this.setMode(WALL);
+			this.setMode(TILE);
 			sprite.loop(0, 4f);
 			sprite.loop(1, 4f);
-			sprite.setSpriteTransparency(.2f);
+			sprite.setSpriteTransparency(.5f);
 		}
 
 
@@ -184,8 +282,8 @@ public class Editor extends Level {
 					cursor.y()
 					);
 			context.g2D.translate(
-					pixel.x() - CURSOR_W / 2,
-					pixel.y() - CURSOR_H / 2
+					pixel.x() - Game.SPRITE_W / 2,
+					pixel.y() - Game.SPRITE_H / 2
 					);
 			sprite.render(context);
 			context = context.pull();
@@ -205,17 +303,38 @@ public class Editor extends Level {
 				if(brush != null)
 					brush.setLocal(i, j);
 				switch(mode) {
-					case TILE: if(grid[i][j].tile != null) sprite.setSprite(0); else sprite.setSprite(1); break;
-					case WALL: if(grid[i][j].entity != null) sprite.setSprite(0); else sprite.setSprite(1); break;
-					case ENTITY: if(grid[i][j].entity != null) sprite.setSprite(0); else sprite.setSprite(1); break;
+					case TILE: 
+					case TRAP:
+						if(grid[i][j].tile != null) 
+							sprite.setSprite(0); 
+						else 
+							sprite.setSprite(1); 
+						break;
+					case UNIT: 
+					case WALL:
+						if(grid[i][j].unit != null) 
+							sprite.setSprite(0);
+						else
+							sprite.setSprite(1);
+						break;
 				}
 			}			
 			sprite.update(context);
 		}
 		
+		public void setMode(int mode) {
+			this.mode = mode;
+			switch(this.mode) {
+				case TILE: brush = tiles.get(tile); break;
+				case TRAP: brush = traps.get(trap); break;
+				case UNIT: brush = units.get(unit); break;
+				case WALL: brush = walls.get(wall); break;
+			}
+		}
+		
 		public void nextMode() {
 			mode ++;
-			if(mode > 2)
+			if(mode > 3)
 				mode = 0;
 			setMode(mode);
 		}
@@ -223,7 +342,7 @@ public class Editor extends Level {
 		public void prevMode() {
 			mode --;
 			if(mode < 0)
-				mode = 2;
+				mode = 3;
 			setMode(mode);
 		}
 		
@@ -231,21 +350,27 @@ public class Editor extends Level {
 			switch(mode) {
 				case TILE: 
 					tile ++; 
-					if(tile >= tiles.length) 
+					if(tile >= tiles.size()) 
 						tile = 0; 
-					brush = tiles[tile]; 
+					brush = tiles.get(tile); 
+					break;
+				case TRAP: 
+					trap ++; 
+					if(trap >= traps.size()) 
+						trap = 0; 
+					brush = traps.get(trap); 
+					break;
+				case UNIT: 
+					unit ++; 
+					if(unit >= units.size()) 
+						unit = 0; 
+					brush = units.get(unit); 
 					break;
 				case WALL: 
 					wall ++; 
-					if(wall >= walls.length) 
+					if(wall >= walls.size()) 
 						wall = 0; 
-					brush = walls[wall]; 
-					break;
-				case ENTITY: 
-					entity ++; 
-					if(entity >= entities.length) 
-						entity = 0; 
-					brush = entities[entity]; 
+					brush = walls.get(wall); 
 					break;
 			}
 		}
@@ -255,30 +380,27 @@ public class Editor extends Level {
 				case TILE: 
 					tile --; 
 					if(tile < 0) 
-						tile = tiles.length - 1; 
-					brush = tiles[tile]; 
+						tile = tiles.size() - 1; 
+					brush = tiles.get(tile); 
+					break;
+				case TRAP: 
+					trap --; 
+					if(trap < 0) 
+						trap = traps.size() - 1; 
+					brush = traps.get(trap); 
+					break;
+				case UNIT: 
+					unit --; 
+					if(unit < 0) 
+						unit = units.size() - 1; 
+					brush = units.get(unit); 
 					break;
 				case WALL: 
 					wall --; 
 					if(wall < 0) 
-						wall = walls.length - 1; 
-					brush = walls[wall]; 
+						wall = walls.size() - 1; 
+					brush = walls.get(wall); 
 					break;
-				case ENTITY: 
-					entity --; 
-					if(entity < 0) 
-						entity = entities.length - 1; 
-					brush = entities[entity]; 
-					break;
-			}
-		}
-		
-		public void setMode(int mode) {
-			this.mode = mode;
-			switch(this.mode) {
-				case TILE: brush = tiles[tile]; break;
-				case WALL: brush = walls[wall]; break;
-				case ENTITY: brush = entities[entity]; break;
 			}
 		}
 		
@@ -289,16 +411,14 @@ public class Editor extends Level {
 					j = cursor.y();
 				switch(mode) {
 					case TILE: 
+					case TRAP:
 						grid[i][j].tile = (Tile)brush.getClass().newInstance(); 
-						grid[i][j].tile.setLocal(cursor.x(), cursor.y());
+						grid[i][j].tile.setLocal(cursor.x()   ,    cursor.y());
 						break;
+					case UNIT: 
 					case WALL:
-						grid[i][j].entity = (Wall)brush.getClass().newInstance(); 
-						grid[i][j].entity.setLocal(cursor.x(), cursor.y());
-						break;
-					case ENTITY:
-						grid[i][j].entity = (Entity)brush.getClass().newInstance(); 
-						grid[i][j].entity.setLocal(cursor.x(), cursor.y());
+						grid[i][j].unit = (Unit)brush.getClass().newInstance(); 
+						grid[i][j].unit.setLocal(cursor.x()   ,    cursor.y());
 						break;
 				}				
 			} catch (Exception ex) {
@@ -311,9 +431,12 @@ public class Editor extends Level {
 				i = cursor.x(),
 				j = cursor.y();
 			switch(mode) {
-				case TILE: grid[i][j].tile = null; break;
-				case WALL: grid[i][j].entity = null; break;
-				case ENTITY: grid[i][j].entity = null; break;
+				case TILE: 
+				case TRAP:
+					grid[i][j].tile = null; break;
+				case UNIT: 
+				case WALL:
+					grid[i][j].unit = null; break;
 			}
 		}
 	}

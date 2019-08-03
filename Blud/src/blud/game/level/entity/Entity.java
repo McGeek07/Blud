@@ -1,30 +1,32 @@
-package blud.game.level;
+package blud.game.level.entity;
 
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.game.Game;
+import blud.game.level.grid.Grid;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 
-public abstract class Object implements Renderable, Updateable {	
-	protected Sprite.Group
+public abstract class Entity implements Renderable, Updateable {
+	public Sprite.Group
 		sprites;
-	protected Vector2f.Mutable
+	public final Vector2f.Mutable
 		local = new Vector2f.Mutable(),
 		pixel = new Vector2f.Mutable();
-	protected Grid
+	public Grid
 		grid;
 	
-	public Object(Sprite... sprites) {
+	public Entity(Sprite... sprites) {
 		this(0f, 0f, sprites);
 	}
 	
-	public Object(Vector local, Sprite... sprites) {
+	public Entity(Vector local, Sprite... sprites) {
 		this(local.X(), local.Y(), sprites);
 	}
 	
-	public Object(float i, float j, Sprite... sprites) {
+	public Entity(float i, float j, Sprite... sprites) {
+		//this.type = type;
 		this.setLocal(i, j);
 		this.sprites = new Sprite.Group(sprites);
 	}
@@ -87,7 +89,7 @@ public abstract class Object implements Renderable, Updateable {
 		this.onUpdate(context);
 	}
 	
-	public String getName() {
+	public String getClassName() {
 		return getClass().getSimpleName();
 	}
 	

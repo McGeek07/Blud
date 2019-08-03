@@ -1,17 +1,17 @@
 package blud.game.level;
 
+import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import blud.core.scene.Scene;
-import blud.game.entity.Entity;
-import blud.game.entity.entities.Entities;
-import blud.game.entity.entities.Player;
+import blud.game.level.grid.Grid;
+import blud.game.level.tile.Tile;
+import blud.game.level.tile.tiles.Tiles;
+import blud.game.level.unit.Unit;
+import blud.game.level.unit.units.Units;
 import blud.game.sprite.Sprite;
-import blud.game.tile.Tile;
-import blud.game.tile.tiles.Tiles;
-import blud.game.wall.walls.Walls;
+import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 import blud.util.Util;
@@ -20,27 +20,20 @@ public class Level extends Scene {
 	public static final int
 		LEVEL_W = 16,
 		LEVEL_H = 16;
-	public static final Entities
-		ENTITIES = new Entities();
-	public static final Tiles
-		TILES = new Tiles();
-	public static final Walls
-		WALLS = new Walls();
 	
 	protected Sprite
 		background;
-	protected final Grid[][]
+	public final Grid[][]
 		grid = new Grid
 				[LEVEL_W]
 				[LEVEL_H];	
-	protected final Vector2f.Mutable
+	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	protected float
-		minPlayerVision,
-		minEntityVision = .5f;
+		playerVisionFloor =  0f,
+		entityVisionFloor = .5f;
 	
-	public Level() {
-		background.setShadowTransparency(1f);
+	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Grid(this, i, j);			
@@ -83,20 +76,20 @@ public class Level extends Scene {
 		grid[i][j].tile = null;
 	}
 	
-	public void add(Entity entity) {
+	public void add(Unit entity) {
 		int
 			i = entity.local.x(),
 			j = entity.local.y();
-		if(grid[i][j].entity == null)
-			grid[i][j].entity = entity;
+		if(grid[i][j].unit == null)
+			grid[i][j].unit = entity;
 	}
 	
-	public void del(Entity entity) {
+	public void del(Unit entity) {
 		int
 			i = entity.local.x(),
 			j = entity.local.y();
-		if(grid[i][j].entity == entity)
-			grid[i][j].entity = null;
+		if(grid[i][j].unit == entity)
+			grid[i][j].unit = null;
 	}
 	
 	public void delEntity(Vector local) {
@@ -104,7 +97,7 @@ public class Level extends Scene {
 	}
 	
 	public void delEntity(int i , int j) {
-		grid[i][j].entity = null;
+		grid[i][j].unit = null;
 	}
 	
 	@Override
@@ -116,8 +109,10 @@ public class Level extends Scene {
 				context.canvas_h / 2 - camera.Y()
 				);	
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j].render(context);
+			for(int j = 0; j < LEVEL_H; j ++) {	
+				grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0? grid[i][j].entityVision : 0f);
+				grid[i][j].render(context);		
+			}
 	}
 	
 	@Override
@@ -126,8 +121,8 @@ public class Level extends Scene {
 			background.update(context);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j].playerVision = minPlayerVision;
-				grid[i][j].entityVision = minEntityVision;
+				grid[i][j].playerVision = playerVisionFloor;
+				grid[i][j].entityVision = entityVisionFloor;
 			}
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
@@ -139,42 +134,58 @@ public class Level extends Scene {
 				grid[i][j].update(context);				
 	}
 	
-	public void save(String path){
-		PrintWriter writer = Util.createPrintWriter(path, false);
-		
-		for(int i = 0; i < LEVEL_W; i++) {
-			for(int j = 0; j < LEVEL_H; j++) {
-				if(grid[i][j].tile != null) {
-					writer.println(grid[i][j].tile.toString());
-				}
-			}
+	public void save(String path) {
+		save(new File(path));
+	}
+	
+	public void save(File file  ) {
+		try(PrintWriter out = Util.createPrintWriter(file, false)) {
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H ; j ++)
+					if(grid[i][j].tile != null || grid[i][j].unit != null)
+						out.println(
+								"grid:" + grid[i][j].local 
+								+ "&" + (grid[i][j].tile != null ? grid[i][j].tile.getClassName() : "") 
+								+ "&" + (grid[i][j].unit != null ? grid[i][j].unit.getClassName() : "")
+								);
 		}
-		for(int i = 0; i < LEVEL_W; i++) {
-			for(int j = 0; j < LEVEL_H; j++) {
-				if(grid[i][j].entity != null) {
-				writer.println(grid[i][j].entity.toString());
-				}
-			}
-		}
-		writer.close();
-}
+	}
 	
 	public void load(String path) {
-		List<String> objects = new ArrayList<String>();
-		Util.parseFromFile(path, objects);
-		
-		
-		for(String object: objects) {
-			int x = Integer.parseInt(object.substring(0, object.indexOf(",")));
-			int y = Integer.parseInt(object.substring(object.indexOf(",")+1, object.lastIndexOf(',')));
-			String type = object.substring(object.lastIndexOf(',')+1);
-			if(type == "Tile") {
-				grid[x][y].tile = new blud.game.tile.tiles.Debug(x, y);
-			}else if(type == "Wall") {
-				grid[x][y].entity = new blud.game.wall.walls.Debug();
-			}else {
-				grid[x][y].entity = new Player();
+		load(new File(path));
+	}
+	
+	public void load(File file  ) {
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].tile = null;
+				grid[i][j].unit = null;
 			}
+		for(String line: Util.parseFromFile(file, new LinkedList<String>())) {
+			line = line.trim();
+			if(line.startsWith("bg:")) {
+				String bg = line.substring("bg:".length()).trim();
+				background = Sprites.get(bg);
+			}
+			if(line.startsWith("grid:")) {
+				String[] 
+					temp = line.substring("grid:".length()).split("\\&");
+				String
+					local 	= temp.length > 0 ? temp[0].trim() : "",
+					tile 	= temp.length > 1 ? temp[1].trim() : "",
+					unit 	= temp.length > 2 ? temp[2].trim() : "";
+				Grid grid = at(Vector2f.parseVector2f(local));
+				if(grid != null) {
+					if(!tile.isEmpty()) {
+						grid.tile = Tiles.load(tile);
+						grid.tile.setLocal(grid.local);
+					}
+					if(!unit.isEmpty()) {
+						grid.unit = Units.load(unit);
+						grid.unit.setLocal(grid.local);
+					}
+				}
+			}			
 		}
 	}
 }

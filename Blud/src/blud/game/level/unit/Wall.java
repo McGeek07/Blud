@@ -1,10 +1,9 @@
-package blud.game.wall;
+package blud.game.level.unit;
 
-import blud.game.entity.Entity;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 
-public abstract class Wall extends Entity {
+public abstract class Wall extends Unit {
 	
 	public Wall(Sprite... sprites) {
 		super(sprites);
@@ -17,4 +16,5 @@ public abstract class Wall extends Entity {
 	public Wall(float i, float j, Sprite... sprites) {
 		super(i, j, sprites);
 	}
+	
 }

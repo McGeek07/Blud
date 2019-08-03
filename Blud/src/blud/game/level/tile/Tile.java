@@ -1,9 +1,9 @@
-package blud.game.tile;
+package blud.game.level.tile;
 
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 
-public abstract class Tile extends blud.game.level.Object {	
+public abstract class Tile extends blud.game.level.entity.Entity {	
 	
 	public Tile(Sprite... sprites) {
 		super(sprites);
@@ -17,7 +17,4 @@ public abstract class Tile extends blud.game.level.Object {
 		super(i, j, sprites);
 	}
 	
-	public String toString() {
-		return ""+this.local.x()+","+this.local.y()+",Tile";
-	}
 }

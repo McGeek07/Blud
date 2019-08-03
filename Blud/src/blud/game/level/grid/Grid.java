@@ -1,10 +1,11 @@
-package blud.game.level;
+package blud.game.level.grid;
 
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.game.Game;
-import blud.game.entity.Entity;
-import blud.game.tile.Tile;
+import blud.game.level.Level;
+import blud.game.level.tile.Tile;
+import blud.game.level.unit.Unit;
 import blud.geom.Vector2f;
 
 public class Grid implements Renderable, Updateable {	
@@ -18,10 +19,9 @@ public class Grid implements Renderable, Updateable {
 	
 	public Tile
 		tile;
-	public Entity
-		entity;
-
-	protected final Vector2f.Mutable
+	public Unit
+		unit;
+	public final Vector2f.Mutable
 		local = new Vector2f.Mutable(),
 		pixel = new Vector2f.Mutable();
 	
@@ -46,58 +46,64 @@ public class Grid implements Renderable, Updateable {
 	}
 	
 	public boolean isEmpty() {
-		return entity == null;
+		return unit == null;
 	}
 	
 	public boolean blocksPlayerVision() {
-		return entity != null && entity.blocksPlayerVision;
+		return unit != null && unit.blocksPlayerVision;
 	}
 	
 	public boolean blocksEntityVision() {
-		return entity != null && entity.blocksEntityVision;
+		return unit != null && unit.blocksEntityVision;
+	}
+	
+	public void setTransparency(float transparency) {
+		if(tile != null)
+			tile.setTransparency(transparency);
+		if(unit != null)
+			unit.setTransparency(transparency);		
+	}
+	
+	public void setSpriteTransparency(float transparency) {
+		if(tile != null)
+			tile.setSpriteTransparency(transparency);
+		if(unit != null)
+			unit.setSpriteTransparency(transparency);		
+	}
+	
+	public void setShadowTransparency(float transparency) {
+		if(tile != null)
+			tile.setShadowTransparency(transparency);
+		if(unit != null)
+			unit.setShadowTransparency(transparency);		
 	}
 
 	@Override
 	public void render(RenderContext context) {
 		if(this.tile != null)
 			this.tile.render(context);
-		if(this.entity != null)
-			this.entity.render(context);
+		if(this.unit != null)
+			this.unit.render(context);
 	}
 
 	@Override
 	public void update(UpdateContext context) {
-		float transparency = 0f;
-		if(playerVision > 0)
-			transparency = entityVision;
-//			transparency = playerVision >= entityVision ?
-//					playerVision :
-//					entityVision ;
-		if(this.tile != null) {	
-			this.tile.setShadowTransparency(transparency);
+		if(this.tile != null)
 			this.tile.update(context);
-		}
-		if(this.entity != null) {
-			this.entity.setShadowTransparency(transparency);
-			this.entity.update(context);
-		}
+		if(this.unit != null)
+			this.unit.update(context);
 	}
 	
-	@Override
-	public String toString() {
-		return "" + local + "=" + (tile != null ? tile.getName(): "") + "," + (entity != null ? entity.getName() : "");
-	}
-	
-	protected void updatePlayerVision() {
-		if(entity != null && entity.playerVisionLevel > 0)
+	public void updatePlayerVision() {
+		if(unit != null && unit.playerVisionLevel > 0)
 			updatePlayerVision(
-					entity.playerVisionLevel,
-					entity.playerVisionRange,
-					entity.playerVisionDirection
+					unit.playerVisionLevel,
+					unit.playerVisionRange,
+					unit.playerVisionDirection
 					);
 	}
 	
-	protected void updatePlayerVision(float level, float range, int direction) {
+	public void updatePlayerVision(float level, float range, int direction) {
 		if(playerVision <= level) {
 			playerVision = level;
 			if(!blocksPlayerVision())
@@ -112,16 +118,16 @@ public class Grid implements Renderable, Updateable {
 		}
 	}
 	
-	protected void updateEntityVision() {
-		if(entity != null && entity.entityVisionLevel > 0)
+	public void updateEntityVision() {
+		if(unit != null && unit.entityVisionLevel > 0)
 			updateEntityVision(
-					entity.entityVisionLevel,
-					entity.entityVisionRange,
-					entity.entityVisionDirection
+					unit.entityVisionLevel,
+					unit.entityVisionRange,
+					unit.entityVisionDirection
 					);
 	}
 	
-	protected void updateEntityVision(float level, float range, int direction) {
+	public void updateEntityVision(float level, float range, int direction) {
 		if(entityVision <= level) {
 			entityVision = level;
 			if(!blocksEntityVision())

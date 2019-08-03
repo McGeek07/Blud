@@ -1,42 +1,30 @@
 package blud;
 
 import blud.core.Engine;
-import blud.game.level.Level;
-import blud.game.sprite.Sprite;
+import blud.game.level.Editor;
+import blud.game.sprite.sprites.Sprites;
 import blud.util.Version;
 
 public class Blud {
 	public static final Version
-		VERSION = new Version("Blud", 0, 0, 6);
+		VERSION = new Version("Blud", 0, 0, 7);
 	
 	public static void main(String[] args) {
 		System.out.println(VERSION);
 		
-		Sprite.load("bg1", 64, 64);
-		Sprite.load("bg2", 64, 64);
 		
-		Sprite.load("Player", 11, 12);
-		Sprite.load("cursor_r", 11, 12);
-		Sprite.load("cursor_g", 11, 12);
-		Sprite.load("cursor_b", 11, 12);
-		Sprite.load("cursor_w", 11, 12);
-		Sprite.load("debug", 11, 12);
-		Sprite.load("tile", 11, 12);
-		Sprite.load("wall", 11, 12);
+		
+		Sprites.load("cursor_r", 11, 12);
+		Sprites.load("cursor_g", 11, 12);
+		Sprites.load("cursor_b", 11, 12);
+		Sprites.load("cursor_w", 11, 12);
+		Sprites.load("debug", 11, 12);
+		Sprites.load("DebugTile", 11, 12);
+		Sprites.load("DebugTrap", 11, 12);
+		Sprites.load("DebugUnit", 11, 12);
+		Sprites.load("DebugWall", 11, 12);
 	
-		Level level = new Level();
-		
-		level.add(new blud.game.wall.walls.Debug(0, 0));
-		for(int i = 0; i < Level.LEVEL_W; i ++)
-			for(int j = 0; j < Level.LEVEL_H; j ++)
-				level.add(new blud.game.tile.tiles.Debug(i, j));
-		
-		blud.game.tile.tiles.Debug debug = new blud.game.tile.tiles.Debug();
-		System.out.println(debug.getName());
-	
-		Engine.setScene(level);
+		Engine.setScene(new Editor("level.txt"));
 		Engine.init();
-		
-
 	}
 }

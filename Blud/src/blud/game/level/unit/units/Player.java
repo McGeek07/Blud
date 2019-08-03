@@ -1,13 +1,13 @@
-package blud.game.entity.entities;
+package blud.game.level.unit.units;
 
 import blud.game.Game;
-import blud.game.entity.Entity;
-import blud.game.sprite.Sprite;
+import blud.game.level.unit.Unit;
+import blud.game.sprite.sprites.Sprites;
 
-public class Player extends Entity{
+public class Player extends Unit{
 
 	public Player() {
-		super(Sprite.get("Player"));
+		super(Sprites.get("Player"));
 		this.currentHealth = 3;
 		this.maxHealth = 3;
 		this.orientation = Game.DIRECTION[Game.SOUTH];
@@ -30,11 +30,6 @@ public class Player extends Entity{
 	public void onUpdate(UpdateContext context) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public String getName() {
-		return "Player";
 	}
 
 }
