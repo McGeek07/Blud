@@ -23,27 +23,26 @@ public abstract class Unit extends Entity {
 		entityVisionDirection = -1;
 	
 	public boolean
-		canMove,
-		canHurt,
-		canHeal,
-		canAttack,
-		canDefend;
+		inBattle,
+		isMoving,
+		isIdle,
+		isHealing;
 	public int
 		maxHP,
 		curHP,
 		facing,
 		damage,
 		priority;
+	
+	public static int animationCounter,
+			   moveFrameTime,
+			   movementFrameCount;
 	public float
 		speed = .1f;
+
 	private int
 		steps;
 	
-	protected Action.Group
-		actions = new Action.Group(
-				new MoveAction(this)
-				);
-		
 	
 	public Unit(Sprite... sprites) {
 		super(sprites);
@@ -74,9 +73,30 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void move(int direction) {
-		if(canMove) {
-			
-		}
+
+			this.setLocal(Vector.add(new Vector2f(Game.DIRECTION[this.facing].X()/moveFrameTime,Game.DIRECTION[this.facing].Y()/moveFrameTime), this.local));
+//			Grid temp = grid;
+//			temp.setUnit(null);
+//			temp.level.at(local).setUnit(this);
+			this.sprites.setFrame(this.animationCounter % this.movementFrameCount);
+			//System.out.println(animationCounter);
+			this.animationCounter++;
+			if(this.animationCounter > this.moveFrameTime) {
+				this.isMoving = false;
+				this.sprites.setFrame(this.facing/2);
+				this.animationCounter = 0;
+				if(Math.ceil(this.local.X()) - this.local.X() > .5) {
+					this.local.setX((float) Math.floor(this.local.X()));
+				}else {
+					this.local.setX((float) Math.ceil(this.local.X()));
+				}
+				if(Math.ceil(this.local.Y()) - this.local.Y() > .5) {
+					this.local.setY((float) Math.floor(this.local.Y()));
+				}else {
+					this.local.setY((float) Math.ceil(this.local.Y()));
+				}
+			}
+		
 	}
 	
 	public void enage(Unit unit) {
@@ -92,31 +112,19 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void attack(Unit unit) {
-		if(canAttack)
 			onAttack(unit);
 	}
 	
 	public void defend(Unit unit) {
-		if(canDefend)
 			onDefend(unit);		
 	}
 	
 	public void hurt(int hp) {
-		if(canHurt) {
-			curHP -= hp;
-			if(curHP < 0)
-				curHP = 0;
-			onHurt();
-		}
+		
 	}
 	
 	public void heal(int hp) {
-		if(canHeal) {
-			curHP += hp;
-			if(curHP > maxHP)
-				curHP = maxHP;
-			onHeal();
-		}
+		
 	}
 	
 	public void onFace() { }
@@ -134,120 +142,119 @@ public abstract class Unit extends Entity {
 	
 	@Override
 	public void update(UpdateContext context) {
-		actions.update(context);
 		super.update(context);		
 	}
 	
-	public static class MoveAction extends Action<Unit> {
-		public MoveAction(Unit unit) {
-			super(unit);
-		}
-		
-		@Override
-		public void onPlay() {
-			Vector2f move = Vector.add(Game.DIRECTION[unit.facing], unit.local);			
-			Grid grid = unit.grid.level.at(move);
-			if(grid == null || grid.unit != null)
-				stop();
-		}
-		
-		@Override
-		public void onStop() {			
-			Grid grid = unit.grid.level.at(unit.local);
-			unit.setLocal(grid.local);
-			unit.grid.setUnit(null);
-			grid.setUnit(unit);
-		}
-
-		@Override
-		public void update(UpdateContext context) {
-			Vector2f move = new Vector2f (
-					Game.DIRECTION[unit.facing].X() * unit.speed,
-					Game.DIRECTION[unit.facing].Y() * unit.speed
-						);
-			Vector.add(unit.local, move);
-			unit.setLocal(unit.local);
-			if(
-					Math.abs(unit.local.X() - unit.grid.local.X()) >= 1 ||
-					Math.abs(unit.local.Y() - unit.grid.local.Y()) >= 1
-					)
-			stop();
-		}		
-	}
+//	public static class MoveAction extends Action<Unit> {
+//		public MoveAction(Unit unit) {
+//			super(unit);
+//		}
+//		
+//		@Override
+//		public void onPlay() {
+//			Vector2f move = Vector.add(Game.DIRECTION[unit.facing], unit.local);			
+//			Grid grid = unit.grid.level.at(move);
+//			if(grid == null || grid.unit != null)
+//				stop();
+//		}
+//		
+//		@Override
+//		public void onStop() {			
+//			Grid grid = unit.grid.level.at(unit.local);
+//			unit.setLocal(grid.local);
+//			unit.grid.setUnit(null);
+//			grid.setUnit(unit);
+//		}
+//
+//		@Override
+//		public void update(UpdateContext context) {
+//			Vector2f move = new Vector2f (
+//					Game.DIRECTION[unit.facing].X() * unit.speed,
+//					Game.DIRECTION[unit.facing].Y() * unit.speed
+//						);
+//			Vector.add(unit.local, move);
+//			unit.setLocal(unit.local);
+//			if(
+//					Math.abs(unit.local.X() - unit.grid.local.X()) >= 1 ||
+//					Math.abs(unit.local.Y() - unit.grid.local.Y()) >= 1
+//					)
+//			stop();
+//		}		
+//	}
 	
-	public static abstract class Action<T extends Unit> implements Updateable {
-		public static final int
-			STOP = 0,
-			PLAY = 1;
-		protected T
-			unit;
-		protected int
-			mode;
-		
-		public Action(T unit) {
-			this.unit = unit;
-		}
-		
-		public void play() {
-			mode = PLAY;
-			this.onPlay();
-		}
-		
-		public void stop() {
-			mode = STOP;
-			this.onStop();
-		}
-		
-		public void onPlay() { }
-		public void onStop() { }
-		
-		public static class Group implements Updateable {
-			protected Action<?>[]
-				actions;
-			protected int
-				action;
-			
-			public Group(
-					Action<?>... actions
-					) {
-				this.actions = actions;
-			}
-			
-			public Action<?> getAction() {
-				return actions[action];
-			}
-			
-			public void play() {
-				if(getAction().mode == STOP)
-					getAction().play();
-			}
-			
-			public void stop() {
-				if(getAction().mode == PLAY)
-					getAction().stop();
-			}
-			
-			public Action<?> setAction(int action) {
-				return actions[this.action = action];
-			}
-			
-			public void play(int action) {
-				if(getAction().mode == STOP)
-					setAction(action).play();
-			}
-			
-			public void stop(int action) {
-				if(getAction().mode == STOP)
-					setAction(action).stop();
-			}
-
-			@Override
-			public void update(UpdateContext context) {
-				if(getAction().mode == PLAY)
-					getAction().update(context);
-			}			
-		}
-	}
+//	public static abstract class Action<T extends Unit> implements Updateable {
+//		public static final int
+//			STOP = 0,
+//			PLAY = 1;
+//		protected T
+//			unit;
+//		protected int
+//			mode;
+//		
+//		public Action(T unit) {
+//			this.unit = unit;
+//		}
+//		
+//		public void play() {
+//			mode = PLAY;
+//			this.onPlay();
+//		}
+//		
+//		public void stop() {
+//			mode = STOP;
+//			this.onStop();
+//		}
+//		
+//		public void onPlay() { }
+//		public void onStop() { }
+//		
+//		public static class Group implements Updateable {
+//			protected Action<?>[]
+//				actions;
+//			protected int
+//				action;
+//			
+//			public Group(
+//					Action<?>... actions
+//					) {
+//				this.actions = actions;
+//			}
+//			
+//			public Action<?> getAction() {
+//				return actions[action];
+//			}
+//			
+//			public void play() {
+//				if(getAction().mode == STOP)
+//					getAction().play();
+//			}
+//			
+//			public void stop() {
+//				if(getAction().mode == PLAY)
+//					getAction().stop();
+//			}
+//			
+//			public Action<?> setAction(int action) {
+//				return actions[this.action = action];
+//			}
+//			
+//			public void play(int action) {
+//				if(getAction().mode == STOP)
+//					setAction(action).play();
+//			}
+//			
+//			public void stop(int action) {
+//				if(getAction().mode == STOP)
+//					setAction(action).stop();
+//			}
+//
+//			@Override
+//			public void update(UpdateContext context) {
+//				if(getAction().mode == PLAY)
+//					getAction().update(context);
+//			}			
+//		}
+//	}
 	
 	
 //	public void move(Unit character) {

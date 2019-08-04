@@ -25,6 +25,7 @@ public class Blud {
 		Sprites.load("StoneWall", 15, 16);
 		Sprites.load("StoneTile", 15, 16);
 		Sprites.load("HellSprite", 64, 64);
+		Sprites.load("DirectionSprites", 15, 16);
 	
 		Engine.setScene(new Editor("level.txt"));
 		Engine.init();
