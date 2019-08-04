@@ -26,7 +26,8 @@ public abstract class Unit extends Entity {
 		inBattle,
 		isMoving,
 		isIdle,
-		isHealing;
+		isHealing,
+		isAggro;
 	public int
 		maxHP,
 		curHP,
@@ -78,12 +79,15 @@ public abstract class Unit extends Entity {
 //			Grid temp = grid;
 //			temp.setUnit(null);
 //			temp.level.at(local).setUnit(this);
-			this.sprites.setFrame(this.animationCounter % this.movementFrameCount);
-			//System.out.println(animationCounter);
+			if(this.isAggro == false) 
+				this.sprites.setFrame(this.facing/2*5 + this.animationCounter%2);
+			else
+				this.sprites.setFrame((this.facing/2*5 + this.animationCounter%2)+3);
+			System.out.println(local);
 			this.animationCounter++;
 			if(this.animationCounter > this.moveFrameTime) {
 				this.isMoving = false;
-				this.sprites.setFrame(this.facing/2);
+				this.sprites.setFrame(this.facing/2*5);
 				this.animationCounter = 0;
 				if(Math.ceil(this.local.X()) - this.local.X() > .5) {
 					this.local.setX((float) Math.floor(this.local.X()));

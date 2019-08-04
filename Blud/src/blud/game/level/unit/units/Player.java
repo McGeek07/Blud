@@ -10,9 +10,9 @@ public class Player extends Unit{
 
 	
 	public Player() {
-		super(Sprites.get("DirectionSprites"));
-		this.moveFrameTime = 32;
-		this.movementFrameCount = 4;
+		super(Sprites.get("Player"));
+		this.moveFrameTime = 16;
+		this.movementFrameCount = 0;
 	}
 	
 	@Override
@@ -32,23 +32,23 @@ public class Player extends Unit{
 		else if(this.isMoving == false) {
 			if(Input.isKeyDnAction(Input.KEY_W)) {
 				this.facing = 4;
-				this.sprites.setFrame(0);
+				this.sprites.setFrame(10);
 				this.isMoving = true;
 				this.move(this.facing);
 			}else if(Input.isKeyDnAction(Input.KEY_D)) {
 				this.facing = 2;
 				this.isMoving = true;
-				this.sprites.setFrame(1);
+				this.sprites.setFrame(5);
 				this.move(this.facing);
 			}else if(Input.isKeyDnAction(Input.KEY_S)) {
 				this.facing = 0;
 				this.isMoving = true;
-				this.sprites.setFrame(2);
+				this.sprites.setFrame(0);
 				this.move(this.facing);
 			}else if(Input.isKeyDnAction(Input.KEY_A)) {
 				this.facing = 6;
 				this.isMoving = true;
-				this.sprites.setFrame(3);
+				this.sprites.setFrame(15);
 				this.move(this.facing);
 			}
 			
