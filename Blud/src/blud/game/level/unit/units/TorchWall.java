@@ -3,15 +3,15 @@ package blud.game.level.unit.units;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
 
-public class Brazier extends Unit {
+public class TorchWall extends Unit {
 	
-	public Brazier() {
-		super(Sprites.get("Brazier"));
+	public TorchWall() {
+		super(Sprites.get("TorchWall"));
 		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 6f;
+		this.playerVisionRange = 4f;
 		this.entityVisionLevel = 1f;
-		this.entityVisionRange = 6f;
-		this.sprites.loop(0, 3f);
+		this.entityVisionRange = 4f;
+		this.sprites.loop(0, 2.5f);
 	}
 
 	@Override
