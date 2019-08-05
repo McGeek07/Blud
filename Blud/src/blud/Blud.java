@@ -32,6 +32,9 @@ public class Blud {
 		Sprites.load("CastleTile", 15, 16);
 		Sprites.load("CastleTorch", 15, 16);
 		Sprites.load("CastleWallWindow", 15, 16);
+		Sprites.load("SewerWall", 15, 16);
+		Sprites.load("SewerTile", 15, 16);
+		Sprites.load("SewerTileWater", 15, 16);
 		Sprites.load("Heart", 9, 9);
 		
 		Engine.setScene(new Editor("level.txt"));
