@@ -11,7 +11,7 @@ public class Player extends Unit{
 	
 	public Player() {
 		super(Sprites.get("Player"));
-		this.moveFrameTime = 16;
+		this.moveFrameTime = 32;
 		this.movementFrameCount = 0;
 	}
 	

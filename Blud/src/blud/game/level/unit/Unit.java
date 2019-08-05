@@ -89,6 +89,7 @@ public abstract class Unit extends Entity {
 				this.isMoving = false;
 				this.sprites.setFrame(this.facing/2*5);
 				this.animationCounter = 0;
+				System.out.println(local);
 				if(Math.ceil(this.local.X()) - this.local.X() > .5) {
 					this.local.setX((float) Math.floor(this.local.X()));
 				}else {

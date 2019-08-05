@@ -17,7 +17,7 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener, Mo
 	public static final Input
 		INSTANCE = new Input();
 	private static final int
-		NUM_KEYS = 90,
+		NUM_KEYS = 91,
 		NUM_BTNS =  4;
 	public static final int
 		KEY_UP 			= 0, BTN_UP 		= 0,
