@@ -6,11 +6,10 @@ import blud.game.sprite.sprites.Sprites;
 public class CastleTorch extends Unit {
 	
 	public CastleTorch() {
-		super(Sprites.get("CastleTorch"));
-		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 4f;
+		super();
+		sprites.add(Sprites.get("CastleTorch"));
 		this.entityVisionLevel = 1f;
-		this.entityVisionRange = 4f;
+		this.entityVisionRange = 6f;
 		this.sprites.loop(0, 3f);
 	}
 

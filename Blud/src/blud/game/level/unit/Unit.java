@@ -71,36 +71,25 @@ public abstract class Unit extends Entity {
 		
 	}
 	
-	public void cancel() {
-		switch(state) {
-			case MOVE:
-				dstNode.reserved = false;
-				srcNode = null;
-				dstNode = null;
-				onCancelMove(); 
-				break;
-			case ATTACK: onCancelAttack(); break;
-			case DEFEND: onCancelDefend(); break;
-		}
-	}
-	
 	public void idle() {
-		pixel.set(node.pixel);
-		state = IDLE;
-		frame = 0;
-		
-		srcNode = null;
-		dstNode = null;
-		srcPixel.set(0, 0);
-		dstPixel.set(0, 0);
-		onIdle();
+		if(state > IDLE) {
+			stop();
+			frame = 0;
+			state = IDLE;
+			
+			srcNode = null;
+			dstNode = null;
+			srcPixel.set(pixel);
+			dstPixel.set(pixel);			
+			onIdle();
+		}
 	}
 	
 	public void move(Node node) {			
 		if(state < MOVE) {
-			pixel.set(this.node.pixel);
-			state = MOVE;
+			stop();
 			frame = 0;
+			state = MOVE;
 			
 			srcNode = this.node;
 			dstNode =      node;
@@ -113,10 +102,9 @@ public abstract class Unit extends Entity {
 	
 	public void attack(Node node) {
 		if(state < ATTACK) {
-			cancel();
-			pixel.set(this.node.pixel);
-			state = ATTACK;
+			stop();
 			frame = 0;
+			state = ATTACK;
 			
 			srcNode = this.node;
 			dstNode =      node;
@@ -128,10 +116,9 @@ public abstract class Unit extends Entity {
 	
 	public void defend(Node node) {
 		if(state < DEFEND) {
-			cancel();
-			pixel.set(this.node.pixel);
-			state = DEFEND;
+			stop();
 			frame = 0;
+			state = DEFEND;
 			
 			srcNode = this.node;
 			dstNode =      node;
@@ -141,14 +128,23 @@ public abstract class Unit extends Entity {
 		}
 	}	
 	
+	public void stop() {
+		pixel.set(node.pixel);
+		switch(state) {
+			case MOVE:   onStopMove();   break;
+			case ATTACK: onStopAttack(); break;
+			case DEFEND: onStopDefend(); break;
+		}
+	}
+	
 	public void onIdle() { }
 	public void onMove() { }   
 	public void onAttack() { }
 	public void onDefend() { } 
 	
-	public void onCancelMove() { }
-	public void onCancelAttack() { }
-	public void onCancelDefend() { }
+	public void onStopMove() { dstNode.reserved = false; }
+	public void onStopAttack() { }
+	public void onStopDefend() { }
 	
 	@Override
 	public void update(UpdateContext context) {
@@ -157,6 +153,8 @@ public abstract class Unit extends Entity {
 			moveFrame2 = moveFrames / 2,
 			attackFrame2 = attackFrames / 2,
 			defendFrame2 = defendFrames / 2;
+		if(state > 0)
+			frame ++;
 		switch(state) {
 			case IDLE: break; //do nothing
 			case MOVE: {
@@ -169,31 +167,24 @@ public abstract class Unit extends Entity {
 					srcNode.setUnit(null);
 					dstNode.setUnit(this);
 				}
-				if(frame == moveFrames) {
-					dstNode.reserved = false;
-					pixel.set(dstPixel);
+				if(frame == moveFrames)
 					idle();
-				}
-				frame ++;
 			} break;
 			case ATTACK: {
 				float
-					t = (float)frame / attackFrames,				
+					t = (float)frame / attackFrame2,
 					x,
 					y;
-				if(t <= .5f) {
-					x = t * (dstPixel.X() - srcPixel.X()) + srcPixel.X();
-					y = t * (dstPixel.Y() - srcPixel.Y()) + srcPixel.Y();
+				if(t <= 1f) {
+					x = t * .75f * (dstPixel.X() - srcPixel.X()) + srcPixel.X();
+					y = t * .75f * (dstPixel.Y() - srcPixel.Y()) + srcPixel.Y();
 				} else {
-					x = t * (srcPixel.X() - dstPixel.X()) + dstPixel.X();
-					y = t * (srcPixel.Y() - dstPixel.Y()) + dstPixel.Y();
+					x = (2f - t) * .75f * (dstPixel.X() - srcPixel.X()) + srcPixel.X();
+					y = (2f - t) * .75f * (dstPixel.Y() - srcPixel.Y()) + srcPixel.Y();
 				}
 				pixel.set(x, y);
-				if(frame == attackFrames) {
-					pixel.set(srcPixel);
+				if(frame == attackFrames)
 					idle();
-				}
-				frame ++;
 			} break;
 			case DEFEND: break;
 		}

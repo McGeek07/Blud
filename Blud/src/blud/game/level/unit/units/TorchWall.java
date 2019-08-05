@@ -6,9 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class TorchWall extends Unit {
 	
 	public TorchWall() {
-		super(Sprites.get("TorchWall"));
-		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 4f;
+		super();
+		sprites.add(Sprites.get("TorchWall"));
 		this.entityVisionLevel = 1f;
 		this.entityVisionRange = 4f;
 		this.sprites.loop(0, 2.5f);

@@ -6,7 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class CastleTile extends Tile{
 
 	public CastleTile() {
-		super(Sprites.get("CastleTile"));
+		super();
+		sprites.add(Sprites.get("CastleTile"));
 	}
 	
 	@Override

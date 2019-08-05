@@ -6,9 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class CastleWall extends Wall{
 	
 	public CastleWall() {
-		super(Sprites.get("CastleWall"));
-		this.blocksPlayerVision = true;
-		this.blocksEntityVision = true;
+		super();
+		sprites.add(Sprites.get("CastleWall"));
 	}
 
 	@Override

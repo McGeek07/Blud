@@ -11,9 +11,9 @@ public class Player extends Unit{
 		super();
 		sprites.add(Sprites.get("Player"));
 		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 6f;
-		this.moveFrames   = 3;
-		this.attackFrames = 6;
+		this.playerVisionRange = 4f;
+		this.moveFrames   = 4;
+		this.attackFrames = 8;
 	}
 	
 	@Override
