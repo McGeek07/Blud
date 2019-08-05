@@ -10,7 +10,8 @@ public abstract class Unit extends Entity {
 		IDLE = 0,
 		MOVE = 1,
 		ATTACK = 2,
-		DEFEND = 3;
+		COOLDOWN = 3,
+		DEFEND = 4;
 	//vision attributes
 	public float
 		playerVisionLevel,
@@ -28,6 +29,7 @@ public abstract class Unit extends Entity {
 		moveFrames,
 		attackFrames,
 		defendFrames,
+		cooldownFrames,
 		state,
 		frame;
 	public final Vector2f.Mutable
@@ -126,7 +128,17 @@ public abstract class Unit extends Entity {
 			dstPixel.set(dstNode.pixel);
 			onDefend();
 		}
-	}	
+	}
+	
+	public void cooldown() {
+		if(state < COOLDOWN) {
+			stop();
+			frame = 0;
+			state = COOLDOWN;
+			
+			onCooldown();
+		}
+	}
 	
 	public void stop() {
 		pixel.set(node.pixel);
@@ -134,6 +146,7 @@ public abstract class Unit extends Entity {
 			case MOVE:   onStopMove();   break;
 			case ATTACK: onStopAttack(); break;
 			case DEFEND: onStopDefend(); break;
+			case COOLDOWN: onStopCooldown(); break;
 		}
 	}
 	
@@ -141,10 +154,12 @@ public abstract class Unit extends Entity {
 	public void onMove() { }   
 	public void onAttack() { }
 	public void onDefend() { } 
+	public void onCooldown() { }
 	
 	public void onStopMove() { dstNode.reserved = false; }
 	public void onStopAttack() { }
 	public void onStopDefend() { }
+	public void onStopCooldown() { }
 	
 	@Override
 	public void update(UpdateContext context) {
@@ -168,7 +183,7 @@ public abstract class Unit extends Entity {
 					dstNode.setUnit(this);
 				}
 				if(frame == moveFrames)
-					idle();
+					cooldown();
 			} break;
 			case ATTACK: {
 				float
@@ -183,8 +198,8 @@ public abstract class Unit extends Entity {
 					y = (2f - t) * .75f * (dstPixel.Y() - srcPixel.Y()) + srcPixel.Y();
 				}
 				pixel.set(x, y);
-				if(frame == attackFrames)
-					idle();
+				if(frame >= attackFrames)
+					cooldown();
 			} break;
 			case DEFEND:
 				float
@@ -214,10 +229,14 @@ public abstract class Unit extends Entity {
 				if((frame + 2) % 4 == 0) {
 					sprites.setWhiteTransparency(1f);			
 				}
-				if(frame == defendFrames) {
+				if(frame >= defendFrames) {
 					sprites.setWhiteTransparency(1f);
 					idle();
 				}
+				break;
+			case COOLDOWN:
+				if(frame >= cooldownFrames)
+					idle();
 				break;
 		}
 		sprites.update(context);

@@ -20,6 +20,8 @@ public class Player extends Unit {
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
+		this.cooldownFrames = 2;
+		
 		this.maxHP = 3;
 		this.curHP = 3;
 	}
