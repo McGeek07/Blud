@@ -192,19 +192,19 @@ public abstract class Unit extends Entity {
 					x,
 					y;
 				if(t <= 1f) {					
-					x = srcPixel.X() + (4f * t);
+					x = srcPixel.X() + (2f * t);
 					y = srcPixel.Y();
 				} else if(t <= 2){
 					t = 2f - t;
-					x = srcPixel.X() + (4f * t);
+					x = srcPixel.X() + (2f * t);
 					y = srcPixel.Y();
 				} else if(t <= 3) {
 					t = t - 3f;
-					x = srcPixel.X() - (4f * t);
+					x = srcPixel.X() - (2f * t);
 					y = srcPixel.Y();
 				} else {
 					t = 4f - t;;
-					x = srcPixel.X() - (4f * t);
+					x = srcPixel.X() - (2f * t);
 					y = srcPixel.Y();
 				}
 				pixel.set(x, y);
