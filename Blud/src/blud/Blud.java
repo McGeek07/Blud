@@ -11,11 +11,11 @@ public class Blud {
 	
 	public static void main(String[] args) {
 		System.out.println(VERSION);		
-		
-		Sprites.load("CursorR", 15, 16);
-		Sprites.load("CursorG", 15, 16);
-		Sprites.load("CursorB", 15, 16);
-		Sprites.load("CursorW", 15, 16);
+
+		Sprites.load("TileCursor1", 15, 16);
+		Sprites.load("TileCursor2", 15, 16);
+		Sprites.load("UnitCursor1", 15, 16);
+		Sprites.load("UnitCursor2", 15, 16);
 		Sprites.load("Debug", 15, 16);
 		Sprites.load("DebugTile", 15, 16);
 		Sprites.load("DebugTrap", 15, 16);

@@ -40,7 +40,7 @@ public class Editor extends Level {
 	protected Brush
 		brush;
 	protected int
-		editor_mode,
+		editorMode,
 		visionMode;
 	
 	protected File
@@ -79,13 +79,17 @@ public class Editor extends Level {
 				context.canvas_w,
 				context.canvas_h
 				);
-		if(background != null)
-			background.render(context);
 		context.g2D.translate(
-				context.canvas_w / 2 - camera.x(),
-				context.canvas_h / 2 - camera.y()
+				context.canvas_w / 2,
+				context.canvas_h / 2
 				);
-		switch(editor_mode) {
+		if(bg != null)
+			bg.render(context);
+		context.g2D.translate(
+				- camera.x(),
+				- camera.y()
+				);
+		switch(editorMode) {
 			case EDIT:
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) 
@@ -96,26 +100,22 @@ public class Editor extends Level {
 						}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++)  {
-						context = context.push();						
-						context.g2D.translate(
-								grid[i][j].pixel.x() - Game.SPRITE_W / 2,
-								grid[i][j].pixel.y() - Game.SPRITE_H / 2
-								);
-						debug.setFrame((i + j) & 1);
-						debug.render(context);						
+						context = context.push();
+							debug.pixel.set(grid[i][j].pixel);
+							debug.frame = (i + j) & 1;
+							debug.render(context);					
 						context = context.pull();
 						
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
+						if(brush.mode < 2 && i == brush.cursor.x() && j == brush.cursor.y())
+							brush.render(context);
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {
 						if(grid[i][j].unit != null)
 							grid[i][j].unit.render(context);
-						if(
-								i == brush.cursor.x() &&
-								j == brush.cursor.y()
-								)
+						if(brush.mode > 1 && i == brush.cursor.x() && j == brush.cursor.y())
 							brush.render(context);
 					}
 				break;
@@ -141,18 +141,18 @@ public class Editor extends Level {
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
-		if(background != null)
-			background.update(context);	
+		if(bg != null)
+			bg.update(context);	
 		if(Input.isKeyDnAction(Input.KEY_1))
 			this.visionMode = GLOBAL_VISION;
 		if(Input.isKeyDnAction(Input.KEY_2))
 			this.visionMode = ENTITY_VISION;
 		if(Input.isKeyDnAction(Input.KEY_3))
 			this.visionMode = PLAYER_VISION;
-		switch(editor_mode) {
+		switch(editorMode) {
 			case EDIT:				
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
-					editor_mode = PLAY;
+					editorMode = PLAY;
 					save(this.file);	
 					return;
 				}
@@ -199,7 +199,7 @@ public class Editor extends Level {
 				break;
 			case PLAY:
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
-					editor_mode = EDIT;
+					editorMode = EDIT;
 					load(this.file);
 					return;
 				}
@@ -222,7 +222,7 @@ public class Editor extends Level {
 	
 	@Override
 	public void onExit() {
-		if(editor_mode == EDIT)
+		if(editorMode == EDIT)
 			save(this.file);
 	}
 
@@ -260,10 +260,10 @@ public class Editor extends Level {
 			cursor = new Vector2f.Mutable();
 		protected final Sprite.Group
 			sprite = new Sprite.Group(
-					Sprites.get("CursorR"),
-					Sprites.get("CursorG"),
-					Sprites.get("CursorB"),
-					Sprites.get("CursorW")
+					Sprites.get("TileCursor1"),
+					Sprites.get("TileCursor2"),
+					Sprites.get("UnitCursor1"),
+					Sprites.get("UnitCursor2")
 					);
 		protected int
 			tile,
@@ -277,8 +277,10 @@ public class Editor extends Level {
 		
 		public Brush() {
 			this.setMode(TILE);
-			sprite.loop(0, 4f);
+			sprite.loop(3, 4f);
+			sprite.loop(2, 4f);
 			sprite.loop(1, 4f);
+			sprite.loop(0, 4f);
 			sprite.setSpriteTransparency(.5f);
 		}
 
@@ -289,17 +291,7 @@ public class Editor extends Level {
 				brush.setSpriteTransparency(0f);
 				brush.render(context);
 			}
-			context = context.push();
-			Vector2f pixel = Game.localToPixel(
-					cursor.x(),
-					cursor.y()
-					);
-			context.g2D.translate(
-					pixel.x() - Game.SPRITE_W / 2,
-					pixel.y() - Game.SPRITE_H / 2
-					);
 			sprite.render(context);
-			context = context.pull();
 		}
 
 		@Override
@@ -315,20 +307,22 @@ public class Editor extends Level {
 					j = cursor.y();
 				if(brush != null)
 					brush.pixel.set(Game.localToPixel(i, j));
+				if(sprite != null)
+					sprite.setPixel(Game.localToPixel(i, j));
 				switch(mode) {
 					case TILE: 
 					case TRAP:
 						if(grid[i][j].tile != null) 
-							sprite.setSprite(0); 
+							sprite.set(1); 
 						else 
-							sprite.setSprite(1); 
+							sprite.set(0); 
 						break;
 					case UNIT: 
 					case WALL:
 						if(grid[i][j].unit != null) 
-							sprite.setSprite(0);
+							sprite.set(3);
 						else
-							sprite.setSprite(1);
+							sprite.set(2);
 						break;
 				}
 			}			

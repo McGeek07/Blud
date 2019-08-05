@@ -6,7 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class DebugTrap extends Trap {
 	
 	public DebugTrap() {
-		super(Sprites.get("DebugTrap"));
+		super();
+		sprites.add(Sprites.get("DebugTrap"));
 	}
 
 	@Override

@@ -6,7 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class DebugTile extends Tile {
 	
 	public DebugTile() {
-		super(Sprites.get("DebugTile"));
+		super();
+		sprites.add(Sprites.get("DebugTile"));
 	}
 
 	@Override

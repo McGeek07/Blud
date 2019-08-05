@@ -9,25 +9,24 @@ import blud.geom.Vector;
 import blud.geom.Vector2f;
 
 public abstract class Entity implements Renderable, Updateable {
-	public Sprite.Group
-		sprites;
+	public final Sprite.Group
+		sprites = new Sprite.Group(),
+		effects = new Sprite.Group();
 	public final Vector2f.Mutable
 		pixel = new Vector2f.Mutable();
 	public Node
 		node;
 	
-	public Entity(Sprite... sprites) {
-		this(0f, 0f, sprites);
+	public Entity() {
+		this(0f, 0f);
 	}
 	
-	public Entity(Vector local, Sprite... sprites) {
-		this(local.X(), local.Y(), sprites);
+	public Entity(Vector local) {
+		this(local.X(), local.Y());
 	}
 	
-	public Entity(float i, float j, Sprite... sprites) {
-		//this.type = type;
+	public Entity(float i, float j) {
 		this.pixel.set(Game.localToPixel(i, j));
-		this.sprites = new Sprite.Group(sprites);
 	}
 	
 	public void setSpriteTransparency(float transparency) {
@@ -44,22 +43,20 @@ public abstract class Entity implements Renderable, Updateable {
 
 	@Override
 	public void render(RenderContext context) {
-		context = context.push();
-		context.g2D.translate(
-				pixel.x() - Game.SPRITE_W / 2,
-				pixel.y() - Game.SPRITE_H / 2
-				);
-		this.sprites.render(context);
-		context = context.pull();
-		this.onRender(context);
+		sprites.setPixel(pixel);
+		sprites.render(context);
+		onRender(context);		
+		if(effects.sprites.size() > 0 && effects.get().mode > 0)
+			effects.render(context);
 	}
 
 	@Override
 	public void update(UpdateContext context) {
-		context = context.push();
-		this.sprites.update(context);
-		context = context.pull();
-		this.onUpdate(context);
+		onUpdate(context);
+		sprites.setPixel(pixel);
+		sprites.update(context);
+		if(effects.sprites.size() > 0 && effects.get().mode > 0)
+			effects.update(context);
 	}
 	
 	public String getClassName() {

@@ -6,21 +6,16 @@ import blud.game.sprite.sprites.Sprites;
 public class StoneWall extends Wall{
 
 	public StoneWall() {
-		super(Sprites.get("StoneWall"));
-		this.blocksPlayerVision = true;
-		this.blocksEntityVision = true;
+		super();
+		sprites.add(Sprites.get("StoneWall"));
 	}
 	
 	@Override
 	public void onRender(RenderContext context) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onUpdate(UpdateContext context) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

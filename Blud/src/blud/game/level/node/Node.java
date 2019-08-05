@@ -48,6 +48,10 @@ public class Node implements Renderable, Updateable {
 		}
 	}
 	
+	public boolean isReserved() {
+		return unit != null || reserved;
+	}
+	
 	public void setTile(Tile tile) {
 		if(this.tile != null)
 			this.tile.node = null;
@@ -126,18 +130,21 @@ public class Node implements Renderable, Updateable {
 					);
 	}
 	
-	public void updatePlayerVision(float level, float range, int direction) {
+	public void updatePlayerVision(float level, float range, int facing) {
 		if(playerVision <= level) {
 			playerVision = level;
-			if(!blocksPlayerVision())
-				if(direction >= 0) {
-					if(neighbor[direction] != null)
-						neighbor[direction].updatePlayerVision(level - (level / range), range - 1, direction);
+			if(!blocksPlayerVision()) {
+				level = level - (level - this.level.entityVisionFloor) / range;
+				range = range - 1;
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].updatePlayerVision(level, range, facing);
 				} else {
 					for(int i = 0; i < neighbor.length; i ++ )
 						if(neighbor[i] != null)
-							neighbor[i].updatePlayerVision(level - (level / range), range - 1, direction);
+							neighbor[i].updatePlayerVision(level, range, facing);
 				}
+			}
 		}
 	}
 	
@@ -150,18 +157,21 @@ public class Node implements Renderable, Updateable {
 					);
 	}
 	
-	public void updateEntityVision(float level, float range, int direction) {
-		if(entityVision <= level) {
+	public void updateEntityVision(float level, float range, int facing) {
+		if(range > 0 && entityVision <= level) {
 			entityVision = level;
-			if(!blocksEntityVision())
-				if(direction >= 0) {
-					if(neighbor[direction] != null)
-						neighbor[direction].updateEntityVision(level - (level / range), range - 1, direction);
+			if(!blocksEntityVision()) {
+				level = level - (level - this.level.entityVisionFloor) / range;
+				range = range - 1;
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].updateEntityVision(level, range, facing);
 				} else {
 					for(int i = 0; i < neighbor.length; i ++ )
 						if(neighbor[i] != null)
-							neighbor[i].updateEntityVision(level - (level / range), range - 1, direction);
+							neighbor[i].updateEntityVision(level, range, facing);
 				}
+			}
 		}
 	}
 }

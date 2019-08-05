@@ -19,6 +19,8 @@ public class Sprites {
 					blackFrames = createBlackFrames(spriteFrames);
 			Sprite sprite = new Sprite(
 					name,
+					w,
+					h,
 					spriteFrames,
 					whiteFrames,
 					blackFrames

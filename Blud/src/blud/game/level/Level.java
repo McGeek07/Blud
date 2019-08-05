@@ -13,24 +13,22 @@ import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
-import blud.geom.Vector;
 import blud.geom.Vector2f;
 import blud.util.Util;
 
 public class Level extends Scene {	
 	public static final int
 		LEVEL_W = 16,
-		LEVEL_H = 16;
-	
-	protected Sprite
-		background;
+		LEVEL_H = 16;	
+	public Sprite
+		bg;
 	public final Node[][]
 		grid = new Node
 				[LEVEL_W]
 				[LEVEL_H];	
 	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
-	protected float
+	public float
 		playerVisionFloor =  0f,
 		entityVisionFloor = .25f;
 	
@@ -55,11 +53,15 @@ public class Level extends Scene {
 	
 	@Override
 	public void onRender(RenderContext context) {
-		if(background != null)
-			background.render(context);
 		context.g2D.translate(
-				context.canvas_w / 2 - camera.x(),
-				context.canvas_h / 2 - camera.y()
+				context.canvas_w / 2,
+				context.canvas_h / 2
+				);
+		if(bg != null)
+			bg.render(context);
+		context.g2D.translate(
+				- camera.x(),
+				- camera.y()
 				);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) 
@@ -76,8 +78,8 @@ public class Level extends Scene {
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
-		if(background != null)
-			background.update(context);
+		if(bg != null)
+			bg.update(context);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j].playerVision = playerVisionFloor;
@@ -99,8 +101,8 @@ public class Level extends Scene {
 	
 	public void save(File file  ) {
 		try(PrintWriter out = Util.createPrintWriter(file, false)) {
-			if(background != null)
-				out.println("bg:" + background.name + "," + background.speed);
+			if(bg != null)
+				out.println("bg:" + bg.name + "," + bg.speed);
 			for(int i = 0; i < LEVEL_W; i ++)
 				for(int j = 0; j < LEVEL_H ; j ++)
 					if(grid[i][j].tile != null || grid[i][j].unit != null)
@@ -129,8 +131,8 @@ public class Level extends Scene {
 				String
 					name  = temp.length > 0 ? temp[0] : "",
 					speed = temp.length > 1 ? temp[1] : "";
-				background = Sprites.get(name);
-				background.loop(Util.stringToFloat(speed));
+				bg = Sprites.get(name);
+				bg.loop(Util.stringToFloat(speed));
 			}
 			if(line.startsWith("grid:")) {
 				String[] 

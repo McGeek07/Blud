@@ -2,9 +2,12 @@ package blud.game.sprite;
 
 import java.awt.AlphaComposite;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import blud.core.Renderable;
 import blud.core.Updateable;
+import blud.geom.Vector;
+import blud.geom.Vector2f;
 import blud.util.Copyable;
 
 public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
@@ -12,24 +15,32 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		STOP = 0,
 		PLAY = 1,
 		LOOP = 2;
-	protected BufferedImage[]
+
+	public final String
+		name;
+	public final int
+		w,
+		h;
+	public final BufferedImage[]
 		spriteFrames,
 		whiteFrames,
 		blackFrames;
-	public String
-		name;
 	public float
 		frame,
 		speed,
 		spriteTransparency,
 		whiteTransparency = 1f,
 		blackTransparency = 1f;
-	protected int
+	public int
 		mode;
+	public final Vector2f.Mutable
+		pixel = new Vector2f.Mutable();
 	
 	public Sprite(Sprite sprite) {
 		this(
 				sprite.name,
+				sprite.w,
+				sprite.h,
 				sprite.spriteFrames,
 				sprite.whiteFrames,
 				sprite.blackFrames
@@ -38,34 +49,18 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	
 	public Sprite(
 			String name,
+			int	w,
+			int h,
 			BufferedImage[] spriteFrames,
 			BufferedImage[] whiteFrames,
 			BufferedImage[] blackFrames
 			) {
 		this.name = name;
+		this.w = w;
+		this.h = h;
 		this.spriteFrames = spriteFrames;
 		this.whiteFrames = whiteFrames;
 		this.blackFrames = blackFrames;
-	}
-	
-	public void nextFrame() {
-		frame ++;
-		if(frame >= spriteFrames.length)
-			frame = 0f;
-	}
-	
-	public void prevFrame() {
-		frame --;
-		if(frame < 0)
-			frame = spriteFrames.length - 1;
-	}
-	
-	public void setFrame(float frame) {
-		this.frame = frame;
-	}
-	
-	public void setSpeed(float speed) {
-		this.speed = speed;
 	}
 	
 	public void setSpriteTransparency(float transparency) {
@@ -80,34 +75,60 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		this.blackTransparency = transparency;
 	}
 	
-	public void play(float speed) {
-		this.setSpeed(speed);
-		this.setFrame(0f);
-		this.play();
-	}
-	
-	public void play() {
+	public void play(float speed) {		
+		this.speed = speed;
+		this.frame = 0f;
 		this.mode = PLAY;
 	}
 	
+	public void play(float speed, Vector pixel) {
+		this.pixel.set(pixel);
+		this.play(speed);
+	}
+	
+	public void play(float speed, float x, float y) {
+		this.pixel.set(x, y);
+		this.play(speed);
+	}
+	
 	public void loop(float speed) {
-		this.setSpeed(speed);
-		this.setFrame(0f);
+		this.speed = speed;
+		this.frame = 0f;
 		this.mode = LOOP;
 	}
 	
-	public void loop() {
-		this.mode = LOOP;
+	public void loop(float speed, Vector pixel) {
+		this.pixel.set(pixel);
+		this.play(speed);
+	}
+	
+	public void loop(float speed, float x, float y) {
+		this.pixel.set(x, y);
+		this.play(speed);
 	}
 	
 	public void stop() {
-		this.setFrame(0f);
+		this.frame = 0f;
 		this.mode = STOP;
+	}
+	
+	public void stop(Vector pixel) {
+		this.pixel.set(pixel);
+		this.stop();
+	}
+	
+	public void stop(float x, float y) {
+		this.pixel.set(x, y);
+		this.stop();
 	}
 
 	@Override
 	public void render(RenderContext context) {
 		context = context.push();
+		context.g2D.translate(
+				pixel.x() - w / 2,
+				pixel.y() - h / 2
+				);
 		if(spriteTransparency < 1) {
 			if(spriteTransparency > 0)
 				context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - spriteTransparency));
@@ -132,12 +153,12 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 			frame += speed * context.dt;
 			switch(mode) {
 				case PLAY: 
-					if(frame <  0f           ) stop();
+					if(frame <  0f) stop();
 					if(frame >= spriteFrames.length) stop(); 
 					break;
 				case LOOP:
-					if(frame <  0f           ) frame = spriteFrames.length - 1;
-					if(frame >= spriteFrames.length) frame = 0f               ;
+					if(frame <  0f) frame = spriteFrames.length - 1;
+					if(frame >= spriteFrames.length) frame = 0f;
 			}
 		}		
 	}	
@@ -148,100 +169,146 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	}	
 	
 	public static class Group implements Renderable, Updateable {
-		protected Sprite[]
-			sprites;
-		protected int
+		public final ArrayList<Sprite>
+			sprites = new ArrayList<>();
+		public int
 			sprite;
 		
+		public Group() {
+			//do nothing
+		}
+		
 		public Group(Sprite... sprites) {
-			this.sprites = sprites;
+			this.add(sprites);
 		}
 		
-		public Sprite getSprite() {
-			return sprites[sprite];
+		public void add(Sprite... sprites) {
+			for(Sprite sprite: sprites)
+				this.sprites.add(sprite);
 		}
 		
-		public void nextFrame() {
-			this.getSprite().nextFrame();
+		public void del(Sprite... sprites) {
+			for(Sprite sprite: sprites)
+				this.sprites.remove(sprite);
 		}
 		
-		public void prevFrame() {
-			this.getSprite().prevFrame();
+		public Sprite get() {
+			return sprites.get(sprite);
 		}
 		
 		public void setFrame(float frame) {
-			this.getSprite().setFrame(frame);
+			get().frame = frame;
 		}
 		
-		public void setSpeed(float speed) {
-			this.getSprite().setSpeed(speed);
+		public void setPixel(Vector pixel) {
+			get().pixel.set(pixel);
+		}
+		
+		public void setPixel(float x, float y) {
+			get().pixel.set(x, y);
 		}
 		
 		public void setSpriteTransparency(float transparency) {
-			for(int i = 0; i < sprites.length; i ++)
-				sprites[i].setSpriteTransparency(transparency);
+			for(Sprite sprite: sprites)
+				sprite.setSpriteTransparency(transparency);
 		}
 		
 		public void setWhiteTransparency(float transparency) {
-			for(int i = 0; i < sprites.length; i ++)
-				sprites[i].setWhiteTransparency(transparency);
+			for(Sprite sprite: sprites)
+				sprite.setWhiteTransparency(transparency);
 		}
 		
 		public void setBlackTransparency(float transparency) {
-			for(int i = 0; i < sprites.length; i ++)
-				sprites[i].setBlackTransparency(transparency);
+			for(Sprite sprite: sprites)
+					sprite.setBlackTransparency(transparency);
 		}
 		
-		public void play() {
-			this.getSprite().play();
+		public void play(float speed) {
+			this.get().play(speed);
 		}
 		
-		public void loop() {
-			this.getSprite().loop();
+		public void play(float speed, Vector pixel) {
+			this.get().play(speed, pixel);
+		}
+		
+		public void play(float speed, float x, float y) {
+			this.get().play(speed, x, y);
+		}
+		
+		public void loop(float speed) {
+			this.get().loop(speed);
+		}
+		
+		public void loop(float speed, Vector pixel) {
+			this.get().loop(speed, pixel);
+		}
+		
+		public void loop(float speed, float x, float y) {
+			this.get().loop(speed, x, y);
 		}
 		
 		public void stop() {
-			this.getSprite().stop();
+			this.get().stop();
 		}
 		
-		public Sprite nextSprite() {
-			sprite ++;
-			if(sprite >= sprites.length)
-				sprite = 0;
-			return sprites[sprite];
+		public void stop(Vector pixel) {
+			this.get().stop(pixel);
 		}
 		
-		public Sprite prevSprite() {
-			sprite --;
-			if(sprite < 0)
-				sprite = sprites.length - 1;
-			return sprites[sprite];
+		public void stop(float x, float y) {
+			this.get().stop(x, y);
 		}
 		
-		public Sprite setSprite(int sprite) {
-			return sprites[this.sprite = sprite];
+		public Sprite set(int sprite) {
+			return sprites.get(this.sprite = sprite);
 		}
 		
 		public void play(int sprite, float speed) {
-			this.setSprite(sprite).play(speed);
+			this.set(sprite).play(speed);
+		}
+		
+		public void play(int sprite, float speed, Vector pixel) {
+			this.set(sprite).play(speed, pixel);
+		}
+		
+		public void play(int sprite, float speed, float x, float y) {
+			this.set(sprite).play(speed, x, y);
 		}
 		
 		public void loop(int sprite, float speed) {
-			this.setSprite(sprite).loop(speed);
+			this.set(sprite).loop(speed);
+		}
+		
+		public void loop(int sprite, float speed, Vector pixel) {
+			this.set(sprite).loop(speed, pixel);
+		}
+		
+		public void loop(int sprite, float speed, float x, float y) {
+			this.set(sprite).loop(speed, x, y);
 		}
 		
 		public void stop(int sprite) {
-			this.setSprite(sprite).stop();
+			this.set(sprite).stop();
+		}
+		
+		public void stop(int sprite, Vector pixel) {
+			this.set(sprite).stop(pixel);
+		}
+		
+		public void stop(int sprite, float x, float y) {
+			this.set(sprite).stop(x, y);
 		}
 
 		@Override
 		public void render(RenderContext context) {
-			sprites[sprite].render(context);
+			if(sprites.size() > 0)
+				get().render(context);
 		}
 
 		@Override
 		public void update(UpdateContext context) {
-			sprites[sprite].update(context);
+			if(sprites.size() > 0)
+				get().update(context);
 		}
 	}	
 }

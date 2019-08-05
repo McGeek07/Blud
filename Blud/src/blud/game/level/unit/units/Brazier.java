@@ -6,12 +6,11 @@ import blud.game.sprite.sprites.Sprites;
 public class Brazier extends Unit {
 	
 	public Brazier() {
-		super(Sprites.get("Brazier"));
-		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 6f;
-		this.entityVisionLevel = 1f;
-		this.entityVisionRange = 8f;
-		this.sprites.loop(0, 3f);
+		super();
+		sprites.add(Sprites.get("Brazier"));
+		entityVisionLevel = 1f;
+		entityVisionRange = 4f;
+		sprites.loop(0, 3f);
 	}
 
 	@Override

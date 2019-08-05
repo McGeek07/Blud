@@ -2,7 +2,6 @@ package blud.game.level.unit;
 
 import blud.game.level.entity.Entity;
 import blud.game.level.node.Node;
-import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
 
@@ -36,9 +35,7 @@ public abstract class Unit extends Entity {
 		dstPixel = new Vector2f.Mutable();
 	public Node
 		srcNode,
-		dstNode;
-	
-		
+		dstNode;		
 	
 	public int
 		maxHP,
@@ -48,16 +45,43 @@ public abstract class Unit extends Entity {
 		priority;
 	
 	
-	public Unit(Sprite... sprites) {
-		super(sprites);
+	public Unit() {
+		super();
 	}
 	
-	public Unit(Vector local, Sprite... sprites) {
-		super(local, sprites);
+	public Unit(Vector local) {
+		super(local);
 	}
 	
-	public Unit(float i, float j, Sprite... sprites) {
-		super(i, j, sprites);
+	public Unit(float i, float j) {
+		super(i, j);
+	}
+	
+	public void move(int facing) {
+		Node node = this.node.neighbor[this.facing = facing];
+		if(node != null && !node.isReserved())
+			move(node);
+	}
+	
+	public void attack(int facing) {
+		
+	}
+	
+	public void defend(int facing) {
+		
+	}
+	
+	public void cancel() {
+		switch(state) {
+			case MOVE:
+				dstNode.reserved = false;
+				srcNode = null;
+				dstNode = null;
+				onCancelMove(); 
+				break;
+			case ATTACK: onCancelAttack(); break;
+			case DEFEND: onCancelDefend(); break;
+		}
 	}
 	
 	public void idle() {
@@ -69,10 +93,10 @@ public abstract class Unit extends Entity {
 		dstNode = null;
 		srcPixel.set(0, 0);
 		dstPixel.set(0, 0);
-		
+		onIdle();
 	}
 	
-	public void move(Node node) {
+	public void move(Node node) {			
 		if(state < MOVE) {
 			pixel.set(this.node.pixel);
 			state = MOVE;
@@ -82,12 +106,14 @@ public abstract class Unit extends Entity {
 			dstNode =      node;
 			srcPixel.set(srcNode.pixel);
 			dstPixel.set(dstNode.pixel);
+			dstNode.reserved = true;
 			onMove();
 		}
 	}
 	
 	public void attack(Node node) {
 		if(state < ATTACK) {
+			cancel();
 			pixel.set(this.node.pixel);
 			state = ATTACK;
 			frame = 0;
@@ -102,6 +128,7 @@ public abstract class Unit extends Entity {
 	
 	public void defend(Node node) {
 		if(state < DEFEND) {
+			cancel();
 			pixel.set(this.node.pixel);
 			state = DEFEND;
 			frame = 0;
@@ -115,12 +142,17 @@ public abstract class Unit extends Entity {
 	}	
 	
 	public void onIdle() { }
-	public void onMove() { }
+	public void onMove() { }   
 	public void onAttack() { }
-	public void onDefend() { }
+	public void onDefend() { } 
+	
+	public void onCancelMove() { }
+	public void onCancelAttack() { }
+	public void onCancelDefend() { }
 	
 	@Override
 	public void update(UpdateContext context) {
+		onUpdate(context);
 		int
 			moveFrame2 = moveFrames / 2,
 			attackFrame2 = attackFrames / 2,
@@ -138,8 +170,9 @@ public abstract class Unit extends Entity {
 					dstNode.setUnit(this);
 				}
 				if(frame == moveFrames) {
+					dstNode.reserved = false;
 					pixel.set(dstPixel);
-					state = IDLE;
+					idle();
 				}
 				frame ++;
 			} break;
@@ -158,12 +191,13 @@ public abstract class Unit extends Entity {
 				pixel.set(x, y);
 				if(frame == attackFrames) {
 					pixel.set(srcPixel);
-					state = IDLE;
+					idle();
 				}
 				frame ++;
 			} break;
 			case DEFEND: break;
 		}
-		super.update(context);
+		sprites.update(context);
+		effects.update(context);
 	}
 }

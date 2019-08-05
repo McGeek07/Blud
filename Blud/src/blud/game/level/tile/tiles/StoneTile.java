@@ -6,7 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class StoneTile extends Tile {
 
 	public StoneTile() {
-		super(Sprites.get("StoneTile"));
+		super();
+		sprites.add(Sprites.get("StoneTile"));
 	}
 	
 	@Override

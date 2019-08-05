@@ -6,7 +6,8 @@ import blud.game.sprite.sprites.Sprites;
 public class DebugWall extends Wall {
 	
 	public DebugWall() {
-		super(Sprites.get("DebugWall"));
+		super();
+		sprites.add(Sprites.get("DebugWall"));
 	}
 
 	@Override
