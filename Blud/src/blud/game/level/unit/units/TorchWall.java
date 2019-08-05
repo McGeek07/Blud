@@ -1,9 +1,11 @@
 package blud.game.level.unit.units;
 
-import blud.game.level.unit.Unit;
+import blud.core.Renderable.RenderContext;
+import blud.core.Updateable.UpdateContext;
+import blud.game.level.unit.Wall;
 import blud.game.sprite.sprites.Sprites;
 
-public class TorchWall extends Unit {
+public class TorchWall extends Wall {
 	
 	public TorchWall() {
 		super();
