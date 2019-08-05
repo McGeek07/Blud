@@ -91,7 +91,7 @@ public class Node implements Renderable, Updateable {
 			unit.setSpriteTransparency(transparency);		
 	}
 	
-	public void setWhiteTransparnecy(float transparency) {
+	public void setWhiteTransparency(float transparency) {
 		if(tile != null)
 			tile.setWhiteTransparency(transparency);
 		if(unit != null)
@@ -122,19 +122,30 @@ public class Node implements Renderable, Updateable {
 	}
 	
 	public void updatePlayerVision() {
-		if(unit != null && unit.playerVisionLevel > 0)
-			updatePlayerVision(
-					unit.playerVisionLevel,
-					unit.playerVisionRange,
-					unit.playerVisionDirection
-					);
+		if(unit != null && unit.playerVisionLevel > 0 && unit.playerVisionRange > 0) {
+			float
+				level = unit.playerVisionLevel,
+				range = unit.playerVisionRange;
+			int
+				facing = unit.playerVisionDirection;
+			if(playerVision <= level)
+				playerVision = level;
+			if(facing >= 0) {
+				if(neighbor[facing] != null)
+					neighbor[facing].updatePlayerVision(level, range, facing);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++ )
+					if(neighbor[i] != null)
+						neighbor[i].updatePlayerVision(level, range, facing);
+			}
+		}
 	}
 	
 	public void updatePlayerVision(float level, float range, int facing) {
-		if(playerVision <= level) {
+		if(level > 0 && range > 0 && playerVision <= level) {
 			playerVision = level;
 			if(!blocksPlayerVision()) {
-				level = level - (level - this.level.entityVisionFloor) / range;
+				level = level - (level - this.level.playerVisionFloor) / range;
 				range = range - 1;
 				if(facing >= 0) {
 					if(neighbor[facing] != null)
@@ -149,16 +160,27 @@ public class Node implements Renderable, Updateable {
 	}
 	
 	public void updateEntityVision() {
-		if(unit != null && unit.entityVisionLevel > 0)
-			updateEntityVision(
-					unit.entityVisionLevel,
-					unit.entityVisionRange,
-					unit.entityVisionDirection
-					);
+		if(unit != null && unit.entityVisionLevel > 0 && unit.entityVisionRange > 0) {
+			float
+				level = unit.entityVisionLevel,
+				range = unit.entityVisionRange;
+			int
+				facing = unit.entityVisionDirection;
+			if(entityVision <= level)
+				entityVision = level;
+			if(facing >= 0) {
+				if(neighbor[facing] != null)
+					neighbor[facing].updateEntityVision(level, range, facing);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++ )
+					if(neighbor[i] != null)
+						neighbor[i].updateEntityVision(level, range, facing);
+			}
+		}
 	}
 	
 	public void updateEntityVision(float level, float range, int facing) {
-		if(range > 0 && entityVision <= level) {
+		if(level > 0 && range > 0 && entityVision <= level) {
 			entityVision = level;
 			if(!blocksEntityVision()) {
 				level = level - (level - this.level.entityVisionFloor) / range;

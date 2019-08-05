@@ -3,22 +3,41 @@ package blud.game.level.unit.units;
 import blud.core.input.Input;
 import blud.game.Game;
 import blud.game.level.unit.Unit;
+import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 
-public class Player extends Unit{	
+public class Player extends Unit {
+	protected final Sprite
+		heart = Sprites.get("Heart");
+	
 	public Player() {
 		super();
 		sprites.add(Sprites.get("Player"));
 		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 5f;
+		this.playerVisionRange = 8f;
 		this.moveFrames   = 4;
 		this.attackFrames = 8;
+		this.defendFrames = 12;
+		
+		this.maxHP = 3;
+		this.curHP = 3;
 	}
 	
 	@Override
 	public void onRender(RenderContext context) {
-		
+		if(node != null) {
+			context = context.push();
+			context.g2D.translate(
+				node.level.camera.x() - context.canvas_w / 2,
+				node.level.camera.y() - context.canvas_h / 2
+				);
+			for(int i = 0; i < curHP; i ++) {
+				heart.pixel.set(5 + i * 9, 5);
+				heart.render(context);
+			}
+			context = context.pull();
+		}
 	}
 
 	@Override
@@ -46,7 +65,7 @@ public class Player extends Unit{
 		}	
 		
 		if(Input.isKeyDnAction(Input.KEY_UP_ARROW))
-			attack(node.neighbor[Game.SOUTH]);
+			defend(node.neighbor[Game.SOUTH]);
 		if(Input.isKeyDnAction(Input.KEY_L_ARROW))
 			attack(node.neighbor[Game.WEST]);
 		if(Input.isKeyDnAction(Input.KEY_DN_ARROW))

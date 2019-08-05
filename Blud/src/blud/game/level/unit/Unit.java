@@ -152,7 +152,7 @@ public abstract class Unit extends Entity {
 		int
 			moveFrame2 = moveFrames / 2,
 			attackFrame2 = attackFrames / 2,
-			defendFrame2 = defendFrames / 2;
+			defendFrame4 = defendFrames / 4;
 		if(state > 0)
 			frame ++;
 		switch(state) {
@@ -186,7 +186,39 @@ public abstract class Unit extends Entity {
 				if(frame == attackFrames)
 					idle();
 			} break;
-			case DEFEND: break;
+			case DEFEND:
+				float
+					t = (float)frame / defendFrame4,
+					x,
+					y;
+				if(t <= 1f) {					
+					x = srcPixel.X() + (4f * t);
+					y = srcPixel.Y();
+				} else if(t <= 2){
+					t = 2f - t;
+					x = srcPixel.X() + (4f * t);
+					y = srcPixel.Y();
+				} else if(t <= 3) {
+					t = t - 3f;
+					x = srcPixel.X() - (4f * t);
+					y = srcPixel.Y();
+				} else {
+					t = 4f - t;;
+					x = srcPixel.X() - (4f * t);
+					y = srcPixel.Y();
+				}
+				pixel.set(x, y);
+				if((frame + 0) % 4 == 0) {
+					sprites.setWhiteTransparency(0f);
+				}
+				if((frame + 3) % 4 == 0) {
+					sprites.setWhiteTransparency(1f);			
+				}
+				if(frame == defendFrames) {
+					sprites.setWhiteTransparency(1f);
+					idle();
+				}
+				break;
 		}
 		sprites.update(context);
 		effects.update(context);
