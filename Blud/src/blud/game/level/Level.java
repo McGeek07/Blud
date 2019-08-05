@@ -58,14 +58,20 @@ public class Level extends Scene {
 		if(background != null)
 			background.render(context);
 		context.g2D.translate(
-				context.canvas_w / 2 - camera.X(),
-				context.canvas_h / 2 - camera.Y()
-				);	
+				context.canvas_w / 2 - camera.x(),
+				context.canvas_h / 2 - camera.y()
+				);
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {	
+			for(int j = 0; j < LEVEL_H; j ++) 
 				grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0? grid[i][j].entityVision : 0f);
-				grid[i][j].render(context);		
-			}
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++) 
+				if(grid[i][j].tile != null)
+					grid[i][j].tile.render(context);
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H; j ++) 
+				if(grid[i][j].unit != null)
+					grid[i][j].unit.render(context);
 	}
 	
 	@Override

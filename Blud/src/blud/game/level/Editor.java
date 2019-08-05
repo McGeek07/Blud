@@ -41,7 +41,7 @@ public class Editor extends Level {
 		brush;
 	protected int
 		editor_mode,
-		vision_mode;
+		visionMode;
 	
 	protected File
 		file;
@@ -88,22 +88,30 @@ public class Editor extends Level {
 		switch(editor_mode) {
 			case EDIT:
 				for(int i = 0; i < LEVEL_W; i ++)
-					for(int j = 0; j < LEVEL_H; j ++) {
-						debug.setFrame((i + j) & 1);
-						context = context.push();
-						Vector2f pixel = Game.localToPixel(i, j);
-						context.g2D.translate(
-								pixel.x() - Game.SPRITE_W / 2,
-								pixel.y() - Game.SPRITE_H / 2
-								);
-						debug.render(context);
-						context = context.pull();
-						switch(vision_mode) {
+					for(int j = 0; j < LEVEL_H; j ++) 
+						switch(visionMode) {
 							case GLOBAL_VISION: grid[i][j].setBlackTransparency(1f); break;
 							case ENTITY_VISION: grid[i][j].setBlackTransparency(grid[i][j].entityVision); break;
 							case PLAYER_VISION: grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
 						}
-						grid[i][j].render(context);
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++)  {
+						context = context.push();						
+						context.g2D.translate(
+								grid[i][j].pixel.x() - Game.SPRITE_W / 2,
+								grid[i][j].pixel.y() - Game.SPRITE_H / 2
+								);
+						debug.setFrame((i + j) & 1);
+						debug.render(context);						
+						context = context.pull();
+						
+						if(grid[i][j].tile != null)
+							grid[i][j].tile.render(context);
+					}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) {
+						if(grid[i][j].unit != null)
+							grid[i][j].unit.render(context);
 						if(
 								i == brush.cursor.x() &&
 								j == brush.cursor.y()
@@ -113,14 +121,20 @@ public class Editor extends Level {
 				break;
 			case PLAY:
 				for(int i = 0; i < LEVEL_W; i ++)
-					for(int j = 0; j < LEVEL_H; j ++) {
-						switch(vision_mode) {
+					for(int j = 0; j < LEVEL_H; j ++) 
+						switch(visionMode) {
 							case GLOBAL_VISION: grid[i][j].setBlackTransparency(1f); break;
 							case ENTITY_VISION: grid[i][j].setBlackTransparency(grid[i][j].entityVision); break;
 							case PLAYER_VISION: grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
 						}
-						grid[i][j].render(context);
-					}
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) 
+						if(grid[i][j].tile != null)
+							grid[i][j].tile.render(context);
+				for(int i = 0; i < LEVEL_W; i ++)
+					for(int j = 0; j < LEVEL_H; j ++) 
+						if(grid[i][j].unit != null)
+							grid[i][j].unit.render(context);
 				break;
 		}		
 	}
@@ -130,11 +144,11 @@ public class Editor extends Level {
 		if(background != null)
 			background.update(context);	
 		if(Input.isKeyDnAction(Input.KEY_1))
-			this.vision_mode = GLOBAL_VISION;
+			this.visionMode = GLOBAL_VISION;
 		if(Input.isKeyDnAction(Input.KEY_2))
-			this.vision_mode = ENTITY_VISION;
+			this.visionMode = ENTITY_VISION;
 		if(Input.isKeyDnAction(Input.KEY_3))
-			this.vision_mode = PLAYER_VISION;
+			this.visionMode = PLAYER_VISION;
 		switch(editor_mode) {
 			case EDIT:				
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
