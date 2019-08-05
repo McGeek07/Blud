@@ -211,7 +211,7 @@ public abstract class Unit extends Entity {
 				if((frame + 0) % 4 == 0) {
 					sprites.setWhiteTransparency(0f);
 				}
-				if((frame + 3) % 4 == 0) {
+				if((frame + 2) % 4 == 0) {
 					sprites.setWhiteTransparency(1f);			
 				}
 				if(frame == defendFrames) {
