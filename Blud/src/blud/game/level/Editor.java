@@ -157,13 +157,13 @@ public class Editor extends Level {
 					return;
 				}
 				if(Input.isKeyDn(Logic.OR, Input.KEY_W, Input.KEY_UP_ARROW))
-					Vector.add(camera, 0, - 1);
+					Vector.add(camera, 0, - 2);
 				if(Input.isKeyDn(Logic.OR, Input.KEY_A, Input.KEY_L_ARROW ))
-					Vector.add(camera, - 1, 0);
+					Vector.add(camera, - 2, 0);
 				if(Input.isKeyDn(Logic.OR, Input.KEY_S, Input.KEY_DN_ARROW))
-					Vector.add(camera, 0, + 1);
+					Vector.add(camera, 0, + 2);
 				if(Input.isKeyDn(Logic.OR, Input.KEY_D, Input.KEY_R_ARROW ))
-					Vector.add(camera, + 1, 0);
+					Vector.add(camera, + 2, 0);
 				if(Input.isKeyDnAction(Input.KEY_TAB))
 					brush.nextMode();
 				if(Input.isWheelUp())
