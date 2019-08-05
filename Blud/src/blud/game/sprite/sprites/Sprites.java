@@ -12,68 +12,76 @@ public class Sprites {
 	protected static final HashMap<String, Sprite>
  		SPRITES = new HashMap<>();
 	
-	public static final Sprite load(String name, int w, int h) {
-		try {
-			BufferedImage atlas = ImageIO.read(Sprite.class.getResource("sprites/" + name + ".png"));
+	public static final Sprite load(String name, int w, int h) {			
+			BufferedImage[]
+					spriteFrames = createSpriteFrames(name, w, h),
+					whiteFrames = createWhiteFrames(spriteFrames),
+					blackFrames = createBlackFrames(spriteFrames);
 			Sprite sprite = new Sprite(
 					name,
-					createSpriteFrames(atlas, w, h),
-					createShadowFrames(atlas, w, h)
+					spriteFrames,
+					whiteFrames,
+					blackFrames
 					);
 			SPRITES.put(name, sprite);
 			return sprite;
+	}
+	
+	private static final BufferedImage[] createSpriteFrames(String name, int w, int h) {
+		try {
+			BufferedImage atlas = ImageIO.read(Sprite.class.getResource("sprites/" + name + ".png"));			
+			int
+				xw = atlas.getWidth()  / w,
+				yh = atlas.getHeight() / h;
+			BufferedImage[] spriteFrames = new BufferedImage[xw * yh];
+			for(int x = 0; x < xw; x ++)
+				for(int y = 0; y < yh; y ++)
+					spriteFrames[yh * y + x] = atlas.getSubimage(
+							x * w,
+							y * h,
+							w , h
+							);			
+			return spriteFrames;
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
 		return null;
 	}
 	
-	private static final BufferedImage[] createSpriteFrames(BufferedImage atlas, int w, int h) {
-		int
-			_w = atlas.getWidth()  / w,
-			_h = atlas.getHeight() / h;
-		BufferedImage[] sprite_frames = new BufferedImage[_w * _h];
-		for(int x = 0; x < _w; x ++)
-			for(int y = 0; y < _h; y ++)
-				sprite_frames[_h * y + x] = atlas.getSubimage(
-						x * w,
-						y * h,
-						w , h
-						);
-		return sprite_frames;
+	private static final BufferedImage[] createWhiteFrames(BufferedImage[] spriteFrames) {
+		return createColorFrames(spriteFrames, 255, 255, 255, 255);
 	}
 	
-	@SuppressWarnings("unused")
-	private static final BufferedImage[] createShadowFrames(BufferedImage atlas, int w, int h) {
-		int
-			_w = atlas.getWidth()  / w,
-			_h = atlas.getHeight() / h;
-		BufferedImage[] shadow_frames = new BufferedImage[_w * _h];
-		for(int x = 0; x < _w; x ++)
-			for(int y = 0; y < _h; y ++)
-				shadow_frames[_h * y + x] = atlas.getSubimage(
-						x * w,
-						y * h,
-						w , h
-						);
-		for(int i = 0; i < shadow_frames.length; i ++) {
-			BufferedImage shadow_frame = new BufferedImage(
-					w, h, BufferedImage.TYPE_INT_ARGB
-					);
+	private static final BufferedImage[] createBlackFrames(BufferedImage[] spriteFrames) {
+		return createColorFrames(spriteFrames, 255,   0,   0,   0);
+	}
+	
+	private static final BufferedImage[] createColorFrames(BufferedImage[] spriteFrames, int a, int r, int g, int b) {
+		BufferedImage[] colorFrames = new BufferedImage[spriteFrames.length];
+		for(int i = 0; i < spriteFrames.length; i ++) {
+			int
+				w = spriteFrames[i].getWidth() ,
+				h = spriteFrames[i].getHeight();
+			colorFrames[i] = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			for(int x = 0; x < w; x ++)
 				for(int y = 0; y < h; y ++) {
-					int 
-						p = shadow_frames[i].getRGB(x, y),
-						a = (p >> 24) & 0xff,
-						r = (p >> 16) & 0xff,
-						g = (p >>  8) & 0xff,
-						b = (p      ) & 0xff;
-					if(a > 0)
-						shadow_frame.setRGB(x, y, 255 << 24);
-				}
-			shadow_frames[i] = shadow_frame;
+					int
+						pixel = spriteFrames[i].getRGB(x, y),
+						_a = (pixel >> 24) & 0xff,
+						_r = (pixel >> 16) & 0xff,
+						_g = (pixel >>  8) & 0xff,
+						_b = (pixel      ) & 0xff;
+					if(_a > 0) {
+						pixel = 
+								(a << 24) |
+								(r << 16) |
+								(g <<  8) |
+								(b      ) ;
+						colorFrames[i].setRGB(x, y, pixel);
+					}						
+				}					
 		}
-		return shadow_frames;
+		return colorFrames;
 	}
 	
 	public static final Sprite get(String id) {

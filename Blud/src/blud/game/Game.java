@@ -5,24 +5,22 @@ import blud.geom.Vector2f;
 public class Game {
 	public static final int
 		NORTH 	= 0,
-		NORTH_EAST = 1,
-		EAST 	= 2,
-		SOUTH_EAST = 3,
-		SOUTH 	= 4,
-		SOUTH_WEST = 5,		
-		WEST 	= 6,
-		NORTH_WEST = 7;
+		EAST 	= 1,
+		SOUTH 	= 2,	
+		WEST 	= 3;
 	public static final Vector2f[]
-		DIRECTION = {
+		LOCAL_DIRECTION = {
 			new Vector2f( 0f,  1f),//NORTH
-			new Vector2f( 1f,  1f),//NORTH EAST
 			new Vector2f( 1f,  0f),//EAST,
-			new Vector2f( 1f, -1f),//SOUTH_EAST
 			new Vector2f( 0f, -1f),//SOUTH
-			new Vector2f(-1f, -1f),//SOUTH_WEST
 			new Vector2f(-1f,  0f),//WEST
-			new Vector2f(-1f,  1f) //NORTH_WEST
-		};		
+		},
+		PIXEL_DIRECTION = {
+			localToPixel(LOCAL_DIRECTION[0]),
+			localToPixel(LOCAL_DIRECTION[1]),
+			localToPixel(LOCAL_DIRECTION[2]),
+			localToPixel(LOCAL_DIRECTION[3])
+		};
 	public static final int
 		TILE_W = 8,
 		TILE_H = 8,

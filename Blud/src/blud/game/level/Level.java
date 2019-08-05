@@ -5,7 +5,8 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 
 import blud.core.scene.Scene;
-import blud.game.level.grid.Grid;
+import blud.game.Game;
+import blud.game.level.node.Node;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
 import blud.game.level.unit.Unit;
@@ -23,8 +24,8 @@ public class Level extends Scene {
 	
 	protected Sprite
 		background;
-	public final Grid[][]
-		grid = new Grid
+	public final Node[][]
+		grid = new Node
 				[LEVEL_W]
 				[LEVEL_H];	
 	public final Vector2f.Mutable
@@ -36,68 +37,20 @@ public class Level extends Scene {
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j] = new Grid(this, i, j);		
+				grid[i][j] = new Node(this, i, j);		
 	}	
 	
-	public Grid at(Vector2f local) {
+	public Node at(Vector2f local) {
 		return at(local.X(), local.Y());
 	}
 	
-	public Grid at(float i, float j) {
+	public Node at(float i, float j) {
 		if(
 				i >= 0 && i < LEVEL_W &&
 				j >= 0 && j < LEVEL_H
 				)
 			return grid[(int)i][(int)j];
 		return null;
-	}
-	
-	public void add(Tile tile) {
-		int
-			i = tile.local.x(),
-			j = tile.local.y();
-		if(grid[i][j].tile == null)
-			grid[i][j].tile = tile;
-	}
-	
-	public void del(Tile tile) {
-		int
-			i = tile.local.x(),
-			j = tile.local.y();
-		if(grid[i][j].tile == tile)
-			grid[i][j].tile = null;
-	}
-	
-	public void delTile(Vector local) {
-		delTile(local.x(), local.y());
-	}
-	
-	public void delTile(int i, int j) {
-		grid[i][j].tile = null;
-	}
-	
-	public void add(Unit entity) {
-		int
-			i = entity.local.x(),
-			j = entity.local.y();
-		if(grid[i][j].unit == null)
-			grid[i][j].unit = entity;
-	}
-	
-	public void del(Unit entity) {
-		int
-			i = entity.local.x(),
-			j = entity.local.y();
-		if(grid[i][j].unit == entity)
-			grid[i][j].unit = null;
-	}
-	
-	public void delEntity(Vector local) {
-		delEntity(local.x(), local.y());
-	}
-	
-	public void delEntity(int i , int j) {
-		grid[i][j].unit = null;
 	}
 	
 	@Override
@@ -110,7 +63,7 @@ public class Level extends Scene {
 				);	
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {	
-				grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0? grid[i][j].entityVision : 0f);
+				grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0? grid[i][j].entityVision : 0f);
 				grid[i][j].render(context);		
 			}
 	}
@@ -177,20 +130,23 @@ public class Level extends Scene {
 				String[] 
 					temp = line.substring("grid:".length()).split("\\&");
 				String
-					local 	= temp.length > 0 ? temp[0].trim() : "",
+					v 	= temp.length > 0 ? temp[0].trim() : "",
 					tile 	= temp.length > 1 ? temp[1].trim() : "",
 					unit 	= temp.length > 2 ? temp[2].trim() : "";
-				Grid grid = at(Vector2f.parseVector2f(local));
-				if(grid != null) {
+				Vector2f 
+					local = Vector2f.parseVector2f(v),
+					pixel = Game.localToPixel(local);
+				Node node = at(local);
+				if(node != null) {
 					if(!tile.isEmpty()) {
 						Tile t = Tiles.load(tile);
-						t.setLocal(grid.local);
-						grid.setTile(t);
+						t.pixel.set(pixel);
+						node.setTile(t);
 					}
 					if(!unit.isEmpty()) {
 						Unit u = Units.load(unit);
-						u.setLocal(grid.local);
-						grid.setUnit(u);
+						u.pixel.set(pixel);
+						node.setUnit(u);
 					}
 				}
 			}			

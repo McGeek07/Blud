@@ -99,9 +99,9 @@ public class Editor extends Level {
 						debug.render(context);
 						context = context.pull();
 						switch(vision_mode) {
-							case GLOBAL_VISION: grid[i][j].setShadowTransparency(1f); break;
-							case ENTITY_VISION: grid[i][j].setShadowTransparency(grid[i][j].entityVision); break;
-							case PLAYER_VISION: grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
+							case GLOBAL_VISION: grid[i][j].setBlackTransparency(1f); break;
+							case ENTITY_VISION: grid[i][j].setBlackTransparency(grid[i][j].entityVision); break;
+							case PLAYER_VISION: grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
 						}
 						grid[i][j].render(context);
 						if(
@@ -115,9 +115,9 @@ public class Editor extends Level {
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {
 						switch(vision_mode) {
-							case GLOBAL_VISION: grid[i][j].setShadowTransparency(1f); break;
-							case ENTITY_VISION: grid[i][j].setShadowTransparency(grid[i][j].entityVision); break;
-							case PLAYER_VISION: grid[i][j].setShadowTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
+							case GLOBAL_VISION: grid[i][j].setBlackTransparency(1f); break;
+							case ENTITY_VISION: grid[i][j].setBlackTransparency(grid[i][j].entityVision); break;
+							case PLAYER_VISION: grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0 ? grid[i][j].entityVision : 0f); break;
 						}
 						grid[i][j].render(context);
 					}
@@ -300,7 +300,7 @@ public class Editor extends Level {
 					i = cursor.x(),
 					j = cursor.y();
 				if(brush != null)
-					brush.setLocal(i, j);
+					brush.pixel.set(Game.localToPixel(i, j));
 				switch(mode) {
 					case TILE: 
 					case TRAP:
@@ -412,13 +412,13 @@ public class Editor extends Level {
 					case TILE: 
 					case TRAP:
 						Tile t = (Tile)brush.getClass().newInstance(); 
-						t.setLocal(cursor.x(), cursor.y());
+						t.pixel.set(Game.localToPixel(i, j));
 						grid[i][j].setTile(t);
 						break;
 					case UNIT: 
 					case WALL:
 						Unit u = (Unit)brush.getClass().newInstance(); 
-						u.setLocal(cursor.x(), cursor.y());
+						u.pixel.set(Game.localToPixel(i, j));
 						grid[i][j].setUnit(u);
 						break;
 				}				

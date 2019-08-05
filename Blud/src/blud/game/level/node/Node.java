@@ -1,4 +1,4 @@
-package blud.game.level.grid;
+package blud.game.level.node;
 
 import blud.core.Renderable;
 import blud.core.Updateable;
@@ -8,11 +8,11 @@ import blud.game.level.tile.Tile;
 import blud.game.level.unit.Unit;
 import blud.geom.Vector2f;
 
-public class Grid implements Renderable, Updateable {	
+public class Node implements Renderable, Updateable {	
 	public Level
 		level;
-	public Grid[]
-		neighbors;
+	public Node[]
+		neighbor;
 	public float
 		playerVision,
 		entityVision;
@@ -21,44 +21,47 @@ public class Grid implements Renderable, Updateable {
 		tile;
 	public Unit
 		unit;
-	public final Vector2f.Mutable
-		local = new Vector2f.Mutable(),
-		pixel = new Vector2f.Mutable();
+	public final Vector2f
+		local,
+		pixel;
 	
-	public Grid(Level level, int i, int j) {
+	public boolean
+		reserved;
+	
+	public Node(Level level, int i, int j) {
 		this.level = level;
-		this.local.set(i, j);
-		this.pixel.set(Game.localToPixel(i, j));
-		
-		this.neighbors = new Grid[8];
-		for(int k = 0; k < neighbors.length; k ++) {
-			Vector2f direction = Game.DIRECTION[k];
+		this.local = new Vector2f(i, j);
+		this.pixel = Game.localToPixel(i, j);
+				
+		this.neighbor = new Node[4];
+		for(int k = 0; k < neighbor.length; k ++) {
+			Vector2f direction = Game.LOCAL_DIRECTION[k];
 			if(
 					i + direction.x() >= 0 && i + direction.x() < Level.LEVEL_W &&
 					j + direction.y() >= 0 && j + direction.y() < Level.LEVEL_H) {				
-				neighbors[k] = level.grid
+				neighbor[k] = level.grid
 						[i + direction.x()]
 						[j + direction.y()];
-				if(neighbors[k] != null)
-					neighbors[k].neighbors[(k + 4) % 8] = this;
+				if(neighbor[k] != null)
+					neighbor[k].neighbor[(k + 2) % 4] = this;
 			}
 		}
 	}
 	
 	public void setTile(Tile tile) {
 		if(this.tile != null)
-			this.tile.grid = null;
+			this.tile.node = null;
 		this.tile = tile;
 		if(this.tile != null)
-			this.tile.grid = this;
+			this.tile.node = this;
 	}
 	
 	public void setUnit(Unit unit) {
 		if(this.unit != null)
-			this.unit.grid = null;
+			this.unit.node = null;
 		this.unit = unit;
 		if(this.unit != null)
-			this.unit.grid = this;
+			this.unit.node = this;
 	}
 	
 	public boolean hasTile() {
@@ -77,13 +80,6 @@ public class Grid implements Renderable, Updateable {
 		return unit != null && unit.blocksEntityVision;
 	}
 	
-	public void setTransparency(float transparency) {
-		if(tile != null)
-			tile.setTransparency(transparency);
-		if(unit != null)
-			unit.setTransparency(transparency);		
-	}
-	
 	public void setSpriteTransparency(float transparency) {
 		if(tile != null)
 			tile.setSpriteTransparency(transparency);
@@ -91,11 +87,18 @@ public class Grid implements Renderable, Updateable {
 			unit.setSpriteTransparency(transparency);		
 	}
 	
-	public void setShadowTransparency(float transparency) {
+	public void setWhiteTransparnecy(float transparency) {
 		if(tile != null)
-			tile.setShadowTransparency(transparency);
+			tile.setWhiteTransparency(transparency);
 		if(unit != null)
-			unit.setShadowTransparency(transparency);		
+			unit.setWhiteTransparency(transparency);
+	}
+	
+	public void setBlackTransparency(float transparency) {
+		if(tile != null)
+			tile.setBlackTransparency(transparency);
+		if(unit != null)
+			unit.setBlackTransparency(transparency);		
 	}
 
 	@Override
@@ -128,12 +131,12 @@ public class Grid implements Renderable, Updateable {
 			playerVision = level;
 			if(!blocksPlayerVision())
 				if(direction >= 0) {
-					if(neighbors[direction] != null)
-						neighbors[direction].updatePlayerVision(level - (level / range), range - 1, direction);
+					if(neighbor[direction] != null)
+						neighbor[direction].updatePlayerVision(level - (level / range), range - 1, direction);
 				} else {
-					for(int i = 0; i < neighbors.length; i += 2)
-						if(neighbors[i] != null)
-							neighbors[i].updatePlayerVision(level - (level / range), range - 1, direction);
+					for(int i = 0; i < neighbor.length; i ++ )
+						if(neighbor[i] != null)
+							neighbor[i].updatePlayerVision(level - (level / range), range - 1, direction);
 				}
 		}
 	}
@@ -152,12 +155,12 @@ public class Grid implements Renderable, Updateable {
 			entityVision = level;
 			if(!blocksEntityVision())
 				if(direction >= 0) {
-					if(neighbors[direction] != null)
-						neighbors[direction].updateEntityVision(level - (level / range), range - 1, direction);
+					if(neighbor[direction] != null)
+						neighbor[direction].updateEntityVision(level - (level / range), range - 1, direction);
 				} else {
-					for(int i = 0; i < neighbors.length; i += 2)
-						if(neighbors[i] != null)
-							neighbors[i].updateEntityVision(level - (level / range), range - 1, direction);
+					for(int i = 0; i < neighbor.length; i ++ )
+						if(neighbor[i] != null)
+							neighbor[i].updateEntityVision(level - (level / range), range - 1, direction);
 				}
 		}
 	}

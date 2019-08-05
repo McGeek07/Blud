@@ -179,13 +179,14 @@ public class Engine implements Runnable {
 					f_elapsed = 0;
 					f_ct ++;
 				}				
-				if(elapsed >= ONE_SECOND) {
+				if(elapsed > ONE_SECOND) {
 					System.out.println("FPS: " + (this.fps = f_ct));
 					System.out.println("TPS: " + (this.tps = t_ct));
 					elapsed = 0;
 					f_ct = 0;
 					t_ct = 0;
 				}
+				Thread.sleep(1);
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();

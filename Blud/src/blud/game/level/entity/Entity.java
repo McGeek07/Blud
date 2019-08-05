@@ -3,7 +3,7 @@ package blud.game.level.entity;
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.game.Game;
-import blud.game.level.grid.Grid;
+import blud.game.level.node.Node;
 import blud.game.sprite.Sprite;
 import blud.geom.Vector;
 import blud.geom.Vector2f;
@@ -12,10 +12,9 @@ public abstract class Entity implements Renderable, Updateable {
 	public Sprite.Group
 		sprites;
 	public final Vector2f.Mutable
-		local = new Vector2f.Mutable(),
 		pixel = new Vector2f.Mutable();
-	public Grid
-		grid;
+	public Node
+		node;
 	
 	public Entity(Sprite... sprites) {
 		this(0f, 0f, sprites);
@@ -27,46 +26,20 @@ public abstract class Entity implements Renderable, Updateable {
 	
 	public Entity(float i, float j, Sprite... sprites) {
 		//this.type = type;
-		this.setLocal(i, j);
+		this.pixel.set(Game.localToPixel(i, j));
 		this.sprites = new Sprite.Group(sprites);
-	}
-	
-	public void setTransparency(float transparency) {
-		this.sprites.setTransparency(transparency);
 	}
 	
 	public void setSpriteTransparency(float transparency) {
 		this.sprites.setSpriteTransparency(transparency);
+	}	
+	
+	public void setWhiteTransparency(float transparency) {
+		this.sprites.setWhiteTransparency(transparency);
 	}
 	
-	public void setShadowTransparency(float transparency) {
-		this.sprites.setShadowTransparency(transparency);
-	}
-	
-	public void setLocal(Vector v) {
-		this.setLocal(v.X(), v.Y());
-	}
-	
-	public void setLocal(float i, float j) {
-		this.local.set(i, j);
-		this.pixel.set(Game.localToPixel(i, j));
-	}
-	
-	public void setPixel(Vector v) {
-		this.setPixel(v.X(), v.Y());
-	}
-	
-	public void setPixel(float x, float y) {
-		this.pixel.set(x, y);
-		this.local.set(Game.pixelToLocal(x, y));
-	}
-	
-	public Vector2f local() {
-		return this.local;
-	}
-	
-	public Vector2f pixel() {
-		return this.pixel;
+	public void setBlackTransparency(float transparency) {
+		this.sprites.setBlackTransparency(transparency);
 	}
 
 	@Override

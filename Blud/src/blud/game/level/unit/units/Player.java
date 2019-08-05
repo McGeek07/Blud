@@ -4,6 +4,7 @@ import blud.core.input.Input;
 import blud.game.Game;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
+import blud.geom.Vector;
 
 public class Player extends Unit{
 
@@ -11,8 +12,10 @@ public class Player extends Unit{
 	
 	public Player() {
 		super(Sprites.get("Player"));
-		this.moveFrameTime = 16;
-		this.movementFrameCount = 0;
+		this.moveFrames   = 3;
+		this.attackFrames = 6;
+		this.playerVisionLevel = 1f;
+		this.playerVisionRange = 6f;
 	}
 	
 	@Override
@@ -23,37 +26,28 @@ public class Player extends Unit{
 	@Override
 	public void onUpdate(UpdateContext context) {
 		
-		grid.level.camera.set(Game.localToPixel(local));
+		float
+			dx = (pixel.X() - node.level.camera.X()) * .5f,
+			dy = (pixel.Y() - node.level.camera.Y()) * .5f;		
+		Vector.add(node.level.camera, dx, dy);
 		
-		if(this.isMoving == true) {
-			this.move(this.facing);
-		}
+		if(Input.isKeyDnAction(Input.KEY_W))
+			move(node.neighbor[Game.SOUTH]);
+		if(Input.isKeyDnAction(Input.KEY_A))
+			move(node.neighbor[Game.WEST]);
+		if(Input.isKeyDnAction(Input.KEY_S))
+			move(node.neighbor[Game.NORTH]);
+		if(Input.isKeyDnAction(Input.KEY_D))
+			move(node.neighbor[Game.EAST]);		
 		
-		else if(this.isMoving == false) {
-			if(Input.isKeyDnAction(Input.KEY_W)) {
-				this.facing = 4;
-				this.sprites.setFrame(10);
-				this.isMoving = true;
-				this.move(this.facing);
-			}else if(Input.isKeyDnAction(Input.KEY_D)) {
-				this.facing = 2;
-				this.isMoving = true;
-				this.sprites.setFrame(5);
-				this.move(this.facing);
-			}else if(Input.isKeyDnAction(Input.KEY_S)) {
-				this.facing = 0;
-				this.isMoving = true;
-				this.sprites.setFrame(0);
-				this.move(this.facing);
-			}else if(Input.isKeyDnAction(Input.KEY_A)) {
-				this.facing = 6;
-				this.isMoving = true;
-				this.sprites.setFrame(15);
-				this.move(this.facing);
-			}
-			
-		}
-			
+		if(Input.isKeyDnAction(Input.KEY_UP_ARROW))
+			attack(node.neighbor[Game.SOUTH]);
+		if(Input.isKeyDnAction(Input.KEY_L_ARROW))
+			attack(node.neighbor[Game.WEST]);
+		if(Input.isKeyDnAction(Input.KEY_DN_ARROW))
+			attack(node.neighbor[Game.NORTH]);
+		if(Input.isKeyDnAction(Input.KEY_R_ARROW))
+			attack(node.neighbor[Game.EAST]);	
 	}
 
 }
