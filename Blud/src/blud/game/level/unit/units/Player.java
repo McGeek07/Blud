@@ -18,7 +18,10 @@ public class Player extends Unit {
 	
 	public Player() {
 		super();
-		sprites.add(Sprites.get("Player"));
+		sprites.add(
+				Sprites.get("PlayerFront"),
+				Sprites.get("PlayerBack")
+				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;
 		this.moveFrames   = 4;
@@ -89,6 +92,17 @@ public class Player extends Unit {
 			attack(node.neighbor[Game.NORTH]);
 		if(Input.isKeyDnAction(Input.KEY_R_ARROW))
 			attack(node.neighbor[Game.EAST]);	
+		
+		switch(this.facing) {
+			case Game.NORTH:
+			case Game.EAST:
+				sprites.set(0);
+				break;
+			case Game.SOUTH:
+			case Game.WEST:
+				sprites.set(1);
+				break;
+		}
 	}
 
 }

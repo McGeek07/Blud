@@ -112,7 +112,7 @@ grid:<6.0, 13.0>&SewerTileWater&
 grid:<6.0, 14.0>&SewerTile&
 grid:<6.0, 15.0>&CastleTile&CastleWall
 grid:<7.0, 0.0>&DebugTile&SewerWall
-grid:<7.0, 1.0>&CastleTile&
+grid:<7.0, 1.0>&CastleTile&DebugUnit
 grid:<7.0, 2.0>&CastleTile&
 grid:<7.0, 3.0>&CastleTile&
 grid:<7.0, 4.0>&CastleTile&CastleWall
@@ -237,7 +237,7 @@ grid:<14.0, 10.0>&CastleTile&
 grid:<14.0, 11.0>&CastleTile&
 grid:<14.0, 12.0>&CastleTile&
 grid:<14.0, 13.0>&CastleTile&
-grid:<14.0, 14.0>&CastleTile&
+grid:<14.0, 14.0>&CastleTile&Brazier
 grid:<14.0, 15.0>&CastleTile&CastleWall
 grid:<15.0, 0.0>&DebugTile&CastleWall
 grid:<15.0, 1.0>&CastleTile&CastleWall

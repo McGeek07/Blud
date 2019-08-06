@@ -31,11 +31,14 @@ public class Level extends Scene {
 	public float
 		playerVisionFloor =  0f,
 		entityVisionFloor = .25f;
+	public boolean
+		updatePlayerVision,
+		updateEntityVision;
 	
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j] = new Node(this, i, j);		
+				grid[i][j] = new Node(this, i, j);
 	}	
 	
 	public Node at(Vector2f local) {

@@ -63,6 +63,6 @@ public abstract class Entity implements Renderable, Updateable {
 		return getClass().getSimpleName();
 	}
 	
-	public abstract void onRender(RenderContext context);
-	public abstract void onUpdate(UpdateContext context);
+	public void onRender(RenderContext context) { }
+	public void onUpdate(UpdateContext context) { }
 }
