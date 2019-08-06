@@ -1,17 +1,18 @@
-package blud.game.level.tile.tiles;
+package blud.game.level.unit.units;
 
-import blud.game.level.tile.Tile;
+import blud.game.level.unit.Wall;
 import blud.game.sprite.sprites.Sprites;
 
-public class SewerTile extends Tile{
-
-	public SewerTile() {
+public class SewerGrate extends Wall {
+	public SewerGrate() {
 		super();
-		sprites.add(Sprites.get("SewerTile"));
+		sprites.add(Sprites.get("SewerGrate"));
 	}
-	
+
 	@Override
 	public void onRender(RenderContext context) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -19,5 +20,4 @@ public class SewerTile extends Tile{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

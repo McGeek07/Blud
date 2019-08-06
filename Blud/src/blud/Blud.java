@@ -35,6 +35,7 @@ public class Blud {
 		Sprites.load("SewerWall", 15, 16);
 		Sprites.load("SewerTile", 15, 16);
 		Sprites.load("SewerTileWater", 15, 16);
+		Sprites.load("SewerGrate", 15, 16);
 		Sprites.load("Heart", 9, 9);
 		
 		Engine.setScene(new Editor("level.txt"));

@@ -16,7 +16,7 @@ import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector2f;
 import blud.util.Util;
 
-public class Level extends Scene {	
+public class Level extends Scene {
 	public static final int
 		LEVEL_W = 16,
 		LEVEL_H = 16;	

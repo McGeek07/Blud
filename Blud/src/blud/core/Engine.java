@@ -134,15 +134,15 @@ public class Engine implements Runnable {
 		this.window.onExit();
 	}
 	
-	private void render(float dt) {
+	private void render(float dt, float t) {
 		if(this.scene != null)
-			this.canvas.render(dt, this.scene);
+			this.canvas.render(dt, t, this.scene);
 	}
 	
-	private void update(float dt) {
+	private void update(float dt, float t) {
 		Input.INSTANCE.poll();
 		if(this.scene != null)
-			this.canvas.update(dt, this.scene);
+			this.canvas.update(dt, t, this.scene);
 	}
 	
 	private static final long
@@ -158,31 +158,33 @@ public class Engine implements Runnable {
 				t_time = TPS > 0 ? ONE_SECOND / TPS : 0,
 				f_elapsed = 0,
 				t_elapsed = 0,
-				elapsed = 0,							
+				elapsed1 = 0,	
+				elapsed2 = 0,
 				f_ct = 0,
 				t_ct = 0,
 				t = System.nanoTime();			
-			this.update(0f);
-			this.render(0f);
+			this.update(0f, 0f);
+			this.render(0f, 0f);
 			while(running) {
 				long dt = - t + (t = System.nanoTime());
 				f_elapsed += dt;
 				t_elapsed += dt;
-				elapsed += dt;
+				elapsed1 += dt;
+				elapsed2 += dt;
 				if(t_elapsed >= t_time) {
-					this.update((float)t_elapsed / ONE_SECOND);
+					this.update((float)t_elapsed / ONE_SECOND, (float)elapsed2 / ONE_SECOND);
 					t_elapsed = 0;
 					t_ct ++;
 				}
 				if(f_elapsed >= f_time) {
-					this.render((float)f_elapsed / ONE_SECOND);
+					this.render((float)f_elapsed / ONE_SECOND, (float)elapsed2 / ONE_SECOND);
 					f_elapsed = 0;
 					f_ct ++;
 				}				
-				if(elapsed > ONE_SECOND) {
+				if(elapsed1 > ONE_SECOND) {
 					System.out.println("FPS: " + (this.fps = f_ct));
 					System.out.println("TPS: " + (this.tps = t_ct));
-					elapsed = 0;
+					elapsed1 = 0;
 					f_ct = 0;
 					t_ct = 0;
 				}
@@ -288,8 +290,9 @@ public class Engine implements Runnable {
 
 		protected BufferStrategy
 			buffer;
-		public void render(float dt, Renderable renderable) {
+		public void render(float dt, float t, Renderable renderable) {
 			this.render_context.dt = dt;
+			this.render_context.t  =  t;
 			this.render_context.canvas_w = CANVAS_W;
 			this.render_context.canvas_h = CANVAS_H;
 			
@@ -330,8 +333,9 @@ public class Engine implements Runnable {
 			this.buffer.show();
 		}
 		
-		public void update(float dt, Updateable updateable) {
+		public void update(float dt, float t, Updateable updateable) {
 			this.update_context.dt = dt;
+			this.update_context.t  =  t;
 			this.update_context.canvas_w = CANVAS_W;
 			this.update_context.canvas_h = CANVAS_H;
 			updateable.update(this.update_context);

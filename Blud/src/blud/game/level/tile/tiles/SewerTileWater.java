@@ -3,18 +3,21 @@ package blud.game.level.tile.tiles;
 import blud.game.level.tile.Tile;
 import blud.game.sprite.sprites.Sprites;
 
-public class SewerTileWater extends Tile{
+public class SewerTileWater extends Tile {
 
 	public SewerTileWater() {
 		super();
 		sprites.add(Sprites.get("SewerTileWater"));
-		sprites.loop(0, 2f);
 	}
 	
 	@Override
 	public void onRender(RenderContext context) {
-		// TODO Auto-generated method stub
-		
+		if(node != null) {
+			int
+				i = node.local.x(),
+				j = node.local.y();
+			sprites.setFrame((int)(3 * context.t + ((i + j) & 1)) % 2);
+		}
 	}
 
 	@Override

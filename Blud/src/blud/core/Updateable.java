@@ -10,7 +10,8 @@ public interface Updateable {
 			canvas_w,
 			canvas_h;
 		public float 
-			dt;
+			dt,
+			t;
 		
 		private UpdateContext
 			parent;
@@ -34,6 +35,7 @@ public interface Updateable {
 			copy.canvas_w = this.canvas_w;
 			copy.canvas_h = this.canvas_h;
 			copy.dt = this.dt;
+			copy.t  =  this.t;
 			return copy;
 		}
 	}
