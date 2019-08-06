@@ -166,9 +166,9 @@ public class Editor extends Level {
 					Vector.add(camera, + 2, 0);
 				if(Input.isKeyDnAction(Input.KEY_TAB))
 					brush.nextMode();
-				if(Input.isWheelUp())
-					brush.nextBrush();
 				if(Input.isWheelDn())
+					brush.nextBrush();
+				if(Input.isWheelUp())
 					brush.prevBrush();
 				if(Input.isBtnDn(Input.BTN_1))
 					brush.paint();
