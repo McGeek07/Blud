@@ -82,6 +82,7 @@ public class Level extends Scene {
 			bg.update(context);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].setSpriteTransparency(0f);
 				grid[i][j].playerVision = playerVisionFloor;
 				grid[i][j].entityVision = entityVisionFloor;
 			}

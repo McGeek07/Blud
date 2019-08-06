@@ -1,8 +1,13 @@
 package blud.game.level.unit.units;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import blud.core.input.Input;
 import blud.game.Game;
+import blud.game.level.node.Node;
 import blud.game.level.unit.Unit;
+import blud.game.level.unit.Wall;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -44,6 +49,16 @@ public class Player extends Unit {
 
 	@Override
 	public void onUpdate(UpdateContext context) {
+		List<Node> walk = node.walk(new LinkedList<Node>(), (node) -> {
+			return (node.local.x() > this.node.local.x()  ||
+					node.local.y() > this.node.local.y()) &&
+					node.unit instanceof Wall;
+		}, 2, -1);
+		
+		for(Node node: walk)
+			node.unit.setSpriteTransparency(.5f);
+		
+		
 		float
 			dx = (pixel.X() - node.level.camera.X()) * .5f,
 			dy = (pixel.Y() - node.level.camera.Y()) * .5f;		

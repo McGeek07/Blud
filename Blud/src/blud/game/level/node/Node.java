@@ -209,16 +209,15 @@ public class Node implements Renderable, Updateable {
 	
 	private List<Node> walk(List<Node> list, Walk walk, int range, int facing, int hash) {
 		if(range > 0 && this.hash != hash) {
-			if(walk.step(this)) {
+			if(walk.step(this))
 				list.add(this);
-				if(facing >= 0) {
-					if(neighbor[facing] != null)
-						neighbor[facing].walk(list, walk, range - 1, facing, hash);
-				} else {
-					for(int i = 0; i < neighbor.length; i ++)
-						if(neighbor[i] != null)
-							neighbor[i].walk(list, walk, range - 1, facing, hash);
-				}
+			if(facing >= 0) {
+				if(neighbor[facing] != null)
+					neighbor[facing].walk(list, walk, range - 1, facing, hash);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++)
+					if(neighbor[i] != null)
+						neighbor[i].walk(list, walk, range - 1, facing, hash);
 			}
 		}
 		return list;
