@@ -1,5 +1,7 @@
 package blud.game.level.node;
 
+import java.util.List;
+
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.game.Game;
@@ -195,5 +197,35 @@ public class Node implements Renderable, Updateable {
 				}
 			}
 		}
+	}
+	private static int
+		HASH;
+	private int
+		hash;
+	
+	public  List<Node> walk(List<Node> list, Walk walk, int range, int facing) {
+		return this.walk(list, walk, range, facing, ++ HASH);
+	}
+	
+	private List<Node> walk(List<Node> list, Walk walk, int range, int facing, int hash) {
+		if(range > 0 && this.hash != hash) {
+			if(walk.step(this)) {
+				list.add(this);
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].walk(list, walk, range - 1, facing, hash);
+				} else {
+					for(int i = 0; i < neighbor.length; i ++)
+						if(neighbor[i] != null)
+							neighbor[i].walk(list, walk, range - 1, facing, hash);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
+	public static interface Walk {
+		public boolean step(Node node);
 	}
 }
