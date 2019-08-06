@@ -68,10 +68,10 @@ public class Player extends Unit {
 		Vector.add(node.level.camera, dx, dy);
 		
 		int
-			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
-			a = Input.isKeyDn(Input.KEY_A) ? 2 : 0,
-			s = Input.isKeyDn(Input.KEY_S) ? 4 : 0,
-			d = Input.isKeyDn(Input.KEY_D) ? 8 : 0;
+			w = Input.isKeyDn(Input.KEY_W) ? 2 : 0,
+			a = Input.isKeyDn(Input.KEY_A) ? 4 : 0,
+			s = Input.isKeyDn(Input.KEY_S) ? 8 : 0,
+			d = Input.isKeyDn(Input.KEY_D) ? 1 : 0;
 		switch(w | a | s | d) {
 			//case 0:
 			//case 5:
