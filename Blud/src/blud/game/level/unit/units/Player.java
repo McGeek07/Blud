@@ -121,6 +121,8 @@ public class Player extends Unit {
 				sprites.set(1);
 				break;
 		}
+		
+		this.entityVisionRange = 2f;
 	}
 
 }

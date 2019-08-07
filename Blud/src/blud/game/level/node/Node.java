@@ -132,6 +132,8 @@ public class Node implements Renderable, Updateable {
 				facing = unit.playerVisionDirection;
 			if(playerVision <= level)
 				playerVision = level;
+			level = level - (level - this.level.entityVisionFloor) / range;
+			range = range - 1;
 			if(facing >= 0) {
 				if(neighbor[facing] != null)
 					neighbor[facing].updatePlayerVision(level, range, facing);
@@ -170,6 +172,8 @@ public class Node implements Renderable, Updateable {
 				facing = unit.entityVisionDirection;
 			if(entityVision <= level)
 				entityVision = level;
+			level = level - (level - this.level.entityVisionFloor) / range;
+			range = range - 1;
 			if(facing >= 0) {
 				if(neighbor[facing] != null)
 					neighbor[facing].updateEntityVision(level, range, facing);
