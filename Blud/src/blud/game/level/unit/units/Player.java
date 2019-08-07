@@ -22,7 +22,7 @@ public class Player extends Unit {
 				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;
-		this.moveFrames   = 12;
+		this.moveFrames   = 8;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
@@ -55,8 +55,8 @@ public class Player extends Unit {
 			dx,
 			dy;
 		if(dstNode != null) {
-			dx = (dstNode.local.X() - camera.X()) * .5f;
-			dy = (dstNode.local.Y() - camera.Y()) * .5f;
+			dx = (dstNode.local.X() - camera.X()) * .4f;
+			dy = (dstNode.local.Y() - camera.Y()) * .4f;
 		} else {
 			dx = (node.local.X() - camera.X()) * .5f;
 			dy = (node.local.Y() - camera.Y()) * .5f;
