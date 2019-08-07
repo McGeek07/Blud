@@ -33,6 +33,7 @@ PlayerIdleUp,15,16
 PlayerWalkDn,15,16
 PlayerIdleDn,15,16
 PlayerWalkUp,15,16
+Facing,15,16
 Mancer1IdleDn,15,16
 Mancer1IdleUp,15,16
 Mancer1WalkDn,15,16

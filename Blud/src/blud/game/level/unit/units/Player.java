@@ -2,6 +2,7 @@ package blud.game.level.unit.units;
 
 import blud.core.input.Input;
 import blud.game.Game;
+import blud.game.level.node.Node;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
@@ -104,7 +105,7 @@ public class Player extends Unit {
 	}
 	
 	@Override 
-	public void onMove() {
+	public void onMove(Node node) {
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
