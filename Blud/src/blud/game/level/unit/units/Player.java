@@ -104,13 +104,31 @@ public class Player extends Unit {
 		}		
 	}
 	
-	@Override
+	@Override 
 	public void onMove() {
+		switch(this.facing) {
+			case Game.NORTH:
+			case Game.EAST:
+				sprites.loop(2,10);
+				break;
+			case Game.SOUTH:
+			case Game.WEST:
+				sprites.loop(3, 10);
+				break;
+		}
 	}
 	
 	@Override
 	public void onIdle() {
-		
+		switch(this.facing) {
+			case Game.NORTH:
+			case Game.EAST:
+				sprites.loop(0,1);
+				break;
+			case Game.SOUTH:
+			case Game.WEST:
+				sprites.loop(1, 1);
+				break;
+		}
 	}
-
 }
