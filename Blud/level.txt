@@ -17,19 +17,11 @@ grid:<0.0, 14.0>&StoneTile&SewerWall:0
 grid:<0.0, 15.0>&StoneTile&SewerWall:0
 grid:<1.0, 0.0>&SewerTile&SewerWall:0
 grid:<1.0, 1.0>&SewerTileWater&
-<<<<<<< HEAD
-grid:<1.0, 2.0>&SewerTile&Mancer1:1
-grid:<1.0, 3.0>&SewerTile&
-grid:<1.0, 4.0>&SewerTile&
-grid:<1.0, 5.0>&SewerTile&
-grid:<1.0, 6.0>&SewerTile&
-=======
 grid:<1.0, 2.0>&SewerTile&Mancer1:0
 grid:<1.0, 3.0>&SewerTile&Mancer1:3
 grid:<1.0, 4.0>&SewerTile&Mancer1:2
 grid:<1.0, 5.0>&SewerTile&Mancer1:1
 grid:<1.0, 6.0>&SewerTile&Brazier:0
->>>>>>> branch 'master' of https://github.com/McGeek07/Blud
 grid:<1.0, 7.0>&SewerTile&
 grid:<1.0, 8.0>&SewerTile&
 grid:<1.0, 9.0>&SewerTile&
