@@ -43,14 +43,12 @@ public class Mancer1 extends Unit {
 		LinkedList<Node> list = new LinkedList<>();
 		node.walk(list, 
 				(node) -> {
-					return true;
+					return node.unit == null || node.unit instanceof Player;
 				},
 				(node) -> {
-					if(node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor)
-						return true;
-					return false;
+					return node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor;
 				},
-				3,
+				4,
 				this.facing
 				);
 		if(list.size() > 0)
