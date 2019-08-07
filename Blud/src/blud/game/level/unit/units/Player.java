@@ -15,8 +15,10 @@ public class Player extends Unit {
 	public Player() {
 		super();
 		sprites.add(
-				Sprites.get("PlayerFront"),
-				Sprites.get("PlayerBack")
+				Sprites.get("PlayerIdleDn"),
+				Sprites.get("PlayerIdleUp"),
+				Sprites.get("PlayerWalkDn"),
+				Sprites.get("PlayerWalkUp")
 				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;

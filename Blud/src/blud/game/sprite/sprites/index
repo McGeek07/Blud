@@ -29,3 +29,7 @@ SewerGrate,15,16
 BookShelfLeft,15,16
 BookShelfRight,15,16
 Heart,9,9
+PlayerIdleUp,15,16
+PlayerWalkDn,15,16
+PlayerIdleDn,15,16
+PlayerWalkUp,15,16
