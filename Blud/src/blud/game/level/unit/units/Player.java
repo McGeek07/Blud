@@ -20,7 +20,7 @@ public class Player extends Unit {
 				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;
-		this.moveFrames   = 8;
+		this.moveFrames   = 12;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
@@ -48,10 +48,18 @@ public class Player extends Unit {
 
 	@Override
 	public void onUpdate(UpdateContext context) {
+		Vector2f camera = Game.pixelToLocal(node.level.camera);
 		float
-			dx = (pixel.X() - node.level.camera.X()) * .5f,
-			dy = (pixel.Y() - node.level.camera.Y()) * .5f;		
-		Vector.add(node.level.camera, dx, dy);
+			dx,
+			dy;
+		if(dstNode != null) {
+			dx = (dstNode.local.X() - camera.X()) * .5f;
+			dy = (dstNode.local.Y() - camera.Y()) * .5f;
+		} else {
+			dx = (node.local.X() - camera.X()) * .5f;
+			dy = (node.local.Y() - camera.Y()) * .5f;
+		}
+		Vector.add(node.level.camera, Game.localToPixel(dx, dy));
 		
 		int
 			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
