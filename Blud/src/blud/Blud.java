@@ -18,6 +18,6 @@ public class Blud {
 		Sounds.load("Track1");
 		Engine.setScene(new Editor("level.txt"));
 		Engine.init();
-		Sounds.get("Track1").loop();
+		//Sounds.get("Track1").loop();
 	}
 }

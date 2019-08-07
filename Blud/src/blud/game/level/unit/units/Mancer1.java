@@ -41,11 +41,18 @@ public class Mancer1 extends Unit {
 	@Override
 	public void onUpdate(UpdateContext context) {
 		LinkedList<Node> list = new LinkedList<>();
-		node.walk(list, (node) -> {
-		 if(node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor)
-				return true;
-			return false;
-		}, 3, this.facing);
+		node.walk(list, 
+				(node) -> {
+					return true;
+				},
+				(node) -> {
+					if(node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor)
+						return true;
+					return false;
+				},
+				3,
+				this.facing
+				);
 		if(list.size() > 0)
 			if(!move(facing))
 				engage(facing);

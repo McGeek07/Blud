@@ -95,7 +95,7 @@ public abstract class Unit extends Entity {
 			Node node = this.node.neighbor[this.facing = facing];
 			Unit unit = node != null ? node.unit : null;
 			if(node.unit != null && !(node.unit instanceof Wall)) {
-				if(((this.facing + unit.facing) & 1) == 0) {
+				if(Math.abs(this.facing - unit.facing) == 2) {
 					switch(Integer.compare(this.priority, unit.priority)) {
 						case -1:
 							unit.attack(this.node);

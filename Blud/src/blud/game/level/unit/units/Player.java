@@ -101,7 +101,7 @@ public class Player extends Unit {
 			case 13: //w + s + d
 				take(Game.EAST );
 				break;			
-		}		
+		}
 	}
 	
 	@Override 

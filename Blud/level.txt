@@ -21,7 +21,7 @@ grid:<1.0, 2.0>&SewerTile&Mancer1:0
 grid:<1.0, 3.0>&SewerTile&Mancer1:3
 grid:<1.0, 4.0>&SewerTile&Mancer1:2
 grid:<1.0, 5.0>&SewerTile&Mancer1:1
-grid:<1.0, 6.0>&SewerTile&
+grid:<1.0, 6.0>&SewerTile&Brazier:0
 grid:<1.0, 7.0>&SewerTile&
 grid:<1.0, 8.0>&SewerTile&
 grid:<1.0, 9.0>&SewerTile&
@@ -53,7 +53,7 @@ grid:<3.0, 2.0>&SewerTile&
 grid:<3.0, 3.0>&SewerTile&
 grid:<3.0, 4.0>&SewerTile&
 grid:<3.0, 5.0>&SewerTile&
-grid:<3.0, 6.0>&SewerTile&Brazier:0
+grid:<3.0, 6.0>&SewerTile&
 grid:<3.0, 7.0>&SewerTile&
 grid:<3.0, 8.0>&SewerTile&
 grid:<3.0, 9.0>&SewerTile&
@@ -68,8 +68,8 @@ grid:<4.0, 1.0>&SewerTile&SewerWall:0
 grid:<4.0, 2.0>&SewerTile&
 grid:<4.0, 3.0>&CastleTile&
 grid:<4.0, 4.0>&SewerTile&CastleWall:0
-grid:<4.0, 5.0>&SewerTile&CastleWall:0
-grid:<4.0, 6.0>&SewerTile&CastleWall:0
+grid:<4.0, 5.0>&SewerTile&
+grid:<4.0, 6.0>&SewerTile&
 grid:<4.0, 7.0>&SewerTile&
 grid:<4.0, 8.0>&SewerTile&
 grid:<4.0, 9.0>&SewerTile&CastleWall:0
@@ -84,8 +84,8 @@ grid:<5.0, 1.0>&SewerTile&
 grid:<5.0, 2.0>&SewerTile&
 grid:<5.0, 3.0>&CastleTile&
 grid:<5.0, 4.0>&CastleTile&CastleWall:0
-grid:<5.0, 5.0>&StoneTile&CastleWall:0
-grid:<5.0, 6.0>&CastleTile&CastleWall:0
+grid:<5.0, 5.0>&CastleTile&
+grid:<5.0, 6.0>&CastleTile&
 grid:<5.0, 7.0>&CastleTile&
 grid:<5.0, 8.0>&CastleTile&
 grid:<5.0, 9.0>&StoneTile&CastleWall:0
@@ -100,7 +100,7 @@ grid:<6.0, 1.0>&CastleTile&
 grid:<6.0, 2.0>&CastleTile&
 grid:<6.0, 3.0>&CastleTile&
 grid:<6.0, 4.0>&CastleTile&CastleWall:0
-grid:<6.0, 5.0>&DebugTile&CastleWall:0
+grid:<6.0, 5.0>&CastleTile&
 grid:<6.0, 6.0>&CastleTile&
 grid:<6.0, 7.0>&CastleTile&
 grid:<6.0, 8.0>&CastleTile&
@@ -116,8 +116,8 @@ grid:<7.0, 1.0>&CastleTile&
 grid:<7.0, 2.0>&CastleTile&
 grid:<7.0, 3.0>&CastleTile&
 grid:<7.0, 4.0>&CastleTile&CastleWall:0
-grid:<7.0, 5.0>&CastleTile&CastleWall:0
-grid:<7.0, 6.0>&CastleTile&BookShelfRight:0
+grid:<7.0, 5.0>&CastleTile&
+grid:<7.0, 6.0>&CastleTile&
 grid:<7.0, 7.0>&CastleTile&CastleTorch:0
 grid:<7.0, 8.0>&CastleTile&
 grid:<7.0, 9.0>&CastleTile&
@@ -132,7 +132,7 @@ grid:<8.0, 1.0>&CastleTile&
 grid:<8.0, 2.0>&CastleTile&
 grid:<8.0, 3.0>&CastleTile&
 grid:<8.0, 4.0>&CastleTile&CastleWall:0
-grid:<8.0, 5.0>&CastleTile&CastleWall:0
+grid:<8.0, 5.0>&CastleTile&
 grid:<8.0, 6.0>&CastleTile&
 grid:<8.0, 7.0>&CastleTile&
 grid:<8.0, 8.0>&CastleTile&Player:2
