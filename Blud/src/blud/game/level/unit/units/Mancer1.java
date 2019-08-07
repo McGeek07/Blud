@@ -36,6 +36,21 @@ public class Mancer1 extends Unit {
 
 	@Override
 	public void onRender(RenderContext context) {
+		LinkedList<Node> list = new LinkedList<>();
+		node.walk(list, (node) -> {
+		 if(node.entityVision > node.level.entityVisionFloor)
+				return true;
+			return false;
+		}, 3, this.facing);
+		if(list.size() > 0) {
+			context = context.push();
+			for(Node item: list) {
+				danger.pixel.set(item.pixel.x(), item.pixel.y());
+				danger.render(context);
+			}
+			context.pull();
+		}
+		
 	}
 
 	@Override

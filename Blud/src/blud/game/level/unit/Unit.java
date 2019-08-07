@@ -2,9 +2,13 @@ package blud.game.level.unit;
 
 import blud.game.level.entity.Entity;
 import blud.game.level.node.Node;
+import blud.game.sprite.Sprite;
+import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 
 public abstract class Unit extends Entity {
+	protected final Sprite
+	danger = Sprites.get("Danger");	
 	public static final int
 		IDLE	= 0,
 		ATTACK 	= 1,
