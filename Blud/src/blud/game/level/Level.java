@@ -112,8 +112,8 @@ public class Level extends Scene {
 					if(grid[i][j].tile != null || grid[i][j].unit != null)
 						out.println(
 								"grid:" + grid[i][j].local 
-								+ "&" + (grid[i][j].tile != null ? grid[i][j].tile.getClassName() : "") 
-								+ "&" + (grid[i][j].unit != null ? grid[i][j].unit.getClassName() : "")
+								+ "&" + (grid[i][j].tile != null ? grid[i][j].tile.getClassName()                                : "") 
+								+ "&" + (grid[i][j].unit != null ? grid[i][j].unit.getClassName() + ":" + grid[i][j].unit.facing : "")
 								);
 		}
 	}
@@ -143,8 +143,11 @@ public class Level extends Scene {
 					temp = line.substring("grid:".length()).split("\\&");
 				String
 					v 	= temp.length > 0 ? temp[0].trim() : "",
-					tile 	= temp.length > 1 ? temp[1].trim() : "",
-					unit 	= temp.length > 2 ? temp[2].trim() : "";
+					tile 	= temp.length > 1 ? temp[1].trim() : "";
+				int i = temp.length > 2 ? temp[2].indexOf(":") : 0;
+				String
+					unit 	= temp.length > 2 ? temp[2].substring(0, i).trim() : "",
+					face    = temp.length > 2 ? temp[2].substring(++ i).trim() : "";
 				Vector2f 
 					local = Vector2f.parseVector2f(v),
 					pixel = Game.localToPixel(local);
@@ -159,6 +162,10 @@ public class Level extends Scene {
 						Unit u = Units.load(unit);
 						u.pixel.set(pixel);
 						node.setUnit(u);
+						
+						u.facing = Util.stringToInt(face);
+						u.state = -1;
+						u.idle();
 					}
 				}
 			}			

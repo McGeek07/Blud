@@ -126,7 +126,7 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void idle() {
-		if(state > IDLE) {			
+		if(state != IDLE) {			
 			frame = 0;
 			state = IDLE;
 			srcNode = null;

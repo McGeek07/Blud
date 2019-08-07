@@ -170,6 +170,10 @@ public class Editor extends Level {
 					brush.nextBrush();
 				if(Input.isWheelUp())
 					brush.prevBrush();
+				if(Input.isKeyDnAction(Input.KEY_Q))
+					brush.nextFace();
+				if(Input.isKeyDnAction(Input.KEY_E))
+					brush.prevFace();
 				if(Input.isBtnDn(Input.BTN_1))
 					brush.paint();
 				if(Input.isBtnDn(Input.BTN_3))
@@ -261,39 +265,43 @@ public class Editor extends Level {
 		protected final Vector2f.Mutable
 			cursor = new Vector2f.Mutable();
 		protected final Sprite.Group
-			sprite = new Sprite.Group(
+			sprite1 = new Sprite.Group(
 					Sprites.get("TileCursor1"),
 					Sprites.get("TileCursor2"),
 					Sprites.get("UnitCursor1"),
 					Sprites.get("UnitCursor2")
+					),
+			sprite2 = new Sprite.Group(
+					Sprites.get("Facing")
 					);
 		protected int
 			tile,
 			trap,
 			unit,
 			wall,
-			mode;
+			mode,
+			facing = 0;
 		
 		protected Entity
 			brush;
 		
 		public Brush() {
 			this.setMode(TILE);
-			sprite.loop(3, 4f);
-			sprite.loop(2, 4f);
-			sprite.loop(1, 4f);
-			sprite.loop(0, 4f);
-			sprite.setSpriteTransparency(.5f);
+			sprite1.loop(3, 4f);
+			sprite1.loop(2, 4f);
+			sprite1.loop(1, 4f);
+			sprite1.loop(0, 4f);
+			sprite1.setSpriteTransparency(.5f);
+			sprite2.setSpriteTransparency(.2f);
 		}
 
 
 		@Override
 		public void render(RenderContext context) {
-			if(brush != null) {
+			sprite2.render(context);
 				brush.setSpriteTransparency(0f);
 				brush.render(context);
-			}
-			sprite.render(context);
+			sprite1.render(context);
 		}
 
 		@Override
@@ -307,28 +315,29 @@ public class Editor extends Level {
 				int 
 					i = cursor.x(),
 					j = cursor.y();
-				if(brush != null)
-					brush.pixel.set(Game.localToPixel(i, j));
-				if(sprite != null)
-					sprite.setPixel(Game.localToPixel(i, j));
+				brush.pixel.set(Game.localToPixel(i, j));
+				sprite1.setPixel(Game.localToPixel(i, j));
+				sprite2.setPixel(Game.localToPixel(i, j));
 				switch(mode) {
 					case TILE: 
 					case TRAP:
 						if(grid[i][j].tile != null) 
-							sprite.set(1); 
+							sprite1.set(1); 
 						else 
-							sprite.set(0); 
+							sprite1.set(0); 
 						break;
 					case UNIT: 
 					case WALL:
 						if(grid[i][j].unit != null) 
-							sprite.set(3);
+							sprite1.set(3);
 						else
-							sprite.set(2);
+							sprite1.set(2);
 						break;
 				}
 			}			
-			sprite.update(context);
+			sprite2.setFrame(facing);
+			sprite2.update(context);
+			sprite1.update(context);
 		}
 		
 		public void setMode(int mode) {
@@ -413,6 +422,30 @@ public class Editor extends Level {
 			}
 		}
 		
+		public void nextFace() {
+			if(mode > 1) {
+				facing ++;
+				if(facing >= 4)
+					facing = 0;
+				Unit u = (Unit)brush;
+				u.facing = facing;				
+				u.state = -1;
+				u.idle();
+			}
+		}
+		
+		public void prevFace() {
+			if(mode > 1) {
+				facing --;
+				if(facing < 0)
+					facing = 3;
+				Unit u = (Unit)brush;
+				u.facing = facing;				
+				u.state = -1;
+				u.idle();
+			}
+		}
+		
 		public void paint() {
 			try {
 				int
@@ -430,6 +463,9 @@ public class Editor extends Level {
 						Unit u = (Unit)brush.getClass().newInstance(); 
 						u.pixel.set(Game.localToPixel(i, j));
 						grid[i][j].setUnit(u);
+						u.facing = facing;
+						u.state = -1;
+						u.idle();
 						break;
 				}				
 			} catch (Exception ex) {
