@@ -207,28 +207,29 @@ public class Node implements Renderable, Updateable {
 	private int
 		hash;
 	
-	public  List<Node> walk(List<Node> list, Walk walk, int range, int facing) {
-		return this.walk(list, walk, range, facing, ++ HASH);
+	public  List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing) {
+		return this.walk(list, check1, check2, range, facing, ++ HASH);
 	}
 	
-	private List<Node> walk(List<Node> list, Walk walk, int range, int facing, int hash) {
+	private List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing, int hash) {
 		if(range > 0 && this.hash != hash) {
-			if(walk.step(this))
+			this.hash = hash;
+			if(check2.check(this))
 				list.add(this);
 			if(facing >= 0) {
-				if(neighbor[facing] != null)
-					neighbor[facing].walk(list, walk, range - 1, facing, hash);
+				if(neighbor[facing] != null && check1.check(neighbor[facing]))
+					neighbor[facing].walk(list, check1, check2, range - 1, facing, hash);
 			} else {
 				for(int i = 0; i < neighbor.length; i ++)
-					if(neighbor[i] != null)
-						neighbor[i].walk(list, walk, range - 1, facing, hash);
+					if(neighbor[i] != null && check1.check(neighbor[i]))
+						neighbor[i].walk(list, check1, check2, range - 1, i, hash);
 			}
 		}
 		return list;
 	}
 	
 	
-	public static interface Walk {
-		public boolean step(Node node);
+	public static interface Check {
+		public boolean check(Node node);
 	}
 }
