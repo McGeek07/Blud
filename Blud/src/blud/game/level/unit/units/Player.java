@@ -47,12 +47,11 @@ public class Player extends Unit {
 	}
 
 	@Override
-	public void onUpdate(UpdateContext context) {	
-		Vector2f camera = Game.pixelToLocal(node.level.camera);
+	public void onUpdate(UpdateContext context) {
 		float
-			dx = (node.local.X() - camera.X()) * .5f,
-			dy = (node.local.Y() - camera.Y()) * .5f;		
-		Vector.add(node.level.camera, Game.localToPixel(dx, dy));
+			dx = (pixel.X() - node.level.camera.X()) * .5f,
+			dy = (pixel.Y() - node.level.camera.Y()) * .5f;		
+		Vector.add(node.level.camera, dx, dy);
 		
 		int
 			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
