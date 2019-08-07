@@ -22,7 +22,7 @@ public class Player extends Unit {
 				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;
-		this.moveFrames   = 12;
+		this.moveFrames   = 16;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
@@ -55,11 +55,11 @@ public class Player extends Unit {
 			dx,
 			dy;
 		if(dstNode != null) {
-			dx = (dstNode.local.X() - camera.X()) * .5f;
-			dy = (dstNode.local.Y() - camera.Y()) * .5f;
+			dx = (dstNode.local.X() - camera.X()) * .25f;
+			dy = (dstNode.local.Y() - camera.Y()) * .25f;
 		} else {
-			dx = (node.local.X() - camera.X()) * .5f;
-			dy = (node.local.Y() - camera.Y()) * .5f;
+			dx = (node.local.X() - camera.X()) * .25f;
+			dy = (node.local.Y() - camera.Y()) * .25f;
 		}
 		Vector.add(node.level.camera, Game.localToPixel(dx, dy));
 		
