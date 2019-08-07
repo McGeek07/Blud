@@ -69,37 +69,25 @@ public class Player extends Unit {
 			//case 15:			
 		
 			case  1: //w
+			case  9: //w + d
 			case 11: //w + a + d
-				if(isFacingL) move(Game.SOUTH);
-				if(isFacingR) move(Game.WEST );
-				break;
-			case  2: //a
-			case  7: //w + a + s
-				if(isFacingUp) move(Game.WEST ); 
-				if(isFacingDn) move(Game.NORTH);
-				break;
-			case  4: //s
-			case 14: //a + s + d
-				if(isFacingL) move(Game.NORTH);
-				if(isFacingR) move(Game.EAST );
-				break;
-			case  8: //d
-			case 13: //w + s + d
-				if(isFacingUp) move(Game.SOUTH); 
-				if(isFacingDn) move(Game.EAST ); 
-				break;
-			case 3: //w + a
-				move(Game.WEST);
-				break;
-			case 9: //w + d
 				move(Game.SOUTH);
 				break;
-			case 6: //a + s
+			case  2: //a
+			case  3: //w + a
+			case  7: //w + a + s
+				move(Game.WEST );
+				break;
+			case  4: //s
+			case  6: //a + s
+			case 14: //a + s + d
 				move(Game.NORTH);
 				break;
+			case  8: //d
 			case 12: //s + d
-				move(Game.EAST);
-				break;				
+			case 13: //w + s + d
+				move(Game.EAST );
+				break;			
 		}	
 		
 		if(Input.isKeyDnAction(Input.KEY_UP_ARROW))
