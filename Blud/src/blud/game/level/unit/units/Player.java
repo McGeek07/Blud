@@ -104,16 +104,6 @@ public class Player extends Unit {
 		if(Input.isKeyDnAction(Input.KEY_R_ARROW))
 			attack(node.neighbor[Game.EAST]);	
 		
-		switch(this.facing) {
-			case Game.NORTH:
-			case Game.EAST:
-				sprites.set(0);
-				break;
-			case Game.SOUTH:
-			case Game.WEST:
-				sprites.set(1);
-				break;
-		}
 		
 		this.entityVisionRange = 2f;
 	}
