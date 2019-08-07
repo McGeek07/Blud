@@ -24,7 +24,7 @@ public class Mancer1 extends Unit {
 		this.defendFrames = 12;
 		
 		this.moveCooldown = 3;
-		this.attackCooldown = 6;
+		this.attackCooldown = 14;
 		this.defendCooldown = 0;
 		
 		this.maxHP = 1;
