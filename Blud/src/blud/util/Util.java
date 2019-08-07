@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
@@ -125,6 +126,7 @@ public class Util {
 				file.createNewFile();
 			} catch(IOException ioe) {
 				System.err.println("Unable to validate file \"" + file + "\"");
+				ioe.printStackTrace();
 			}
 		return file;
 	}
@@ -274,6 +276,15 @@ public class Util {
 	
 	public static List<String> parseFromFile(File file  , List<String> list) {
 		try(BufferedReader in = createBufferedReader(file)) {
+			while(in.ready()) list.add(in.readLine());
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static List<String> parseFromResource(Class<?> clazz, String name, List<String> list) {
+		try(BufferedReader in = new BufferedReader(new InputStreamReader(clazz.getResourceAsStream(name)))) {
 			while(in.ready()) list.add(in.readLine());
 		} catch(IOException ioe) {
 			ioe.printStackTrace();

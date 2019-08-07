@@ -1,13 +1,8 @@
 package blud.game.level.unit.units;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import blud.core.input.Input;
 import blud.game.Game;
-import blud.game.level.node.Node;
 import blud.game.level.unit.Unit;
-import blud.game.level.unit.Wall;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -51,37 +46,60 @@ public class Player extends Unit {
 	}
 
 	@Override
-	public void onUpdate(UpdateContext context) {
-		List<Node> walk = node.walk(new LinkedList<Node>(), (node) -> {
-			return (node.local.x() > this.node.local.x()  ||
-					node.local.y() > this.node.local.y()) &&
-					node.unit instanceof Wall;
-		}, 2, -1);
-		
-		for(Node node: walk)
-			node.unit.setSpriteTransparency(.5f);
-		
-		
+	public void onUpdate(UpdateContext context) {		
 		float
 			dx = (pixel.X() - node.level.camera.X()) * .5f,
 			dy = (pixel.Y() - node.level.camera.Y()) * .5f;		
 		Vector.add(node.level.camera, dx, dy);
 		
 		int
-			w = Input.isKeyDn(Input.KEY_W) ? 2 : 0,
-			a = Input.isKeyDn(Input.KEY_A) ? 4 : 0,
-			s = Input.isKeyDn(Input.KEY_S) ? 8 : 0,
-			d = Input.isKeyDn(Input.KEY_D) ? 1 : 0;
+			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
+			a = Input.isKeyDn(Input.KEY_A) ? 2 : 0,
+			s = Input.isKeyDn(Input.KEY_S) ? 4 : 0,
+			d = Input.isKeyDn(Input.KEY_D) ? 8 : 0;
+		boolean
+			isFacingUp = facing > 1,
+			isFacingDn = facing < 2,
+			isFacingL = (facing & 1) != 0,
+			isFacingR = (facing & 1) == 0;
 		switch(w | a | s | d) {
 			//case 0:
 			//case 5:
 			//case 10:
-			//case 15:
+			//case 15:			
 		
-			case 1: move(Game.SOUTH); break;
-			case 2: move(Game.WEST); break;
-			case 4: move(Game.NORTH); break;
-			case 8: move(Game.EAST); break;
+			case  1: //w
+			case 11: //w + a + d
+				if(isFacingL) move(Game.SOUTH);
+				if(isFacingR) move(Game.WEST );
+				break;
+			case  2: //a
+			case  7: //w + a + s
+				if(isFacingUp) move(Game.WEST ); 
+				if(isFacingDn) move(Game.NORTH);
+				break;
+			case  4: //s
+			case 14: //a + s + d
+				if(isFacingL) move(Game.NORTH);
+				if(isFacingR) move(Game.EAST );
+				break;
+			case  8: //d
+			case 13: //w + s + d
+				if(isFacingUp) move(Game.SOUTH); 
+				if(isFacingDn) move(Game.EAST ); 
+				break;
+			case 3: //w + a
+				move(Game.WEST);
+				break;
+			case 9: //w + d
+				move(Game.SOUTH);
+				break;
+			case 6: //a + s
+				move(Game.NORTH);
+				break;
+			case 12: //s + d
+				move(Game.EAST);
+				break;				
 		}	
 		
 		if(Input.isKeyDnAction(Input.KEY_UP_ARROW))

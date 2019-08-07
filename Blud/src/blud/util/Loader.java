@@ -1,7 +1,5 @@
 package blud.util;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +30,8 @@ public class Loader<T> {
 	}
 	
 	public List<T> load(String package_name, List<T> list) {
-		URL url = getClass().getResource(INDEX);
 		LinkedList<String> class_names = new LinkedList<>();
-		Util.parseFromFile(new File(url.getPath()), class_names);		
+		Util.parseFromResource(getClass(), INDEX, class_names);		
 		for(String class_name : class_names) 
 			list.add(load(package_name, class_name));
 		return list;		

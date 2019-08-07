@@ -60,9 +60,11 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void move(int facing) {
-		Node node = this.node.neighbor[this.facing = facing];
-		if(node != null && !node.isReserved())
-			move(node);
+		if(state < MOVE) {
+			Node node = this.node.neighbor[this.facing = facing];
+			if(node != null && !node.isReserved())
+				move(node);
+		}
 	}
 	
 	public void attack(int facing) {

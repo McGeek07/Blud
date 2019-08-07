@@ -3,14 +3,34 @@ package blud.game.sprite.sprites;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
 import blud.game.sprite.Sprite;
+import blud.util.Util;
 
 public class Sprites {
+	public static final String
+		INDEX = "index";
 	protected static final HashMap<String, Sprite>
  		SPRITES = new HashMap<>();
+	
+	public static final void load() {
+		LinkedList<String> list = new LinkedList<String>();
+		Util.parseFromResource(Sprites.class, INDEX, list);
+		for(String line: list) {
+			String[] temp = line.split("\\,");
+			String
+				name = temp.length > 0 ? temp[0].trim() : "",
+				w    = temp.length > 1 ? temp[1].trim() : "",
+				h 	 = temp.length > 2 ? temp[2].trim() : "";
+			int
+				_w = Util.stringToInt(w),
+				_h = Util.stringToInt(h);
+			load(name, _w, _h);
+		}
+	}
 	
 	public static final Sprite load(String name, int w, int h) {			
 			BufferedImage[]
@@ -67,13 +87,9 @@ public class Sprites {
 			colorFrames[i] = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			for(int x = 0; x < w; x ++)
 				for(int y = 0; y < h; y ++) {
-					int
-						pixel = spriteFrames[i].getRGB(x, y),
-						_a = (pixel >> 24) & 0xff,
-						_r = (pixel >> 16) & 0xff,
-						_g = (pixel >>  8) & 0xff,
-						_b = (pixel      ) & 0xff;
-					if(_a > 0) {
+					int 
+						pixel = spriteFrames[i].getRGB(x, y);
+					if(((pixel >> 24) & 0xff) > 0) {
 						pixel = 
 								(a << 24) |
 								(r << 16) |
