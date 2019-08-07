@@ -6,11 +6,15 @@ import blud.game.level.unit.Unit;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
-import blud.geom.Vector2f;
+import blud.util.Util;
 
 public class Player extends Unit {
 	protected final Sprite
 		heart = Sprites.get("Heart");
+	
+	public float
+		cameraSpeedX = 1f,
+		cameraSpeedY = 4;
 	
 	public Player() {
 		super();
@@ -22,14 +26,24 @@ public class Player extends Unit {
 				);
 		this.playerVisionLevel = 1f;
 		this.playerVisionRange = 8f;
-		this.moveFrames   = 8;
+		this.moveFrames   = 5;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
-		this.cooldownFrames = 2;
+		this.moveCooldown = 3;
+		this.attackCooldown = 6;
+		this.defendCooldown = 0;
 		
 		this.maxHP = 3;
 		this.curHP = 3;
+		
+		this.damage   = 1;
+		this.priority = 2;
+	}
+	
+	public void take(int facing) {
+		if(!move(facing))
+			engage(facing);
 	}
 	
 	@Override
@@ -50,18 +64,12 @@ public class Player extends Unit {
 
 	@Override
 	public void onUpdate(UpdateContext context) {
-		Vector2f camera = Game.pixelToLocal(node.level.camera);
 		float
-			dx,
-			dy;
-		if(dstNode != null) {
-			dx = (dstNode.local.X() - camera.X()) * .4f;
-			dy = (dstNode.local.Y() - camera.Y()) * .4f;
-		} else {
-			dx = (node.local.X() - camera.X()) * .5f;
-			dy = (node.local.Y() - camera.Y()) * .5f;
-		}
-		Vector.add(node.level.camera, Game.localToPixel(dx, dy));
+			dx = pixel.x() - node.level.camera.x(),
+			dy = pixel.y() - node.level.camera.y();
+		dx = Util.box(dx, -cameraSpeedX, cameraSpeedX);
+		dy = Util.box(dy, -cameraSpeedY, cameraSpeedY);
+		Vector.add(node.level.camera, dx, dy);
 		
 		int
 			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
@@ -76,46 +84,33 @@ public class Player extends Unit {
 			case  1: //w
 			case  9: //w + d
 			case 11: //w + a + d
-				move(Game.SOUTH);
+				take(Game.SOUTH);
 				break;
 			case  2: //a
 			case  3: //w + a
 			case  7: //w + a + s
-				move(Game.WEST );
+				take(Game.WEST );
 				break;
 			case  4: //s
 			case  6: //a + s
 			case 14: //a + s + d
-				move(Game.NORTH);
+				take(Game.NORTH);
 				break;
 			case  8: //d
 			case 12: //s + d
 			case 13: //w + s + d
-				move(Game.EAST );
+				take(Game.EAST );
 				break;			
-		}	
+		}		
+	}
+	
+	@Override
+	public void onMove() {
+	}
+	
+	@Override
+	public void onIdle() {
 		
-		if(Input.isKeyDnAction(Input.KEY_UP_ARROW))
-			defend(node.neighbor[Game.SOUTH]);
-		if(Input.isKeyDnAction(Input.KEY_L_ARROW))
-			attack(node.neighbor[Game.WEST]);
-		if(Input.isKeyDnAction(Input.KEY_DN_ARROW))
-			attack(node.neighbor[Game.NORTH]);
-		if(Input.isKeyDnAction(Input.KEY_R_ARROW))
-			attack(node.neighbor[Game.EAST]);	
-		
-		switch(this.facing) {
-			case Game.NORTH:
-			case Game.EAST:
-				sprites.set(0);
-				break;
-			case Game.SOUTH:
-			case Game.WEST:
-				sprites.set(1);
-				break;
-		}
-		
-		this.entityVisionRange = 2f;
 	}
 
 }
