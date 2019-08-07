@@ -41,9 +41,9 @@ public class Mancer1 extends Unit {
 			return node.entityVision > node.level.entityVisionFloor;
 		},
 				(node) -> {
-                    return true;
+                    return node.entityVision > node.level.entityVisionFloor;
                 },
-		3, this.facing);
+		5, this.facing);
 		if(list.size() > 0) {
 			context = context.push();
 			for(Node item: list) {
@@ -64,10 +64,13 @@ public class Mancer1 extends Unit {
 				(node) -> {
                     return node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor;
                 },
-		3, this.facing);
+		5, this.facing);
 		if(list.size() > 0)
+		{
+			System.out.println("Spotted");
 			if(!move(facing))
-				engage(facing);
+				engage(facing);			
+		}	
 	}
 	
 	@Override 
