@@ -106,12 +106,20 @@ public class Player extends Unit {
 	@Override 
 	public void onMove() {
 		switch(this.facing) {
-			case Game.NORTH:
 			case Game.EAST:
+				this.sprites.flop();
 				sprites.loop(2,10);
 				break;
-			case Game.SOUTH:
+			case Game.NORTH:
+				this.sprites.flip();
+				sprites.loop(2,10);
+				break;
 			case Game.WEST:
+				this.sprites.flip();
+				sprites.loop(3,10);
+				break;
+			case Game.SOUTH:
+				this.sprites.flop();
 				sprites.loop(3, 10);
 				break;
 		}
