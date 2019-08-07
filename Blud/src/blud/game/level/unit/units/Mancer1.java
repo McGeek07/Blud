@@ -19,6 +19,9 @@ public class Mancer1 extends Unit {
 				);
 		sprites.loop(0, 3f);
 		
+		this.entityVisionLevel = .51f;
+		this.entityVisionRange =   2f;
+		
 		this.moveFrames   = 5;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
@@ -40,6 +43,7 @@ public class Mancer1 extends Unit {
 
 	@Override
 	public void onUpdate(UpdateContext context) {
+		this.entityVisionDirection = facing;
 		LinkedList<Node> list = new LinkedList<>();
 		node.walk(list, 
 				(node) -> {
