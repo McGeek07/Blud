@@ -144,7 +144,7 @@ public abstract class Unit extends Entity {
 			srcNode = this.node;
 			dstNode =      node;
 			dstNode.reserved = true; 
-			onMove();
+			onMove(node);
 		}
 	}
 	
@@ -156,7 +156,7 @@ public abstract class Unit extends Entity {
 			state = ATTACK;			
 			srcNode = this.node;
 			dstNode =      node;
-			onAttack();
+			onAttack(node);
 		}
 	}
 	
@@ -168,7 +168,7 @@ public abstract class Unit extends Entity {
 			state = DEFEND;			
 			srcNode = this.node;
 			dstNode =      node;
-			onDefend();
+			onDefend(node);
 		}
 	}
 	
@@ -194,9 +194,9 @@ public abstract class Unit extends Entity {
 	}
 	
 	public void onIdle() { }
-	public void onMove() { }
-	public void onAttack() { }
-	public void onDefend() { }
+	public void onMove(Node node) { }
+	public void onAttack(Node node) { }
+	public void onDefend(Node node) { }
 	public void onKill() { }
 	
 	public void onIdleExit() { 
