@@ -76,27 +76,22 @@ public class Player extends Unit {
 			case  1: //w
 			case  9: //w + d
 			case 11: //w + a + d
-				this.sprites.loop(2, 30);
 				move(Game.SOUTH);
-				this.sprites.loop(0, 1);
 				break;
 			case  2: //a
 			case  3: //w + a
 			case  7: //w + a + s
 				move(Game.WEST );
-				this.sprites.loop(0, 1);
 				break;
 			case  4: //s
 			case  6: //a + s
 			case 14: //a + s + d
 				move(Game.NORTH);
-				this.sprites.loop(1, 1);
 				break;
 			case  8: //d
 			case 12: //s + d
 			case 13: //w + s + d
 				move(Game.EAST);
-				this.sprites.loop(1, 1);
 				break;			
 		}	
 		
@@ -121,6 +116,34 @@ public class Player extends Unit {
 		}
 		
 		this.entityVisionRange = 2f;
+	}
+	
+	@Override 
+	public void onMove() {
+		switch(this.facing) {
+		case Game.NORTH:
+		case Game.EAST:
+			sprites.loop(2,10);
+			break;
+		case Game.SOUTH:
+		case Game.WEST:
+			sprites.loop(3, 10);
+			break;
+		}
+	}
+	
+	@Override
+	public void onIdle() {
+		switch(this.facing) {
+		case Game.NORTH:
+		case Game.EAST:
+			sprites.loop(0,1);
+			break;
+		case Game.SOUTH:
+		case Game.WEST:
+			sprites.loop(1, 1);
+			break;
+	}
 	}
 
 }
