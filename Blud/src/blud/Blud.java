@@ -16,7 +16,11 @@ public class Blud {
 		Sprites.load();
 		Sounds .load();
 		
+		Sounds.load("Track1");
+		
 		Engine.setScene(new Editor("level.txt"));
 		Engine.init();
+		
+		Sounds.get("Track1").play();
 	}
 }

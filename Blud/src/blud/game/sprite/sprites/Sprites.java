@@ -51,7 +51,7 @@ public class Sprites {
 	
 	private static final BufferedImage[] createSpriteFrames(String name, int w, int h) {
 		try {
-			BufferedImage atlas = ImageIO.read(Sprite.class.getResource("sprites/" + name + ".png"));			
+			BufferedImage atlas = ImageIO.read(Sprites.class.getResource(name + ".png"));			
 			int
 				xw = atlas.getWidth()  / w,
 				yh = atlas.getHeight() / h;
@@ -102,8 +102,8 @@ public class Sprites {
 		return colorFrames;
 	}
 	
-	public static final Sprite get(String id) {
-		Sprite sprite = SPRITES.get(id);
+	public static final Sprite get(String name) {
+		Sprite sprite = SPRITES.get(name);
 		return sprite != null ?
 				sprite.copy() :
 				null;
