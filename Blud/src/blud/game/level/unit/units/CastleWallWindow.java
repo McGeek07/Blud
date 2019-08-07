@@ -10,7 +10,7 @@ public class CastleWallWindow extends Wall {
 		super();
 		sprites.add(Sprites.get("CastleWallWindow"));
 		this.entityVisionLevel = .6f;
-		this.entityVisionRange = 2f;
+		this.entityVisionRange = 3f;
 	}
 
 	@Override

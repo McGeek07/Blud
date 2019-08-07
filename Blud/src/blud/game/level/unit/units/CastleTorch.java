@@ -11,6 +11,8 @@ public class CastleTorch extends Unit {
 		this.entityVisionLevel = 1f;
 		this.entityVisionRange = 6f;
 		this.sprites.loop(0, 3f);
+		
+		this.defendFrames = 12;
 	}
 
 	@Override

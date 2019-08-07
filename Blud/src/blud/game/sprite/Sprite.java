@@ -33,6 +33,8 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		blackTransparency = 1f;
 	public int
 		mode;
+	public boolean
+		flip;
 	public final Vector2f.Mutable
 		pixel = new Vector2f.Mutable();
 	
@@ -121,13 +123,29 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		this.pixel.set(x, y);
 		this.stop();
 	}
+	
+	public void flip() {
+		if(!flip)
+			flip = true;
+	}
+	
+	public void flop() {
+		if( flip)
+			flip = false;
+	}
 
 	@Override
 	public void render(RenderContext context) {
 		context = context.push();
 		context.g2D.translate(
-				pixel.x() - w / 2,
-				pixel.y() - h / 2
+				pixel.x(),
+				pixel.y()
+				);
+		if(flip)
+			context.g2D.scale(-1, 1);
+		context.g2D.translate(
+				- w / 2,
+				- h / 2
 				);
 		if(spriteTransparency < 1) {
 			if(spriteTransparency > 0)
@@ -297,6 +315,16 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		
 		public void stop(int sprite, float x, float y) {
 			this.set(sprite).stop(x, y);
+		}
+		
+		public void flip() {
+			for(Sprite sprite: sprites)
+				sprite.flip();
+		}
+		
+		public void flop() {
+			for(Sprite sprite: sprites)
+				sprite.flop();
 		}
 
 		@Override

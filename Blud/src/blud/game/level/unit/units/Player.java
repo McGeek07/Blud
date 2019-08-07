@@ -10,11 +10,10 @@ import blud.util.Util;
 
 public class Player extends Unit {
 	protected final Sprite
-		heart = Sprites.get("Heart");
-	
+		heart = Sprites.get("Heart");	
 	public float
-		cameraSpeedX = 1f,
-		cameraSpeedY = 4;
+		cameraSpeedX = 1,
+		cameraSpeedY = 2;
 	
 	public Player() {
 		super();
