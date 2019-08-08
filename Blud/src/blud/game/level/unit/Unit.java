@@ -224,7 +224,6 @@ public abstract class Unit extends Entity {
 		if(curHP <= 0) kill(); else idle();
 	}
 	public void onDefendExit() { 
-		System.out.println("Defend!");
 		if(blocksLight || (lightLevel > 0 && lightRange > 0))
 			node.level.updateLighting = true;
 		if(blocksPlayerVision || playerVisionRange > 0)
