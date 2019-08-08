@@ -29,20 +29,21 @@ public class Level extends Scene {
 	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	public float
-		lightFloor = .5f;
+		lightFloor = .3f;
 	public boolean
 		updateLighting = true,
 		updatePlayerVision = true,
 		updateEntityVision = true;
 	
 	public final Sprite
-		danger = Sprites.get("Danger");
+		vision = Sprites.get("Vision");
 	
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
-		danger.setSpriteTransparency(.6f);
+		vision.setSpriteTransparency(.6f);
+		vision.loop(3f);
 	}
 	
 	public Node at(Vector2f local) {
@@ -56,7 +57,7 @@ public class Level extends Scene {
 				)
 			return grid[(int)i][(int)j];
 		return null;
-	}
+	}	
 	
 	@Override
 	public void onRender(RenderContext context) {
@@ -77,8 +78,8 @@ public class Level extends Scene {
 				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-					danger.pixel.set(Game.localToPixel(i, j));
-					danger.render(context);
+					vision.pixel.set(Game.localToPixel(i, j));
+					vision.render(context);
 				}
 			}									
 		for(int i = 0; i < LEVEL_W; i ++)
@@ -115,7 +116,8 @@ public class Level extends Scene {
 		}	
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j].update(context);		
+				grid[i][j].update(context);	
+		vision.update(context);
 	}
 	
 	public void save(String path) {

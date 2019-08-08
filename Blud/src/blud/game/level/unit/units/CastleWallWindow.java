@@ -9,8 +9,8 @@ public class CastleWallWindow extends Wall {
 	public CastleWallWindow() {
 		super();
 		sprites.add(Sprites.get("CastleWallWindow"));
-		this.lightLevel = .6f;
-		this.lightRange =   3;
+		this.lightLevel = 1f;
+		this.lightRange =  3;
 	}
 	
 }

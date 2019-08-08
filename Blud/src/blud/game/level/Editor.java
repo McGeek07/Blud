@@ -104,8 +104,8 @@ public class Editor extends Level {
 						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-							danger.pixel.set(Game.localToPixel(i, j));
-							danger.render(context);
+							vision.pixel.set(Game.localToPixel(i, j));
+							vision.render(context);
 						}
 						if(brush.mode < 2 && i == brush.cursor.x() && j == brush.cursor.y())
 							brush.render(context);
@@ -126,8 +126,8 @@ public class Editor extends Level {
 						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-							danger.pixel.set(Game.localToPixel(i, j));
-							danger.render(context);
+							vision.pixel.set(Game.localToPixel(i, j));
+							vision.render(context);
 						}
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
@@ -264,7 +264,8 @@ public class Editor extends Level {
 					for(int j = 0; j < LEVEL_H; j ++)
 						grid[i][j].update(context);
 					
-		}		
+		}	
+		vision.update(context);
 	}
 	
 	@Override

@@ -57,6 +57,9 @@ public class Node implements Renderable, Updateable {
 		this.tile = tile;
 		if(this.tile != null)
 			this.tile.node = this;
+		level.updateLighting = true;
+		level.updatePlayerVision = true;
+		level.updateEntityVision = true;
 	}
 	
 	public void setUnit(Unit unit) {
@@ -65,6 +68,9 @@ public class Node implements Renderable, Updateable {
 		this.unit = unit;
 		if(this.unit != null)
 			this.unit.node = this;
+		level.updateLighting = true;
+		level.updatePlayerVision = true;
+		level.updateEntityVision = true;
 	}
 	
 	public boolean hasTile() {

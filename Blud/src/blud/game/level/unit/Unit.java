@@ -206,39 +206,15 @@ public abstract class Unit extends Entity {
 		//do nothing
 	}
 	public void onMoveExit() {
-		if(blocksLight || (lightLevel > 0 && lightRange > 0))
-			node.level.updateLighting = true;
-		if(blocksPlayerVision || playerVisionRange > 0)
-			node.level.updatePlayerVision = true;
-		if(blocksEntityVision || entityVisionRange > 0)
-			node.level.updateEntityVision = true;
 		dstNode.isReserved = false; idle();
 	}
 	public void onAttackExit() {
-		if(blocksLight || (lightLevel > 0 && lightRange > 0))
-			node.level.updateLighting = true;
-		if(blocksPlayerVision || playerVisionRange > 0)
-			node.level.updatePlayerVision = true;
-		if(blocksEntityVision || entityVisionRange > 0)
-			node.level.updateEntityVision = true;
 		if(curHP <= 0) kill(); else idle();
 	}
 	public void onDefendExit() { 
-		if(blocksLight || (lightLevel > 0 && lightRange > 0))
-			node.level.updateLighting = true;
-		if(blocksPlayerVision || playerVisionRange > 0)
-			node.level.updatePlayerVision = true;
-		if(blocksEntityVision || entityVisionRange > 0)
-			node.level.updateEntityVision = true;
 		if(curHP <= 0) kill(); else idle();
 	}
 	public void onKillExit() {
-		if(blocksLight || (lightLevel > 0 && lightRange > 0))
-			node.level.updateLighting = true;
-		if(blocksPlayerVision || playerVisionRange > 0)
-			node.level.updatePlayerVision = true;
-		if(blocksEntityVision || entityVisionRange > 0)
-			node.level.updateEntityVision = true;
 		node.setUnit(null);
 	}
 	
