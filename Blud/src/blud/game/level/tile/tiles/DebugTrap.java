@@ -9,13 +9,5 @@ public class DebugTrap extends Trap {
 		super();
 		sprites.add(Sprites.get("DebugTrap"));
 	}
-
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-	}
 	
 }

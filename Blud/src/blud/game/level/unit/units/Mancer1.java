@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import blud.game.Game;
 import blud.game.level.node.Node;
+import blud.game.level.node.Node.Check;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
 
@@ -30,47 +31,43 @@ public class Mancer1 extends Unit {
 		this.maxHP = 1;
 		this.curHP = 1;
 		
+		this.entityVisionRange = 4;
+		
+		
+		
 		this.damage   = 1;
 		this.priority = 1;
 	}
+	
+	protected LinkedList<Node>
+		search = new LinkedList<>();
+	protected static final Check
+		check1 = (node) -> {
+			return false;
+		},
+		check2 = (node) -> {
+			return node.lightLevel > 0 && node.entityVision && node.unit instanceof Player;
+		};
 
 	@Override
-	public void onRender(RenderContext context) {
-		LinkedList<Node> list = new LinkedList<>();
-		node.walk(list, (node) -> {
-			return node.entityVision > node.level.entityVisionFloor;
-		},
-				(node) -> {
-                    return node.entityVision > node.level.entityVisionFloor;
-                },
-		5, this.facing);
-		if(list.size() > 0) {
-			context = context.push();
-			for(Node item: list) {
-				danger.pixel.set(item.pixel.x(), item.pixel.y());
-				danger.render(context);
-			}
-			context.pull();
+	public void onUpdate1(UpdateContext context) {
+		switch(state) {
+			case IDLE:
+				search.clear();
+				node.walk(
+						search,
+						check1,
+						check2,
+						this.entityVisionRange,
+						this.entityVisionDirection
+						);
+				if(search.size() > 0)
+				{
+					if(!move(facing))
+						engage(facing);			
+				}
+			break;
 		}
-		
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		LinkedList<Node> list = new LinkedList<>();
-		node.walk(list, (node) -> {
-			return node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor;
-		},
-				(node) -> {
-                    return node.unit instanceof Player && node.entityVision > node.level.entityVisionFloor;
-                },
-		5, this.facing);
-		if(list.size() > 0)
-		{
-			System.out.println("Spotted");
-			if(!move(facing))
-				engage(facing);			
-		}	
 	}
 	
 	@Override 
@@ -93,28 +90,30 @@ public class Mancer1 extends Unit {
 				sprites.loop(3, 10);
 				break;
 		}
+		this.entityVisionDirection = facing;
 	}
 	
 	@Override
 	public void onIdle() {
 		switch(this.facing) {
-		case Game.EAST:
-			this.sprites.flop();
-			sprites.loop(0, .4f);
-			break;
-		case Game.NORTH:
-			this.sprites.flip();
-			sprites.loop(0, .4f);
-			break;
-		case Game.WEST:
-			this.sprites.flop();
-			sprites.loop(1, .4f);
-			break;
-		case Game.SOUTH:
-			this.sprites.flip();
-			sprites.loop(1, .4f);
-			break;
-	}
+			case Game.EAST:
+				this.sprites.flop();
+				sprites.loop(0, .4f);
+				break;
+			case Game.NORTH:
+				this.sprites.flip();
+				sprites.loop(0, .4f);
+				break;
+			case Game.WEST:
+				this.sprites.flop();
+				sprites.loop(1, .4f);
+				break;
+			case Game.SOUTH:
+				this.sprites.flip();
+				sprites.loop(1, .4f);
+				break;
+		}
+		this.entityVisionDirection = facing;
 	}
 	
 }

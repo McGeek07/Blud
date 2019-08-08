@@ -4,6 +4,7 @@ import blud.core.input.Input;
 import blud.game.Game;
 import blud.game.level.node.Node;
 import blud.game.level.unit.Unit;
+import blud.game.level.unit.Wall;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -24,8 +25,8 @@ public class Player extends Unit {
 				Sprites.get("PlayerWalkDn"),
 				Sprites.get("PlayerWalkUp")
 				);
-		this.playerVisionLevel = 1f;
-		this.playerVisionRange = 8f;
+		this.playerVisionRange = 8;
+		this.blocksEntityVision = false;
 		this.moveFrames   = 5;
 		this.attackFrames = 8;
 		this.defendFrames = 12;
@@ -47,7 +48,7 @@ public class Player extends Unit {
 	}
 	
 	@Override
-	public void onRender(RenderContext context) {
+	public void onRender2(RenderContext context) {
 		if(node != null) {
 			context = context.push();
 			context.g2D.translate(
@@ -63,7 +64,7 @@ public class Player extends Unit {
 	}
 
 	@Override
-	public void onUpdate(UpdateContext context) {
+	public void onUpdate1(UpdateContext context) {
 		float
 			dx = pixel.x() - node.level.camera.x(),
 			dy = pixel.y() - node.level.camera.y();
@@ -106,6 +107,19 @@ public class Player extends Unit {
 	
 	@Override 
 	public void onMove(Node node) {
+		Node
+			src1 = srcNode.level.at(Vector.add(srcNode.local, 0, 1)),
+			src2 = srcNode.level.at(Vector.add(srcNode.local, 1, 1)),
+			src3 = srcNode.level.at(Vector.add(srcNode.local, 1, 0)),
+			dst1 = dstNode.level.at(Vector.add(dstNode.local, 0, 1)),
+			dst2 = dstNode.level.at(Vector.add(dstNode.local, 1, 1)),
+			dst3 = dstNode.level.at(Vector.add(dstNode.local, 1, 0));
+		if(src1 != null && src1.unit instanceof Wall) src1.unit.setSpriteTransparency(0f);
+		if(src2 != null && src2.unit instanceof Wall) src2.unit.setSpriteTransparency(0f);
+		if(src3 != null && src3.unit instanceof Wall) src3.unit.setSpriteTransparency(0f);
+		if(dst1 != null && dst1.unit instanceof Wall) dst1.unit.setSpriteTransparency(.5f);
+		if(dst2 != null && dst2.unit instanceof Wall) dst2.unit.setSpriteTransparency(.5f);
+		if(dst3 != null && dst3.unit instanceof Wall) dst3.unit.setSpriteTransparency(.5f);
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();

@@ -11,11 +11,11 @@ public class BookShelfLeft extends Wall{
 	}
 	
 	@Override
-	public void onRender(RenderContext context) {
+	public void onRender2(RenderContext context) {
 	}
 
 	@Override
-	public void onUpdate(UpdateContext context) {
+	public void onUpdate2(UpdateContext context) {
 	}
 
 }

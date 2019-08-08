@@ -9,13 +9,5 @@ public class StoneWall extends Wall{
 		super();
 		sprites.add(Sprites.get("StoneWall"));
 	}
-	
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-	}
 
 }

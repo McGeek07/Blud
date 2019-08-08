@@ -8,7 +8,7 @@ public class DebugUnit extends Unit {
 	public DebugUnit() {
 		super();
 		sprites.add(Sprites.get("DebugUnit"));
-		this.entityVisionLevel = 1f;
-		this.entityVisionRange = 4f;
+		this.lightLevel =  1;
+		this.lightRange =  4;
 	}
 }

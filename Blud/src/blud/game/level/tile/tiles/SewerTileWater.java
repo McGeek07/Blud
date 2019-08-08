@@ -11,19 +11,13 @@ public class SewerTileWater extends Tile {
 	}
 	
 	@Override
-	public void onRender(RenderContext context) {
+	public void onRender1(RenderContext context) {
 		if(node != null) {
 			int
 				i = node.local.x(),
 				j = node.local.y();
 			sprites.setFrame((int)(3 * context.t + ((i + j) & 1)) % 2);
 		}
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

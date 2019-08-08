@@ -14,6 +14,7 @@ public abstract class Wall extends Unit {
 	
 	public Wall(float i, float j) {
 		super(i, j);
+		this.blocksLight = true;
 		this.blocksPlayerVision = true;
 		this.blocksEntityVision = true;
 	}

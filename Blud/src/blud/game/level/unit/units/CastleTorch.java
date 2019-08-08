@@ -8,20 +8,10 @@ public class CastleTorch extends Unit {
 	public CastleTorch() {
 		super();
 		sprites.add(Sprites.get("CastleTorch"));
-		this.entityVisionLevel = 1f;
-		this.entityVisionRange = 6f;
+		this.lightLevel = 1;
+		this.lightRange = 6;
 		this.sprites.loop(0, 3f);
 		
 		this.defendFrames = 12;
-	}
-
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		
-	}
-	
+	}	
 }

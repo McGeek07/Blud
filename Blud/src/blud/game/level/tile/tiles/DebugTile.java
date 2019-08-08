@@ -9,12 +9,4 @@ public class DebugTile extends Tile {
 		super();
 		sprites.add(Sprites.get("DebugTile"));
 	}
-
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-	}
 }

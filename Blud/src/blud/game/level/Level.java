@@ -29,17 +29,21 @@ public class Level extends Scene {
 	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	public float
-		playerVisionFloor =  0f,
-		entityVisionFloor = .25f;
+		lightFloor = .5f;
 	public boolean
-		updatePlayerVision,
-		updateEntityVision;
+		updateLighting = true,
+		updatePlayerVision = true,
+		updateEntityVision = true;
+	
+	public final Sprite
+		danger = Sprites.get("Danger");
 	
 	public Level() {		
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
-	}	
+		danger.setSpriteTransparency(.6f);
+	}
 	
 	public Node at(Vector2f local) {
 		return at(local.X(), local.Y());
@@ -67,12 +71,16 @@ public class Level extends Scene {
 				- camera.y()
 				);
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) 
-				grid[i][j].setBlackTransparency(grid[i][j].playerVision > 0? grid[i][j].entityVision : 0f);
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) 
+			for(int j = 0; j < LEVEL_H; j ++) {
 				if(grid[i][j].tile != null)
 					grid[i][j].tile.render(context);
+				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
+//					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
+//					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
+					danger.pixel.set(Game.localToPixel(i, j));
+					danger.render(context);
+				}
+			}									
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) 
 				if(grid[i][j].unit != null)
@@ -83,20 +91,31 @@ public class Level extends Scene {
 	public void onUpdate(UpdateContext context) {
 		if(bg != null)
 			bg.update(context);
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j].setSpriteTransparency(0f);
-				grid[i][j].playerVision = playerVisionFloor;
-				grid[i][j].entityVision = entityVisionFloor;
-			}
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				grid[i][j].updatePlayerVision();
-				grid[i][j].updateEntityVision();
-			}
+		if(updateLighting || updatePlayerVision || updateEntityVision) {
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H; j ++) {
+					if(updateLighting) grid[i][j].lightLevel = 0f;
+					if(updatePlayerVision) grid[i][j].playerVision = false;
+					if(updateEntityVision) grid[i][j].entityVision = false;
+				}
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H; j ++) {
+					if(updateLighting) grid[i][j].castLight();
+					if(updatePlayerVision) grid[i][j].castPlayerVision();
+					if(updateEntityVision) grid[i][j].castEntityVision();
+				}
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H; j ++) {
+					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor ;
+					grid[i][j].setBlackTransparency(grid[i][j].playerVision ? transparency : 0f);
+				}
+			updateLighting = false;
+			updatePlayerVision = false;
+			updateEntityVision = false;
+		}	
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
-				grid[i][j].update(context);				
+				grid[i][j].update(context);		
 	}
 	
 	public void save(String path) {

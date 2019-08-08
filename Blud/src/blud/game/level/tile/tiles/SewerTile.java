@@ -9,15 +9,5 @@ public class SewerTile extends Tile{
 		super();
 		sprites.add(Sprites.get("SewerTile"));
 	}
-	
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

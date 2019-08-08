@@ -9,17 +9,5 @@ public class CastleTile extends Tile{
 		super();
 		sprites.add(Sprites.get("CastleTile"));
 	}
-	
-	@Override
-	public void onRender(RenderContext context) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

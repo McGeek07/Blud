@@ -2,13 +2,9 @@ package blud.game.level.unit;
 
 import blud.game.level.entity.Entity;
 import blud.game.level.node.Node;
-import blud.game.sprite.Sprite;
-import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 
 public abstract class Unit extends Entity {
-	protected final Sprite
-	danger = Sprites.get("Danger");	
 	public static final int
 		IDLE	= 0,
 		ATTACK 	= 1,
@@ -17,14 +13,17 @@ public abstract class Unit extends Entity {
 		KILL  	= 4;
 	//vision attributes
 	public float
-		playerVisionLevel,
-		playerVisionRange,
-		entityVisionLevel,
-		entityVisionRange;
-	public boolean
-		blocksPlayerVision,
-		blocksEntityVision;
+		lightLevel;
 	public int
+		lightRange,
+		playerVisionRange,
+		entityVisionRange;	
+	public boolean
+		blocksLight,
+		blocksPlayerVision,
+		blocksEntityVision = true;
+	public int
+		lightDirection		  = -1,
 		playerVisionDirection = -1,
 		entityVisionDirection = -1;
 	
@@ -147,7 +146,7 @@ public abstract class Unit extends Entity {
 			state = MOVE;
 			srcNode = this.node;
 			dstNode =      node;
-			dstNode.reserved = true; 
+			dstNode.isReserved = true; 
 			onMove(node);
 		}
 	}
@@ -206,22 +205,47 @@ public abstract class Unit extends Entity {
 	public void onIdleExit() { 
 		//do nothing
 	}
-	public void onMoveExit() { 
-		dstNode.reserved = false; idle();
+	public void onMoveExit() {
+		if(blocksLight || (lightLevel > 0 && lightRange > 0))
+			node.level.updateLighting = true;
+		if(blocksPlayerVision || playerVisionRange > 0)
+			node.level.updatePlayerVision = true;
+		if(blocksEntityVision || entityVisionRange > 0)
+			node.level.updateEntityVision = true;
+		dstNode.isReserved = false; idle();
 	}
 	public void onAttackExit() {
+		if(blocksLight || (lightLevel > 0 && lightRange > 0))
+			node.level.updateLighting = true;
+		if(blocksPlayerVision || playerVisionRange > 0)
+			node.level.updatePlayerVision = true;
+		if(blocksEntityVision || entityVisionRange > 0)
+			node.level.updateEntityVision = true;
 		if(curHP <= 0) kill(); else idle();
 	}
 	public void onDefendExit() { 
+		System.out.println("Defend!");
+		if(blocksLight || (lightLevel > 0 && lightRange > 0))
+			node.level.updateLighting = true;
+		if(blocksPlayerVision || playerVisionRange > 0)
+			node.level.updatePlayerVision = true;
+		if(blocksEntityVision || entityVisionRange > 0)
+			node.level.updateEntityVision = true;
 		if(curHP <= 0) kill(); else idle();
 	}
 	public void onKillExit() {
+		if(blocksLight || (lightLevel > 0 && lightRange > 0))
+			node.level.updateLighting = true;
+		if(blocksPlayerVision || playerVisionRange > 0)
+			node.level.updatePlayerVision = true;
+		if(blocksEntityVision || entityVisionRange > 0)
+			node.level.updateEntityVision = true;
 		node.setUnit(null);
 	}
 	
 	@Override
 	public void update(UpdateContext context) {
-		onUpdate(context);
+		onUpdate1(context);
 		int
 			moveFrame2 = moveFrames / 2,
 			attackFrame2 = attackFrames / 2,
@@ -298,5 +322,6 @@ public abstract class Unit extends Entity {
 		}
 		sprites.update(context);
 		effects.update(context);
+		onUpdate2(context);
 	}
 }

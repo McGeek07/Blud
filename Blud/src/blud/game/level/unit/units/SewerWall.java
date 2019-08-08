@@ -11,14 +11,5 @@ public class SewerWall extends Wall {
 		sprites.add(Sprites.get("SewerWall"));
 	
 	}
-
-	@Override
-	public void onRender(RenderContext context) {
-	}
-
-	@Override
-	public void onUpdate(UpdateContext context) {
-		
-	}
 	
 }

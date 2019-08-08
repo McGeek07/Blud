@@ -16,19 +16,20 @@ public class Node implements Renderable, Updateable {
 	public Node[]
 		neighbor;
 	public float
+		lightLevel;
+	public boolean
 		playerVision,
-		entityVision;
+		entityVision,
+		isReserved;
 	
 	public Tile
 		tile;
 	public Unit
 		unit;
+	
 	public final Vector2f
 		local,
 		pixel;
-	
-	public boolean
-		reserved;
 	
 	public Node(Level level, int i, int j) {
 		this.level = level;
@@ -48,10 +49,6 @@ public class Node implements Renderable, Updateable {
 					neighbor[k].neighbor[(k + 2) % 4] = this;
 			}
 		}
-	}
-	
-	public boolean isReserved() {
-		return unit != null || reserved;
 	}
 	
 	public void setTile(Tile tile) {
@@ -76,6 +73,14 @@ public class Node implements Renderable, Updateable {
 	
 	public boolean hasUnit() {
 		return unit != null;
+	}
+	
+	public boolean isReserved() {
+		return unit != null || isReserved;
+	}
+	
+	public boolean blocksLight() {
+		return unit != null && unit.blocksLight;
 	}
 	
 	public boolean blocksPlayerVision() {
@@ -123,106 +128,118 @@ public class Node implements Renderable, Updateable {
 			this.unit.update(context);
 	}
 	
-	public void updatePlayerVision() {
-		if(unit != null && unit.playerVisionLevel > 0 && unit.playerVisionRange > 0) {
-			float
-				level = unit.playerVisionLevel,
-				range = unit.playerVisionRange;
-			int
-				facing = unit.playerVisionDirection;
-			if(playerVision <= level)
-				playerVision = level;
-			level = level - (level - this.level.entityVisionFloor) / range;
-			range = range - 1;
-			if(facing >= 0) {
-				if(neighbor[facing] != null)
-					neighbor[facing].updatePlayerVision(level, range, facing);
-			} else {
-				for(int i = 0; i < neighbor.length; i ++ )
-					if(neighbor[i] != null)
-						neighbor[i].updatePlayerVision(level, range, facing);
-			}
-		}
-	}
-	
-	public void updatePlayerVision(float level, float range, int facing) {
-		if(level > 0 && range > 0 && playerVision <= level) {
-			playerVision = level;
-			if(!blocksPlayerVision()) {
-				level = level - (level - this.level.playerVisionFloor) / range;
-				range = range - 1;
-				if(facing >= 0) {
-					if(neighbor[facing] != null)
-						neighbor[facing].updatePlayerVision(level, range, facing);
-				} else {
-					for(int i = 0; i < neighbor.length; i ++ )
-						if(neighbor[i] != null)
-							neighbor[i].updatePlayerVision(level, range, facing);
-				}
-			}
-		}
-	}
-	
-	public void updateEntityVision() {
-		if(unit != null && unit.entityVisionLevel > 0 && unit.entityVisionRange > 0) {
-			float
-				level = unit.entityVisionLevel,
-				range = unit.entityVisionRange;
-			int
-				facing = unit.entityVisionDirection;
-			if(entityVision <= level)
-				entityVision = level;
-			level = level - (level - this.level.entityVisionFloor) / range;
-			range = range - 1;
-			if(facing >= 0) {
-				if(neighbor[facing] != null)
-					neighbor[facing].updateEntityVision(level, range, facing);
-			} else {
-				for(int i = 0; i < neighbor.length; i ++ )
-					if(neighbor[i] != null)
-						neighbor[i].updateEntityVision(level, range, facing);
-			}
-		}
-	}
-	
-	public void updateEntityVision(float level, float range, int facing) {
-		if(level > 0 && range > 0 && entityVision <= level) {
-			entityVision = level;
-			if(!blocksEntityVision()) {
-				level = level - (level - this.level.entityVisionFloor) / range;
-				range = range - 1;
-				if(facing >= 0) {
-					if(neighbor[facing] != null)
-						neighbor[facing].updateEntityVision(level, range, facing);
-				} else {
-					for(int i = 0; i < neighbor.length; i ++ )
-						if(neighbor[i] != null)
-							neighbor[i].updateEntityVision(level, range, facing);
-				}
-			}
-		}
-	}
 	private static int
-		HASH;
+		CAST_ID;
 	private int
-		hash;
+		cast_id;
 	
-	public  List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing) {
-		return this.walk(list, check1, check2, range, facing, ++ HASH);
-	}
-	
-	private List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing, int hash) {
-		if(range > 0 && this.hash != hash) {
-			this.hash = hash;
-			if(check2.check(this))
-				list.add(this);
-			if(facing >= 0) {
-				if(neighbor[facing] != null && check1.check(neighbor[facing]))
-					neighbor[facing].walk(list, check1, check2, range - 1, facing, hash);
+	public void castLight() {
+		if(unit != null && unit.lightLevel > 0 && unit.lightRange > 0) {
+			if(lightLevel < unit.lightLevel)
+				lightLevel = unit.lightLevel;
+			if(unit.lightDirection >= 0) {
+				if(neighbor[unit.lightDirection] != null)
+					neighbor[unit.lightDirection].castLight(unit.lightLevel - 1f / unit.lightRange, unit.lightRange - 1, unit.lightDirection);
 			} else {
 				for(int i = 0; i < neighbor.length; i ++)
-					if(neighbor[i] != null && check1.check(neighbor[i]))
-						neighbor[i].walk(list, check1, check2, range - 1, i, hash);
+					if(neighbor[i] != null)
+						neighbor[              i].castLight(unit.lightLevel - 1f / unit.lightRange, unit.lightRange - 1, unit.lightDirection);
+			}			
+		}
+	}
+	
+	public void castPlayerVision() {
+		if(unit != null && unit.playerVisionRange > 0) {
+			playerVision = true;
+			if(unit.playerVisionDirection >= 0) {
+				if(neighbor[unit.playerVisionDirection] != null)
+					neighbor[unit.playerVisionDirection].castPlayerVision(unit.playerVisionRange - 1, unit.playerVisionDirection);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++)
+					if(neighbor[i] != null)
+						neighbor[                     i].castPlayerVision(unit.playerVisionRange - 1, unit.playerVisionDirection);
+			}			
+		}
+	}
+	
+	public void castEntityVision() {		
+		if(unit != null && unit.entityVisionRange > 0) {
+			entityVision = true;
+			if(unit.entityVisionDirection >= 0) {
+				if(neighbor[unit.entityVisionDirection] != null)
+					neighbor[unit.entityVisionDirection].castEntityVision(unit.entityVisionRange - 1, unit.entityVisionDirection);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++)
+					if(neighbor[i] != null)
+						neighbor[                     i].castEntityVision(unit.entityVisionRange - 1, unit.entityVisionDirection);
+			}			
+		}
+	}
+	
+	public void castLight(float level, int range, int facing) {
+		if(level > 0 && range > 0) {
+			if(lightLevel < level)
+				lightLevel = level;
+			if(!blocksLight())
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].castLight(level - 1f / range, range - 1, facing);
+				} else {
+					for(int i = 0; i < neighbor.length; i ++)
+						if(neighbor[i] != null)
+							neighbor[ i].castLight(level - 1f / range, range - 1, facing);
+				}					
+		}
+	}
+	
+	public void castPlayerVision(int range, int facing) {
+		if(range > 0) {
+			playerVision = true;
+			if(!blocksPlayerVision())
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].castPlayerVision(range - 1, facing);
+				} else {
+					for(int i = 0; i < neighbor.length; i ++)
+						if(neighbor[i] != null)
+							neighbor[ i].castPlayerVision(range - 1, facing);
+				}
+		}
+	}
+	
+	public void castEntityVision(int range, int facing) {
+		if(range > 0) {
+			entityVision = true;
+			if(!blocksEntityVision())
+				if(facing >= 0) {
+					if(neighbor[facing] != null)
+						neighbor[facing].castEntityVision(range - 1, facing);
+				} else {
+					for(int i = 0; i < neighbor.length; i ++)
+						if(neighbor[i] != null)
+							neighbor[ i].castEntityVision(range - 1, facing);
+				}
+		}
+	}
+	
+	public List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing) {
+		return walk(list, check1, check2, range, facing, ++ CAST_ID);
+	}
+	
+	private List<Node> walk(List<Node> list, Check check1, Check check2, int range, int facing, int cast_id) {
+		if(range > 0) {
+			if(this.cast_id != cast_id) {
+				this.cast_id = cast_id;
+				if(check2.check(this))
+					list.add(this);
+			}
+			if(facing >= 0) {
+				if(neighbor[facing] != null && !check1.check(neighbor[facing]))
+					neighbor[facing].walk(list, check1, check2, range - 1, facing, cast_id);
+			} else {
+				for(int i = 0; i < neighbor.length; i ++)
+					if(neighbor[i] != null && !check1.check(neighbor[i]))
+						neighbor[ i].walk(list, check1, check2, range - 1, facing, cast_id);
 			}
 		}
 		return list;
