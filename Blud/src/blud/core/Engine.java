@@ -19,7 +19,7 @@ import blud.util.Util;
 public class Engine implements Runnable {
 	public static final Engine
 		INSTANCE = new Engine();
-	protected static final int
+	public static final int
 		NUM_BUFFERS = 2,
 		WINDOW_W = 512,
 		WINDOW_H = 512,

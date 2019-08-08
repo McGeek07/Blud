@@ -33,7 +33,8 @@ public class Loader<T> {
 		LinkedList<String> class_names = new LinkedList<>();
 		Util.parseFromResource(getClass(), INDEX, class_names);		
 		for(String class_name : class_names) 
-			list.add(load(package_name, class_name));
+			if(!class_name.startsWith("//"))
+				list.add(load(package_name, class_name));
 		return list;		
 	}
 }

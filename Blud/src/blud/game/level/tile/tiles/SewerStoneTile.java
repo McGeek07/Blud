@@ -3,11 +3,11 @@ package blud.game.level.tile.tiles;
 import blud.game.level.tile.Tile;
 import blud.game.sprite.sprites.Sprites;
 
-public class SewerTile extends Tile{
+public class SewerStoneTile extends Tile{
 
-	public SewerTile() {
+	public SewerStoneTile() {
 		super();
-		sprites.add(Sprites.get("SewerTile"));
+		sprites.add(Sprites.get("SewerStoneTile"));
 	}
 
 }

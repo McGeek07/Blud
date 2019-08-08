@@ -1,6 +1,10 @@
+//Debug
 DebugTile
 DebugTrap
+//Sewer
+SewerPlankTile
+SewerStoneTile
+SewerWaterTile
+//Misc
 StoneTile
 CastleTile
-SewerTile
-SewerTileWater

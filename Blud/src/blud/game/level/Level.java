@@ -29,7 +29,7 @@ public class Level extends Scene {
 	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	public float
-		lightFloor = .3f;
+		lightFloor = .4f;
 	public boolean
 		updateLighting = true,
 		updatePlayerVision = true,

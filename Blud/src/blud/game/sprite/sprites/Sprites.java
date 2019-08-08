@@ -19,17 +19,18 @@ public class Sprites {
 	public static final void load() {
 		LinkedList<String> list = new LinkedList<String>();
 		Util.parseFromResource(Sprites.class, INDEX, list);
-		for(String line: list) {
-			String[] temp = line.split("\\,");
-			String
-				name = temp.length > 0 ? temp[0].trim() : "",
-				w    = temp.length > 1 ? temp[1].trim() : "",
-				h 	 = temp.length > 2 ? temp[2].trim() : "";
-			int
-				_w = Util.stringToInt(w),
-				_h = Util.stringToInt(h);
-			load(name, _w, _h);
-		}
+		for(String line: list)
+			if(!line.startsWith("//")) {
+				String[] temp = line.split("\\,");
+				String
+					name = temp.length > 0 ? temp[0].trim() : "",
+					w    = temp.length > 1 ? temp[1].trim() : "",
+					h 	 = temp.length > 2 ? temp[2].trim() : "";
+				int
+					_w = Util.stringToInt(w),
+					_h = Util.stringToInt(h);
+				load(name, _w, _h);
+			}		
 	}
 	
 	public static final Sprite load(String name, int w, int h) {			

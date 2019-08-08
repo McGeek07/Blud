@@ -12,6 +12,7 @@ import blud.util.Util;
 
 public class Player extends Unit {
 	protected final Sprite
+		light = Sprites.get("Eye"  ),
 		heart = Sprites.get("Heart");	
 	public float
 		cameraSpeedX = 1,
@@ -56,9 +57,12 @@ public class Player extends Unit {
 				node.level.camera.y() - context.canvas_h / 2
 				);
 			for(int i = 0; i < curHP; i ++) {
-				heart.pixel.set(5 + i * 9, 5);
+				heart.pixel.set(3 + i * 6, 3);
 				heart.render(context);
 			}
+			light.pixel.set( context.canvas_w - 4, 3);
+			light.frame = node.lightLevel > 0 ? 1 : 0;				
+			light.render(context);
 			context = context.pull();
 		}
 	}
