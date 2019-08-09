@@ -43,15 +43,12 @@ public class Editor extends Level {
 		editorMode,
 		visionMode;
 	
-	protected File
-		file;
-	
 	public Editor(String path) {
 		this(new File(path));
 	}
 	
 	public Editor(File file  ) {
-		super();
+		super(file);
 		List<Tile> tiles = Tiles.load(new LinkedList<Tile>());
 		List<Unit> units = Units.load(new LinkedList<Unit>());		
 		for(Tile tile: tiles)
@@ -64,7 +61,6 @@ public class Editor extends Level {
 				this.walls.add(unit);
 			else
 				this.units.add(unit);
-		load(this.file = file);
 		
 		brush = new Brush();
 	}	

@@ -3,12 +3,9 @@ package blud.game.menu.menus;
 import blud.core.Engine;
 import blud.game.level.Editor;
 import blud.game.menu.Menu;
-import blud.game.menu.component.Component;
 import blud.game.menu.component.components.Button;
 import blud.game.menu.component.components.Button.Action;
 import blud.game.menu.component.components.Label;
-import blud.game.sound.Sound;
-import blud.game.sound.sounds.Sounds;
 
 public class Main extends Menu {
 	public static final Action
@@ -21,8 +18,6 @@ public class Main extends Menu {
 		QUIT_ACTION = () -> {
 			Engine.exit();
 		};
-	public final Sound.Group
-		sounds = new Sound.Group();
 	public Main() {
 		Label label = new Label("Blud");
 		Button play_button = new Button("Play", PLAY_ACTION);
@@ -42,17 +37,10 @@ public class Main extends Menu {
 		children.add(play_button);
 		children.add(info_button);
 		children.add(quit_button);
-		
-		sounds.add(Sounds.get("Track1"));
 	}
 	
 	@Override
 	public void onAttach() {
-		sounds.loop(.8f);
-	}
-	
-	@Override
-	public void onDetach() {
-		sounds.stop();
+		Menus.TRACK0.loop(1f);
 	}
 }

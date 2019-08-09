@@ -16,4 +16,9 @@ public class Splash extends Menu {
 			Engine.setScene(Menus.MAIN);
 		super.onUpdate(context);		
 	}
+	
+	@Override
+	public void onAttach() {
+		Menus.TRACK0.loop(1f);
+	}
 }

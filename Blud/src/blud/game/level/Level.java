@@ -11,6 +11,7 @@ import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
+import blud.game.menu.menus.Menus;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector2f;
@@ -33,15 +34,22 @@ public class Level extends Scene {
 	public boolean
 		updateLighting = true,
 		updatePlayerVision = true,
-		updateEntityVision = true;
-	
+		updateEntityVision = true;	
 	public final Sprite
 		vision = Sprites.get("Vision");
 	
-	public Level() {		
+	protected File
+		file;
+	
+	public Level(String path) {
+		this(new File(path));
+	}
+	
+	public Level(File file  ) {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
+		this.load(this.file = file);
 		vision.setSpriteTransparency(.6f);
 		vision.loop(3f);
 	}
@@ -118,6 +126,11 @@ public class Level extends Scene {
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j].update(context);	
 		vision.update(context);
+	}
+	
+	@Override
+	public void onAttach() {
+		Menus.TRACK0.stop();
 	}
 	
 	public void save(String path) {

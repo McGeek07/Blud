@@ -15,4 +15,9 @@ public class Info extends Menu {
 		label.loc.set(17, 8);
 		label.dim.set(28,12);
 	}
+	
+	@Override
+	public void onAttach() {
+		Menus.TRACK0.loop(1f);
+	}
 }
