@@ -77,10 +77,12 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 		this.blackTransparency = transparency;
 	}
 	
-	public void play(float speed) {		
+	public void play(float speed) {	
 		this.speed = speed;
-		this.frame = 0f;
-		this.mode = PLAY;
+		if(this.mode == STOP) {			
+			this.frame = 0f;
+			this.mode = PLAY;
+		}
 	}
 	
 	public void play(float speed, Vector pixel) {
@@ -95,8 +97,10 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	
 	public void loop(float speed) {
 		this.speed = speed;
-		this.frame = 0f;
-		this.mode = LOOP;
+		if(this.mode == STOP) {
+			this.frame = 0f;
+			this.mode = LOOP;
+		}
 	}
 	
 	public void loop(float speed, Vector pixel) {
@@ -110,7 +114,6 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	}
 	
 	public void stop() {
-		this.frame = 0f;
 		this.mode = STOP;
 	}
 	

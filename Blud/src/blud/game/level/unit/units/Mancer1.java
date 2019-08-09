@@ -1,14 +1,11 @@
 package blud.game.level.unit.units;
 
-import java.util.LinkedList;
-
 import blud.game.Game;
 import blud.game.level.node.Node;
-import blud.game.level.node.Node.Check;
-import blud.game.level.unit.Unit;
+import blud.game.level.unit.Living;
 import blud.game.sprite.sprites.Sprites;
 
-public class Mancer1 extends Unit {
+public class Mancer1 extends Living {
 	
 	public Mancer1() {
 		super();
@@ -24,6 +21,8 @@ public class Mancer1 extends Unit {
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
+		this.alertFrames = 15;
+		
 		this.moveCooldown = 3;
 		this.attackCooldown = 14;
 		this.defendCooldown = 0;
@@ -31,43 +30,30 @@ public class Mancer1 extends Unit {
 		this.maxHP = 1;
 		this.curHP = 1;
 		
-		this.entityVisionRange = 4;
-		
-		
+		this.entityVisionRange = 4;	
+		this.detectionRange    = 4;
 		
 		this.damage   = 1;
 		this.priority = 1;
 	}
-	
-	protected LinkedList<Node>
-		search = new LinkedList<>();
-	protected static final Check
-		check1 = (node) -> {
-			return false;
-		},
-		check2 = (node) -> {
-			return node.lightLevel > 0 && node.entityVision && node.unit instanceof Player;
-		};
 
 	@Override
-	public void onUpdate1(UpdateContext context) {
-		switch(state) {
-			case IDLE:
-				search.clear();
-				node.walk(
-						search,
-						check1,
-						check2,
-						this.entityVisionRange,
-						this.entityVisionDirection
-						);
-				if(search.size() > 0)
-				{
-					if(!move(facing))
-						engage(facing);			
-				}
-			break;
-		}
+	public void whileRelaxed() {
+		//do nothing
+	}
+	
+	@Override
+	public void whileAlerted() {
+		if(!move(facing))
+			engage(facing);
+	}
+	
+	@Override
+	public void onTurn() {
+		this.entityVisionDirection = facing;
+		this.node.level.updateLighting = true;
+		this.node.level.updateEntityVision = true;
+		this.node.level.updatePlayerVision = true;
 	}
 	
 	@Override 
@@ -90,7 +76,6 @@ public class Mancer1 extends Unit {
 				sprites.loop(3, 10);
 				break;
 		}
-		this.entityVisionDirection = facing;
 	}
 	
 	@Override
@@ -114,6 +99,9 @@ public class Mancer1 extends Unit {
 				break;
 		}
 		this.entityVisionDirection = facing;
+		this.node.level.updateLighting = true;
+		this.node.level.updateEntityVision = true;
+		this.node.level.updatePlayerVision = true;
 	}
 	
 }
