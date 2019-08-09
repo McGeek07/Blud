@@ -2,6 +2,7 @@ package blud.game.sound.sounds;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -10,7 +11,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import blud.game.sound.Sound;
-import blud.game.sprite.Sprite;
+import blud.util.Util;
 
 public class Sounds {
 	public static final String
@@ -19,7 +20,13 @@ public class Sounds {
 		SOUNDS = new HashMap<>();
 	
 	public static void load() {
-		
+		LinkedList<String> list = new LinkedList<String>();
+		Util.parseFromResource(Sounds.class, INDEX, list);
+		for(String line: list)
+			if(!line.startsWith("//")) {
+				String name = line.trim();
+				load(name);
+			}
 	}
 	
 	public static Sound load(String name) {

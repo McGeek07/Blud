@@ -85,7 +85,7 @@ public class Sound implements Copyable<Sound> {
 		}
 		
 		public Group(Sound... sounds) {
-			
+			this.add(sounds);
 		}
 		
 		public void add(Sound... sounds) {

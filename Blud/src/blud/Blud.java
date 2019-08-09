@@ -14,10 +14,9 @@ public class Blud {
 		System.out.println(VERSION);		
 		
 		Sprites.load();
-		//Sounds.load();
-		Sounds.load("Track1");
+		Sounds .load();
+		
 		Engine.setScene(Menus.SPLASH);
 		Engine.init();
-		//Sounds.get("Track1").loop();
 	}
 }

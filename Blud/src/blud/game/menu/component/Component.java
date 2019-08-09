@@ -13,10 +13,7 @@ public abstract class Component implements Renderable, Updateable {
 		WHITE 	= 1,
 		BLACK 	= 2,
 		TEXT_W  = 6,
-		TEXT_H  = 6,
-		SLOT_W  = 8,
-		SLOT_H  = 11,
-		PADDING = 2;
+		TEXT_H  = 6;
 	public static final Sprite
 		TEXT = Sprites.get("Text");
 	public String
@@ -67,10 +64,10 @@ public abstract class Component implements Renderable, Updateable {
 				context,
 				text,
 				line,
-				loc.x() + PADDING,
-				loc.y() + PADDING,
-				dim.x() - PADDING * 2,
-				dim.y() - PADDING * 2,
+				loc.x() + 2,
+				loc.y() + 1,
+				dim.x() - 2,
+				dim.y() - 2,
 				color
 				);
 	}
@@ -124,17 +121,4 @@ public abstract class Component implements Renderable, Updateable {
 			}		
 		}
 	}
-	
-	public static Component format(Component component, int i, int j, int w, int h, int padding) {
-		component.loc.set(
-				padding + i * (padding + SLOT_W),
-				padding + j * (padding + SLOT_H)
-				);
-		component.dim.set(
-				w * (SLOT_W + padding) - padding * 2,
-				h * (SLOT_H + padding) - padding * 2
-				);
-		return component;
-	}
-
 }

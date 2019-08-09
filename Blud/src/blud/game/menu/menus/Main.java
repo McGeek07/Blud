@@ -7,6 +7,8 @@ import blud.game.menu.component.Component;
 import blud.game.menu.component.components.Button;
 import blud.game.menu.component.components.Button.Action;
 import blud.game.menu.component.components.Label;
+import blud.game.sound.Sound;
+import blud.game.sound.sounds.Sounds;
 
 public class Main extends Menu {
 	public static final Action
@@ -19,13 +21,38 @@ public class Main extends Menu {
 		QUIT_ACTION = () -> {
 			Engine.exit();
 		};
+	public final Sound.Group
+		sounds = new Sound.Group();
 	public Main() {
 		Label label = new Label("Blud");
-		label.loc.set(17, 8);
-		label.dim.set(28,12);		
-		children.add( label);
-		children.add(Component.format(new Button("Play"	, PLAY_ACTION) , 0, 2, 7, 1, 1));
-		children.add(Component.format(new Button("Info"	, INFO_ACTION) , 0, 3, 7, 1, 1));
-		children.add(Component.format(new Button("Quit"	, QUIT_ACTION) , 0, 4, 7, 1, 1));
+		Button play_button = new Button("Play", PLAY_ACTION);
+		Button info_button = new Button("Info", INFO_ACTION);
+		Button quit_button = new Button("Quit", QUIT_ACTION);
+		
+		label.loc.set(19,  6);
+		label.dim.set(26,  8);
+		play_button.loc.set(19, 19);
+		play_button.dim.set(26,  8);
+		info_button.loc.set(19, 29);
+		info_button.dim.set(26,  8);
+		quit_button.loc.set(19, 39);
+		quit_button.dim.set(26,  8);
+		
+		children.add(label);
+		children.add(play_button);
+		children.add(info_button);
+		children.add(quit_button);
+		
+		sounds.add(Sounds.get("Track1"));
+	}
+	
+	@Override
+	public void onAttach() {
+		sounds.loop(.8f);
+	}
+	
+	@Override
+	public void onDetach() {
+		sounds.stop();
 	}
 }

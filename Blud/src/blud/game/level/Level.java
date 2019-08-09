@@ -25,11 +25,11 @@ public class Level extends Scene {
 	public final Node[][]
 		grid = new Node
 				[LEVEL_W]
-				[LEVEL_H];	
+				[LEVEL_H];
 	public final Vector2f.Mutable
 		camera = new Vector2f.Mutable();
 	public float
-		lightFloor = .4f;
+		lightFloor = .25f;
 	public boolean
 		updateLighting = true,
 		updatePlayerVision = true,
