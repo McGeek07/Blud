@@ -155,15 +155,15 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 				context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - spriteTransparency));
 			context.g2D.drawImage(spriteFrames[(int)frame], null, 0,  0);
 		}
-		if(whiteTransparency < 1) {
-			if(whiteTransparency > 0)
-				context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - whiteTransparency));
-			context.g2D.drawImage(whiteFrames[(int)frame], null, 0,  0);
-		}
 		if(blackTransparency < 1) {
 			if(blackTransparency > 0)
 				context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - blackTransparency));
 			context.g2D.drawImage(blackFrames[(int)frame], null, 0,  0);
+		}
+		if(whiteTransparency < 1) {
+			if(whiteTransparency > 0)
+				context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - whiteTransparency));
+			context.g2D.drawImage(whiteFrames[(int)frame], null, 0,  0);
 		}
 		context = context.pull();
 	}
