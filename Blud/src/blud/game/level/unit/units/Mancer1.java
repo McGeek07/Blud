@@ -99,9 +99,6 @@ public class Mancer1 extends Living {
 				break;
 		}
 		this.entityVisionDirection = facing;
-		this.node.level.updateLighting = true;
-		this.node.level.updateEntityVision = true;
-		this.node.level.updatePlayerVision = true;
 	}
 	
 }

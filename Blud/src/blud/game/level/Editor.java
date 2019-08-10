@@ -13,6 +13,7 @@ import blud.game.level.entity.Entity;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.Trap;
 import blud.game.level.tile.tiles.Tiles;
+import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.Wall;
 import blud.game.level.unit.units.Units;
@@ -36,7 +37,7 @@ public class Editor extends Level {
 		units = new LinkedList<>(),
 		walls = new LinkedList<>();
 	protected Sprite
-		debug = Sprites.get("Debug");
+		debug  = Sprites.get("Debug" );
 	protected final Brush
 		brush;
 	protected int
@@ -97,17 +98,22 @@ public class Editor extends Level {
 						
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
-						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
+//						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-							vision.pixel.set(Game.localToPixel(i, j));
-							vision.render(context);
-						}
+//							vision.pixel.set(Game.localToPixel(i, j));
+//							vision.render(context);
+//						}
 						if(brush.mode < 2 && i == brush.cursor.x() && j == brush.cursor.y())
 							brush.render(context);
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {
+						if(grid[i][j].unit instanceof Enemy) {
+							facing.frame = grid[i][j].unit.facing;
+							facing.pixel.set(grid[i][j].pixel);
+							facing.render(context);
+						}	
 						if(grid[i][j].unit != null)
 							grid[i][j].unit.render(context);
 						if(brush.mode > 1 && i == brush.cursor.x() && j == brush.cursor.y())
@@ -119,17 +125,23 @@ public class Editor extends Level {
 					for(int j = 0; j < LEVEL_H; j ++) {
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
-						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
+//						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-							vision.pixel.set(Game.localToPixel(i, j));
-							vision.render(context);
-						}
+//							vision.pixel.set(Game.localToPixel(i, j));
+//							vision.render(context);
+//						}
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
-					for(int j = 0; j < LEVEL_H; j ++) 
+					for(int j = 0; j < LEVEL_H; j ++) {
+						if(grid[i][j].unit instanceof Enemy) {
+							facing.frame = grid[i][j].unit.facing;
+							facing.pixel.set(grid[i][j].pixel);
+							facing.render(context);
+						}								
 						if(grid[i][j].unit != null)
 							grid[i][j].unit.render(context);
+					}
 				break;
 		}		
 	}

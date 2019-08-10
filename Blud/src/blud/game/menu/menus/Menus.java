@@ -6,7 +6,7 @@ import blud.game.sound.sounds.Sounds;
 
 public class Menus {
 	public static final Sound
-		TRACK0 = Sounds.get("Track4-2");
+		TRACK0 = Sounds.get("Track0");
 	public static final Menu
 		SPLASH = new Splash(),
 		MAIN = new Main(),

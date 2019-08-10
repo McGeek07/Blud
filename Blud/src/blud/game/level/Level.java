@@ -9,6 +9,7 @@ import blud.game.Game;
 import blud.game.level.node.Node;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
+import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
 import blud.game.menu.menus.Menus;
@@ -36,7 +37,8 @@ public class Level extends Scene {
 		updatePlayerVision = true,
 		updateEntityVision = true;	
 	public final Sprite
-		vision = Sprites.get("Vision");
+		vision = Sprites.get("Vision"),
+		facing = Sprites.get("Facing");
 	
 	protected File
 		file;
@@ -83,17 +85,23 @@ public class Level extends Scene {
 			for(int j = 0; j < LEVEL_H; j ++) {
 				if(grid[i][j].tile != null)
 					grid[i][j].tile.render(context);
-				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
+//				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
 //					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
 //					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-					vision.pixel.set(Game.localToPixel(i, j));
-					vision.render(context);
-				}
+//					vision.pixel.set(Game.localToPixel(i, j));
+//					vision.render(context);
+//				}
 			}									
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) 
+			for(int j = 0; j < LEVEL_H; j ++) {
+				if(grid[i][j].unit instanceof Enemy) {
+					facing.frame = grid[i][j].unit.facing;
+					facing.pixel.set(grid[i][j].pixel);
+					facing.render(context);
+				}					
 				if(grid[i][j].unit != null)
 					grid[i][j].unit.render(context);
+			}
 	}
 	
 	@Override
