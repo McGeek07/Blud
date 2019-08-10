@@ -14,8 +14,7 @@ public class Player extends Unit {
 	protected final Sprite
 		heart = Sprites.get("Heart"),
 		light = Sprites.get("Light"),
-		sight = Sprites.get("Sight"),
-		cursor = Sprites.get("TileCursor2");
+		sight = Sprites.get("Sight");
 	public float
 		cameraSpeedX = 1,
 		cameraSpeedY = 2;
@@ -28,8 +27,6 @@ public class Player extends Unit {
 				Sprites.get("PlayerWalkDn"),
 				Sprites.get("PlayerWalkUp")
 				);
-		cursor.setSpriteTransparency(.6f);
-		cursor.loop(4f);
 		this.playerVisionRange = 8;
 		this.blocksEntityVision = false;
 		this.moveFrames   = 5;
@@ -50,14 +47,6 @@ public class Player extends Unit {
 	public void take(int facing) {
 		if(!move(facing))
 			engage(facing);
-	}
-	
-	@Override
-	public void onRender1(RenderContext context) {
-		if(node != null) {
-			cursor.pixel.set(node.pixel);
-			cursor.render(context);
-		}
 	}
 	
 	@Override
@@ -125,7 +114,6 @@ public class Player extends Unit {
 				take(Game.EAST );
 				break;			
 		}
-		cursor.update(context);
 	}
 	
 	@Override 

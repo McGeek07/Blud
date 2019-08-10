@@ -5,10 +5,13 @@ import java.util.LinkedList;
 import blud.game.level.node.Node;
 import blud.game.level.node.Node.Check;
 import blud.game.level.unit.units.Player;
+import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
 
 public abstract class Enemy extends Unit {
+	public final Sprite
+		alert = Sprites.get("Alert");
 	public boolean
 		isAlert,//the alert state of the enemy
 		detectThroughUnits,//can detect the player through other units
@@ -52,7 +55,6 @@ public abstract class Enemy extends Unit {
 	
 	public Enemy(float i, float j) {
 		super(i, j);
-		effects.add(Sprites.get("Alert"));//add the alert effect
 	}	
 	
 	//method to alert this unit
@@ -81,6 +83,12 @@ public abstract class Enemy extends Unit {
 	public void whileRelaxed() { }
 	
 	@Override
+	public void onRender2(RenderContext context) {
+		if(alert.mode > 0)
+			alert.render(context);
+	}
+	
+	@Override
 	public void onUpdate1(UpdateContext context) {
 		detection.clear();
 		node.walk(
@@ -98,8 +106,7 @@ public abstract class Enemy extends Unit {
 			if(target != null) {
 				frame = 0;
 			} else {
-				frame ++;
-				  
+				frame ++;				  
 				if(frame >= relaxFrames) {
 					this.target = target;
 					relax();
@@ -109,11 +116,11 @@ public abstract class Enemy extends Unit {
 			whileAlerted();
 		} else {
 			if(target != null) {
-				frame ++;
-				effects.play(0, 10f, pixel.x(), pixel.y() - 6);
+				frame ++;				
+				alert.play(10f, pixel.x(), pixel.y() - 8);
 				if(frame >= alertFrames) {					
 					this.target = target;
-					effects.stop();
+					alert.stop();
 					alert();
 					return;
 				}
@@ -122,5 +129,6 @@ public abstract class Enemy extends Unit {
 			}
 			whileRelaxed();
 		}
+		alert.update(context);
 	}
 }
