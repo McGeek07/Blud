@@ -8,7 +8,7 @@ import blud.game.sprite.sprites.Sprites;
 public class Mancer2 extends Living {
 	
 	int moveCounter = 0;
-	int maxMove = 44;
+	int maxMove = 3;
 	
 	public Mancer2() {
 		super();
@@ -51,8 +51,8 @@ public class Mancer2 extends Living {
 	@Override
 	public void whileRelaxed() {
 		//Walk around patrolling
-		move(facing);
-		moveCounter++;
+		if(!move(facing));
+			moveCounter = maxMove;
 		if(moveCounter == maxMove) {
 			switch(this.facing) {
 				case 0:
@@ -95,6 +95,7 @@ public class Mancer2 extends Living {
 	
 	@Override 
 	public void onMove(Node node) {
+		moveCounter++;
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
