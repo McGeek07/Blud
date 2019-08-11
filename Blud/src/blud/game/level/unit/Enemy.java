@@ -14,6 +14,7 @@ public abstract class Enemy extends Unit {
 		alert = Sprites.get("Alert");
 	public boolean
 		isAlert,//the alert state of the enemy
+		isDetect,
 		detectThroughUnits,//can detect the player through other units
 		detectThroughWalls,//can detect the player through other walls
 		aoeDetection;//is detection aoe? if not detect only in the direction this unit is facing
@@ -73,10 +74,27 @@ public abstract class Enemy extends Unit {
 		}
 	}
 	
+	public void detect() {
+		if(!isDetect) {
+			isDetect = true;
+			onDetect();
+		}
+	}
+	
+	public void forget() {
+		if( isDetect) {
+			isDetect = false;
+			onForget();
+		}
+	}
+	
 	//called when alert is triggered
 	public void onAlert() { }	
 	//called when relax is triggered
 	public void onRelax() { }	
+	//called once per update while player is detected before becoming alerted
+	public void onDetect() { }
+	public void onForget() { }
 	//called once per update while alerted
 	public void whileAlerted() { }	
 	//called once per update while relaxed
@@ -110,13 +128,15 @@ public abstract class Enemy extends Unit {
 				if(frame >= relaxFrames) {
 					this.target = target;
 					relax();
+					forget();
 					return;
 				}
 			}
 			whileAlerted();
 		} else {
 			if(target != null) {
-				frame ++;				
+				frame ++;
+				detect();
 				alert.play(10f, pixel.x(), pixel.y() - 8);
 				if(frame >= alertFrames) {					
 					this.target = target;
@@ -126,6 +146,7 @@ public abstract class Enemy extends Unit {
 				}
 			} else {
 				frame = 0;
+				forget();
 			}
 			whileRelaxed();
 		}

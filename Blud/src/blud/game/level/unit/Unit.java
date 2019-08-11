@@ -60,13 +60,17 @@ public abstract class Unit extends Entity {
 		super(i, j);
 	}
 	
+	public void turn(int facing) {
+		if(this.facing != facing) {
+			this.facing = facing;
+			this.onTurn();
+		}
+	}
+	
 	public boolean move(int facing) {
 		if(state < MOVE) {
-			Node node = this.node.neighbor[facing];
-			if(this.facing != facing) {
-				this.facing = facing;
-				onTurn();
-			}			
+			turn(facing);
+			Node node = this.node.neighbor[facing];			
 			if(node != null && !node.isReserved()) {
 				move(node);
 				return true;
@@ -77,11 +81,8 @@ public abstract class Unit extends Entity {
 	
 	public boolean attack(int facing) {
 		if(state < ATTACK) {
+			turn(facing);
 			Node node = this.node.neighbor[facing];
-			if(this.facing != facing) {
-				this.facing = facing;
-				onTurn();
-			}
 			if(node != null && node.unit != null && !(node.unit instanceof Wall)) {
 				attack(node);
 				return true ;
@@ -92,11 +93,8 @@ public abstract class Unit extends Entity {
 	
 	public boolean defend(int facing) {
 		if(state < DEFEND) {
+			turn(facing);
 			Node node = this.node.neighbor[facing];
-			if(this.facing != facing) {
-				this.facing = facing;
-				onTurn();
-			}
 			if(node != null && node.unit != null && !(node.unit instanceof Wall)) {
 				defend(node);
 				return true;
@@ -107,11 +105,8 @@ public abstract class Unit extends Entity {
 	
 	public boolean engage(int facing) {
 		if(state < ATTACK) {
+			turn(facing);
 			Node node = this.node.neighbor[facing];
-			if(this.facing != facing) {
-				this.facing = facing;
-				onTurn();
-			}
 			Unit unit = node != null ? node.unit : null;
 			if(unit != null && !(unit instanceof Wall)) {
 				if(Math.abs(this.facing - unit.facing) == 2) {

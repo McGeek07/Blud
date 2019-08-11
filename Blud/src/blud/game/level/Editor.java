@@ -37,7 +37,8 @@ public class Editor extends Level {
 		units = new LinkedList<>(),
 		walls = new LinkedList<>();
 	protected Sprite
-		debug  = Sprites.get("Debug" );
+		debug  = Sprites.get("Debug" ),
+		vision = Sprites.get("Vision");
 	protected final Brush
 		brush;
 	protected int
@@ -62,6 +63,7 @@ public class Editor extends Level {
 				this.walls.add(unit);
 			else
 				this.units.add(unit);
+		//vision.loop(3f);
 		
 		brush = new Brush();
 	}	
@@ -98,12 +100,10 @@ public class Editor extends Level {
 						
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
-//						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
-//							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
-//							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-//							vision.pixel.set(Game.localToPixel(i, j));
-//							vision.render(context);
-//						}
+						if(grid[i][j].lightLevel > 0 && grid[i][j].entityVision) {
+							vision.pixel.set(Game.localToPixel(i, j));
+							vision.render(context);
+						}
 						if(brush.mode < 2 && i == brush.cursor.x() && j == brush.cursor.y())
 							brush.render(context);
 					}
@@ -125,12 +125,10 @@ public class Editor extends Level {
 					for(int j = 0; j < LEVEL_H; j ++) {
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
-//						if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
-//							float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
-//							danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-//							vision.pixel.set(Game.localToPixel(i, j));
-//							vision.render(context);
-//						}
+						if(grid[i][j].lightLevel > 0 && grid[i][j].entityVision) {
+							vision.pixel.set(Game.localToPixel(i, j));
+							vision.render(context);
+						}
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {

@@ -37,7 +37,6 @@ public class Level extends Scene {
 		updatePlayerVision = true,
 		updateEntityVision = true;	
 	public final Sprite
-		vision = Sprites.get("Vision"),
 		facing = Sprites.get("Facing");
 	
 	protected File
@@ -52,8 +51,6 @@ public class Level extends Scene {
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
 		this.load(this.file = file);
-		vision.setSpriteTransparency(.6f);
-		vision.loop(3f);
 	}
 	
 	public Node at(Vector2f local) {
@@ -133,7 +130,6 @@ public class Level extends Scene {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j].update(context);	
-		vision.update(context);
 	}
 	
 	@Override

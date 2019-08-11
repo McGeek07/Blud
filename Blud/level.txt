@@ -16,10 +16,10 @@ grid:<0.0, 14.0>&SewerStoneTile&SewerLanternWall:0
 grid:<0.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<1.0, 0.0>&SewerStoneTile&SewerStoneWall:0
 grid:<1.0, 1.0>&SewerStoneTile&Brazier:1
-grid:<1.0, 2.0>&SewerStoneTile&Slime:1
+grid:<1.0, 2.0>&SewerStoneTile&
 grid:<1.0, 3.0>&SewerStoneTile&
 grid:<1.0, 4.0>&SewerStoneTile&SewerStoneWall:0
-grid:<1.0, 5.0>&SewerPlankTile&
+grid:<1.0, 5.0>&SewerPlankTile&Brazier:0
 grid:<1.0, 6.0>&SewerPlankTile&
 grid:<1.0, 7.0>&SewerPlankTile&
 grid:<1.0, 8.0>&SewerPlankTile&Mancer1:2
@@ -31,9 +31,9 @@ grid:<1.0, 13.0>&SewerPlankTile&
 grid:<1.0, 14.0>&SewerStoneTile&
 grid:<1.0, 15.0>&SewerStoneTile&SewerLanternWall:0
 grid:<2.0, 0.0>&SewerStoneTile&SewerStoneWall:0
-grid:<2.0, 1.0>&SewerStoneTile&Slime:0
+grid:<2.0, 1.0>&SewerStoneTile&
 grid:<2.0, 2.0>&SewerStoneTile&Player:0
-grid:<2.0, 3.0>&SewerStoneTile&Slime:2
+grid:<2.0, 3.0>&SewerStoneTile&
 grid:<2.0, 4.0>&SewerStoneTile&Mancer1:0
 grid:<2.0, 5.0>&SewerWaterTile&
 grid:<2.0, 6.0>&SewerWaterTile&
@@ -48,7 +48,7 @@ grid:<2.0, 14.0>&SewerStoneTile&
 grid:<2.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<3.0, 0.0>&SewerStoneTile&SewerStoneWall:0
 grid:<3.0, 1.0>&SewerStoneTile&
-grid:<3.0, 2.0>&SewerStoneTile&Slime:3
+grid:<3.0, 2.0>&SewerStoneTile&
 grid:<3.0, 3.0>&SewerStoneTile&
 grid:<3.0, 4.0>&SewerStoneTile&SewerStoneWall:0
 grid:<3.0, 5.0>&SewerStoneTile&
@@ -79,7 +79,7 @@ grid:<4.0, 13.0>&SewerStoneTile&SewerLanternWall:0
 grid:<4.0, 14.0>&SewerStoneTile&SewerStoneWall:0
 grid:<4.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<5.0, 0.0>&SewerStoneTile&SewerStoneWall:0
-grid:<5.0, 1.0>&SewerStoneTile&
+grid:<5.0, 1.0>&SewerStoneTile&Brazier:0
 grid:<5.0, 2.0>&SewerStoneTile&
 grid:<5.0, 3.0>&SewerStoneTile&
 grid:<5.0, 4.0>&SewerStoneTile&
