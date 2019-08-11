@@ -147,19 +147,19 @@ public class Player extends Unit {
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
-				sprites.loop(2,10);
+				sprites.loop(2,5);
 				break;
 			case Game.NORTH:
 				this.sprites.flip();
-				sprites.loop(2,10);
+				sprites.loop(2,5);
 				break;
 			case Game.WEST:
 				this.sprites.flip();
-				sprites.loop(3,10);
+				sprites.loop(3,5);
 				break;
 			case Game.SOUTH:
 				this.sprites.flop();
-				sprites.loop(3, 10);
+				sprites.loop(3, 5);
 				break;
 		}
 	}

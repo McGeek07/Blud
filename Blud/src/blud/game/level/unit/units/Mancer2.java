@@ -52,29 +52,29 @@ public class Mancer2 extends Living {
 	@Override
 	public void whileRelaxed() {
 		//Walk around patrolling
-//		if(!move(facing))
-//			failedMoveAttempts++;
-//		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
-//			switch(this.facing) {
-//				case 0:
-//					this.facing = 2;
-//					moveCounter = 0;
-//					break;
-//				case 1:
-//					this.facing = 3;
-//					moveCounter = 0;
-//					break;
-//				case 2:
-//					this.facing = 0;
-//					moveCounter = 0;
-//					break;
-//				case 3:
-//					this.facing = 1;
-//					moveCounter = 0;
-//					break;
-//			}
-//			
-//		}
+		if(!move(facing))
+			failedMoveAttempts++;
+		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+			switch(this.facing) {
+				case 0:
+					this.facing = 2;
+					moveCounter = 0;
+					break;
+				case 1:
+					this.facing = 3;
+					moveCounter = 0;
+					break;
+				case 2:
+					this.facing = 0;
+					moveCounter = 0;
+					break;
+				case 3:
+					this.facing = 1;
+					moveCounter = 0;
+					break;
+			}
+			
+		}
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class Mancer2 extends Living {
 	
 	@Override 
 	public void onMove(Node node) {
-		moveCounter++;
+		this.moveCounter++;
 		this.failedMoveAttempts = 0;
 		switch(this.facing) {
 			case Game.EAST:

@@ -55,6 +55,10 @@ SlimeIdleDn,15,16
 SlimeIdleUp,15,16
 SlimeWalkDn,15,16
 SlimeWalkUp,15,16
+GhostWalkDn,15,16
+GhostWalkUp,15,16
+GhostIdleUp,15,16
+GhostIdleDn,15,16
 //Hell
 HellTile,15,16
 HellWall,15,16

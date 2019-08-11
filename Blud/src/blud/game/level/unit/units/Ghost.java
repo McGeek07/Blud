@@ -5,15 +5,18 @@ import blud.game.level.node.Node;
 import blud.game.level.unit.Undead;
 import blud.game.sprite.sprites.Sprites;
 
-public class Slime extends Undead {
+public class Ghost extends Undead {
+	int moveCounter = 0;
+	int maxMove = 8;
+	int failedMoveAttempts = 0;
 	
-	public Slime() {
+	public Ghost() {
 		super();
 		sprites.add(
-				Sprites.get("SlimeIdleDn"),
-				Sprites.get("SlimeIdleUp"),
-				Sprites.get("SlimeWalkDn"),
-				Sprites.get("SlimeWalkUp")
+				Sprites.get("GhostIdleDn"),
+				Sprites.get("GhostIdleUp"),
+				Sprites.get("GhostWalkDn"),
+				Sprites.get("GhostWalkUp")
 				);
 		
 		this.moveFrames   = 15;
@@ -26,25 +29,50 @@ public class Slime extends Undead {
 		this.attackCooldown = 14;
 		this.defendCooldown = 0;
 		
-		this.maxHP = 1;
-		this.curHP = 1;
+		this.maxHP = 1000;
+		this.curHP = 1000;
 		
-		this.entityVisionRange = 4;	
-		this.detectionRange    = 4;
+		this.lightLevel = 1f;
+		this.lightRange = 7;
+		this.detectionRange = 0;
+		this.entityVisionRange = 0;	
 		
 		this.damage   = 0;
-		this.priority = 1;
+		this.priority = 5;
 	}
 
 	@Override
 	public void whileRelaxed() {
-		//do nothing
+		//Walk around patrolling
+				if(!move(facing))
+					failedMoveAttempts++;
+				if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+					switch(this.facing) {
+						case 0:
+							this.facing = 1;
+							moveCounter = 0;
+							break;
+						case 1:
+							this.facing = 2;
+							moveCounter = 0;
+							break;
+						case 2:
+							this.facing = 3;
+							moveCounter = 0;
+							break;
+						case 3:
+							this.facing = 0;
+							moveCounter = 0;
+							break;
+					}
+					
+				}
+		
 	}
 	
 	@Override
 	public void whileAlerted() {
-		if(!move(facing))
-			engage(facing);
+		
 	}
 	
 	@Override
@@ -57,6 +85,8 @@ public class Slime extends Undead {
 	
 	@Override 
 	public void onMove(Node node) {
+		this.moveCounter++;
+		this.failedMoveAttempts = 0;
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
@@ -72,7 +102,7 @@ public class Slime extends Undead {
 				break;
 			case Game.SOUTH:
 				this.sprites.flop();
-				sprites.loop(3,10);
+				sprites.loop(3, 10);
 				break;
 		}
 	}
@@ -99,5 +129,5 @@ public class Slime extends Undead {
 		}
 		this.entityVisionDirection = facing;
 	}
-	
+
 }
