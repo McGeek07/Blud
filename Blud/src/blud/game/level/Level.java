@@ -163,6 +163,7 @@ public class Level extends Scene {
 	public void load(File file  ) {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].isReserved = false;
 				grid[i][j].tile = null;
 				grid[i][j].unit = null;
 			}
