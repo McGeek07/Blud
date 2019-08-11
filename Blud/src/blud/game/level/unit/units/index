@@ -7,6 +7,9 @@ Player
 SewerStoneWall
 SewerGrateWall
 SewerLanternWall
+//Hell
+HellWall
+Lava
 //Misc
 StoneWall
 Brazier
@@ -17,3 +20,5 @@ CastleWallWindow
 BookShelfLeft
 BookShelfRight
 Mancer1
+Mancer2
+Slime

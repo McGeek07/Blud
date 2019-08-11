@@ -46,4 +46,16 @@ Mancer1IdleDn,15,16
 Mancer1IdleUp,15,16
 Mancer1WalkDn,15,16
 Mancer1WalkUp,15,16
+Mancer2IdleDn,15,16
+Mancer2IdleUp,15,16
+Mancer2WalkDn,15,16
+Mancer2WalkUp,15,16
 Alert,15,6
+SlimeIdleDn,15,16
+SlimeIdleUp,15,16
+SlimeWalkDn,15,16
+SlimeWalkUp,15,16
+//Hell
+HellTile,15,16
+HellWall,15,16
+Lava,15,16
