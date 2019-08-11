@@ -51,8 +51,7 @@ public class Mancer2 extends Living {
 	@Override
 	public void whileRelaxed() {
 		//Walk around patrolling
-		if(!move(facing));
-			moveCounter = maxMove;
+		move(facing);
 		if(moveCounter == maxMove) {
 			switch(this.facing) {
 				case 0:
