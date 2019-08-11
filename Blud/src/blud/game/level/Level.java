@@ -20,8 +20,8 @@ import blud.util.Util;
 
 public class Level extends Scene {
 	public static final int
-		LEVEL_W = 16,
-		LEVEL_H = 16;	
+		LEVEL_W = 32,
+		LEVEL_H = 32;	
 	public Sprite
 		bg;
 	public final Node[][]
@@ -137,6 +137,14 @@ public class Level extends Scene {
 		Menus.TRACK0.stop();
 	}
 	
+	public void reset() {
+		this.load(this.file);
+	}
+	
+	public void save() {
+		this.save(this.file);
+	}
+	
 	public void save(String path) {
 		save(new File(path));
 	}
@@ -156,6 +164,10 @@ public class Level extends Scene {
 		}
 	}
 	
+	public void load() {
+		this.load(this.file);
+	}
+	
 	public void load(String path) {
 		load(new File(path));
 	}
@@ -163,6 +175,7 @@ public class Level extends Scene {
 	public void load(File file  ) {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
+				grid[i][j].isReserved = false;
 				grid[i][j].tile = null;
 				grid[i][j].unit = null;
 			}
