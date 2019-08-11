@@ -9,6 +9,7 @@ public class Mancer2 extends Living {
 	
 	int moveCounter = 0;
 	int maxMove = 3;
+	int failedMoveAttempts = 0;
 	
 	public Mancer2() {
 		super();
@@ -51,38 +52,56 @@ public class Mancer2 extends Living {
 	@Override
 	public void whileRelaxed() {
 		//Walk around patrolling
-		move(facing);
-		if(moveCounter == maxMove) {
-			switch(this.facing) {
-				case 0:
-					this.facing = 2;
-					moveCounter = 0;
-					break;
-				case 1:
-					this.facing = 3;
-					moveCounter = 0;
-					break;
-				case 2:
-					this.facing = 0;
-					moveCounter = 0;
-					break;
-				case 3:
-					this.facing = 1;
-					moveCounter = 0;
-					break;
-			}
-			
-		}
+//		if(!move(facing))
+//			failedMoveAttempts++;
+//		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+//			switch(this.facing) {
+//				case 0:
+//					this.facing = 2;
+//					moveCounter = 0;
+//					break;
+//				case 1:
+//					this.facing = 3;
+//					moveCounter = 0;
+//					break;
+//				case 2:
+//					this.facing = 0;
+//					moveCounter = 0;
+//					break;
+//				case 3:
+//					this.facing = 1;
+//					moveCounter = 0;
+//					break;
+//			}
+//			
+//		}
 	}
 	
 	@Override
 	public void whileAlerted() {
-		
-		//I want it to face toward the player here
-		
-		
-		if(!move(facing))
-			engage(facing);
+		if(this.target.curHP > 0) {
+			//makes the enemy look toward the player
+			if(this.node.local.y() == this.target.node.local.y()) {
+				if(this.node.local.x() < this.target.node.local.x()) {
+					this.facing = Game.EAST;
+				}else {
+					this.facing = Game.WEST;
+				}
+			}else if(this.node.local.x() == this.target.node.local.x()) {
+				if(this.node.local.y() < this.target.node.local.y()) {
+					this.facing = Game.NORTH;
+				}else {
+					this.facing = Game.SOUTH;
+				}
+			}else if(this.node.local.x() < this.target.node.local.x()) {
+				this.facing = Game.EAST;
+			}else if(this.node.local.x() > this.target.node.local.x()) {
+				this.facing = Game.WEST;
+			}
+
+			if(!move(facing))
+				engage(facing);
+		}
 	}
 	
 	@Override
@@ -95,6 +114,7 @@ public class Mancer2 extends Living {
 	@Override 
 	public void onMove(Node node) {
 		moveCounter++;
+		this.failedMoveAttempts = 0;
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
