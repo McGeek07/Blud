@@ -90,19 +90,19 @@ public class Ghost extends Undead {
 		switch(this.facing) {
 			case Game.EAST:
 				this.sprites.flop();
-				sprites.loop(2,10);
+				sprites.loop(2,2);
 				break;
 			case Game.NORTH:
 				this.sprites.flip();
-				sprites.loop(2,10);
+				sprites.loop(2,2);
 				break;
 			case Game.WEST:
 				this.sprites.flip();
-				sprites.loop(3,10);
+				sprites.loop(3,2);
 				break;
 			case Game.SOUTH:
 				this.sprites.flop();
-				sprites.loop(3, 10);
+				sprites.loop(3, 2);
 				break;
 		}
 	}

@@ -59,6 +59,11 @@ GhostWalkDn,15,16
 GhostWalkUp,15,16
 GhostIdleUp,15,16
 GhostIdleDn,15,16
+GargoyleIdle,15,16
+GargoyleAggroUp,15,16
+GargoyleAggroDn,15,16
+GargoyleWalkUp,15,16
+GargoyleWalkDn,15,16
 //Hell
 HellTile,15,16
 HellWall,15,16

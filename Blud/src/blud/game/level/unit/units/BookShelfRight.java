@@ -1,13 +1,15 @@
 package blud.game.level.unit.units;
 
-import blud.game.level.unit.Wall;
+import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
 
-public class BookShelfRight extends Wall{
+public class BookShelfRight extends Unit{
 
 	public BookShelfRight() {
 		super();
 		sprites.add(Sprites.get("BookShelfRight"));
+		this.curHP = 1;
+		this.maxHP = 1;
 	}
 	
 	@Override
