@@ -68,7 +68,8 @@ public abstract class Component implements Renderable, Updateable {
 				loc.y() + 1,
 				dim.x() - 2,
 				dim.y() - 2,
-				color
+				color,
+				0f
 				);
 	}
 
@@ -86,7 +87,7 @@ public abstract class Component implements Renderable, Updateable {
 	public void onRender(RenderContext context) { }
 	public void onUpdate(UpdateContext context) { }	
 	
-	public static void drawText(RenderContext context, String text, int line, int x, int y, int w, int h, int color) {
+	public static void drawText(RenderContext context, String text, int line, int x, int y, int w, int h, int color, float transparency) {
 		if(text != null) {
 			text = text.toUpperCase();		
 			int
@@ -102,15 +103,18 @@ public abstract class Component implements Renderable, Updateable {
 						_y = y + ((i / _w) - line) * TEXT_H + TEXT_H / 2;//y + (i / _w) * 5 - (line * 5);
 					switch(color) {
 						case DEFAULT: 
+							TEXT.setSpriteTransparency(transparency);
 							TEXT.setBlackTransparency(1f);
 							TEXT.setWhiteTransparency(1f);
 							break;
 						case WHITE: 
+							TEXT.setSpriteTransparency(1f);
 							TEXT.setBlackTransparency(1f);
-							TEXT.setWhiteTransparency(0f);
+							TEXT.setWhiteTransparency(transparency);
 							break;
 						case BLACK: 
-							TEXT.setBlackTransparency(0f);
+							TEXT.setSpriteTransparency(1f);
+							TEXT.setBlackTransparency(transparency);
 							TEXT.setWhiteTransparency(1f);
 							break;
 					}

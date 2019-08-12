@@ -1,7 +1,6 @@
 package blud.game.level;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,12 +43,8 @@ public class Editor extends Level {
 		editorMode,
 		visionMode;
 	
-	public Editor(String path) {
-		this(new File(path));
-	}
-	
-	public Editor(File file  ) {
-		super(file);
+	public Editor(String name) {
+		super(name);
 		List<Tile> tiles = Tiles.load(new LinkedList<Tile>());
 		List<Unit> units = Units.load(new LinkedList<Unit>());		
 		for(Tile tile: tiles)

@@ -177,4 +177,9 @@ public class Player extends Unit {
 				break;
 		}
 	}
+	
+	@Override
+	public void onKillExit() {
+		node.level.reset();
+	}
 }

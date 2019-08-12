@@ -11,6 +11,7 @@ import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
+import blud.game.menu.component.Component;
 import blud.game.menu.menus.Menus;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
@@ -38,18 +39,20 @@ public class Level extends Scene {
 	public final Sprite
 		facing = Sprites.get("Facing");
 	
+	
+	protected float
+		name_transparency;
+	protected String
+		name;
 	protected File
 		file;
 	
-	public Level(String path) {
-		this(new File(path));
-	}
-	
-	public Level(File file  ) {
+	public Level(String name) {
+		this.file = new File(this.name = name);
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
-		this.load(this.file = file);
+		this.load();
 	}
 	
 	public Node at(Vector2f local) {
@@ -67,37 +70,44 @@ public class Level extends Scene {
 	
 	@Override
 	public void onRender(RenderContext context) {
-		context.g2D.translate(
-				context.canvas_w / 2,
-				context.canvas_h / 2
-				);
-		if(bg != null)
-			bg.render(context);
-		context.g2D.translate(
-				- camera.x(),
-				- camera.y()
-				);
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				if(grid[i][j].tile != null)
-					grid[i][j].tile.render(context);
-//				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
-//					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
-//					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-//					vision.pixel.set(Game.localToPixel(i, j));
-//					vision.render(context);
-//				}
-			}									
-		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {									
-				if(grid[i][j].unit != null) {
-					if(grid[i][j].unit.drawFacing) {
-						facing.frame = grid[i][j].unit.facing;
-						facing.pixel.set(grid[i][j].pixel);
-						facing.render(context);
+		context = context.push();
+			context.g2D.translate(
+					context.canvas_w / 2,
+					context.canvas_h / 2
+					);
+			if(bg != null)
+				bg.render(context);
+			context.g2D.translate(
+					- camera.x(),
+					- camera.y()
+					);
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H; j ++) {
+					if(grid[i][j].tile != null)
+						grid[i][j].tile.render(context);
+	//				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
+	//					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
+	//					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
+	//					vision.pixel.set(Game.localToPixel(i, j));
+	//					vision.render(context);
+	//				}
+				}									
+			for(int i = 0; i < LEVEL_W; i ++)
+				for(int j = 0; j < LEVEL_H; j ++) {									
+					if(grid[i][j].unit != null) {
+						if(grid[i][j].unit.drawFacing) {
+							facing.frame = grid[i][j].unit.facing;
+							facing.pixel.set(grid[i][j].pixel);
+							facing.render(context);
+						}
+						grid[i][j].unit.render(context);
 					}
-					grid[i][j].unit.render(context);
 				}
+			context = context.pull();
+			
+			if(name_transparency <= 1f) {			
+				Component.drawText(context, name, 0, 1, 57, 62, 62, Component.WHITE, name_transparency);
+				name_transparency += .01f;
 			}
 	}
 	

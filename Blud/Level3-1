@@ -1,3 +1,4 @@
+bg:HellSprite,6.0
 grid:<0.0, 0.0>&CastleTile&CastleWall:0
 grid:<0.0, 1.0>&CastleTile&CastleWall:0
 grid:<0.0, 2.0>&CastleTile&CastleWall:0
