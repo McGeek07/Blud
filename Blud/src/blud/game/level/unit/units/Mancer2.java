@@ -54,7 +54,7 @@ public class Mancer2 extends Living {
 		//Walk around patrolling
 		if(!move(facing))
 			failedMoveAttempts++;
-		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+this.moveCooldown) {
 			this.facing = (this.facing+2)%4;
 			this.failedMoveAttempts = 0;
 			moveCounter = 0;

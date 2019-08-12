@@ -49,7 +49,7 @@ public class Ghost extends Undead {
 		//Walk around patrolling
 				if(!move(facing))
 					failedMoveAttempts++;
-				if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+				if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+this.moveCooldown) {
 					switch(this.facing) {
 						case 0:
 							this.facing = 1;

@@ -5,10 +5,10 @@ import blud.game.level.node.Node;
 import blud.game.level.unit.Undead;
 import blud.game.sprite.sprites.Sprites;
 
-public class Skeleton extends Undead {
+public class Skeleton extends Undead{
 	
 	int moveCounter = 0;
-	int maxMove = 5;
+	int maxMove = 1;
 	int failedMoveAttempts = 0;
 	
 	public Skeleton() {
@@ -21,8 +21,8 @@ public class Skeleton extends Undead {
 				);
 		sprites.loop(0, 3f);
 		
-		this.moveFrames   = 15;
-		this.attackFrames = 8;
+		this.moveFrames   = 20;
+		this.attackFrames = 15;
 		this.defendFrames = 12;
 		
 		this.alertFrames = 10;
@@ -31,7 +31,7 @@ public class Skeleton extends Undead {
 		this.aoeDetection = true;
 		this.detectThroughUnits = true;
 		
-		this.moveCooldown = 10;
+		this.moveCooldown = 5;
 		this.attackCooldown = 14;
 		this.defendCooldown = 0;
 		
@@ -42,7 +42,7 @@ public class Skeleton extends Undead {
 		this.lightRange = 0;
 		
 		this.entityVisionRange = 0;	
-		this.detectionRange    = 4;
+		this.detectionRange    = 5;
 		this.entityVisionDirection = -1;
 		
 		this.damage   = 1;
@@ -54,10 +54,10 @@ public class Skeleton extends Undead {
 		//Walk around patrolling
 		if(!move(facing))
 			failedMoveAttempts++;
-		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
+		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+this.moveCooldown) {
 			this.facing = (this.facing+1)%4;
+			this.failedMoveAttempts = 0;
 			moveCounter = 0;
-			failedMoveAttempts = 0;
 		}
 	}
 	
