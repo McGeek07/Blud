@@ -64,6 +64,10 @@ GargoyleAggroUp,15,16
 GargoyleAggroDn,15,16
 GargoyleWalkUp,15,16
 GargoyleWalkDn,15,16
+SkeletonIdleDn,15,16
+SkeletonIdleUp,15,16
+SkeletonWalkDn,15,16
+SkeletonWalkUp,15,16
 //Hell
 HellTile,15,16
 HellWall,15,16

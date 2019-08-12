@@ -2,22 +2,22 @@ package blud.game.level.unit.units;
 
 import blud.game.Game;
 import blud.game.level.node.Node;
-import blud.game.level.unit.Living;
+import blud.game.level.unit.Undead;
 import blud.game.sprite.sprites.Sprites;
 
-public class Mancer2 extends Living {
+public class Skeleton extends Undead {
 	
 	int moveCounter = 0;
-	int maxMove = 3;
+	int maxMove = 5;
 	int failedMoveAttempts = 0;
 	
-	public Mancer2() {
+	public Skeleton() {
 		super();
 		sprites.add(
-				Sprites.get("Mancer2IdleDn"),
-				Sprites.get("Mancer2IdleUp"),
-				Sprites.get("Mancer2WalkDn"),
-				Sprites.get("Mancer2WalkUp")
+				Sprites.get("SkeletonIdleDn"),
+				Sprites.get("SkeletonIdleUp"),
+				Sprites.get("SkeletonWalkDn"),
+				Sprites.get("SkeletonWalkUp")
 				);
 		sprites.loop(0, 3f);
 		
@@ -25,28 +25,28 @@ public class Mancer2 extends Living {
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
-		this.alertFrames = 5;
-		this.relaxFrames = 5;
+		this.alertFrames = 10;
+		this.relaxFrames = 10;
 		
 		this.aoeDetection = true;
 		this.detectThroughUnits = true;
 		
-		this.moveCooldown = 3;
+		this.moveCooldown = 10;
 		this.attackCooldown = 14;
 		this.defendCooldown = 0;
 		
 		this.maxHP = 1;
 		this.curHP = 1;
 		
-		this.lightLevel = 1f;
-		this.lightRange = 3;
+		this.lightLevel = 0f;
+		this.lightRange = 0;
 		
-		this.entityVisionRange = 4;	
+		this.entityVisionRange = 0;	
 		this.detectionRange    = 4;
 		this.entityVisionDirection = -1;
 		
 		this.damage   = 1;
-		this.priority = 2;
+		this.priority = 1;
 	}
 
 	@Override
@@ -55,9 +55,9 @@ public class Mancer2 extends Living {
 		if(!move(facing))
 			failedMoveAttempts++;
 		if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+2) {
-			this.facing = (this.facing+2)%4;
-			this.failedMoveAttempts = 0;
+			this.facing = (this.facing+1)%4;
 			moveCounter = 0;
+			failedMoveAttempts = 0;
 		}
 	}
 	
