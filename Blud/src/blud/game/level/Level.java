@@ -9,7 +9,6 @@ import blud.game.Game;
 import blud.game.level.node.Node;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
-import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
 import blud.game.menu.menus.Menus;
@@ -90,14 +89,15 @@ public class Level extends Scene {
 //				}
 			}									
 		for(int i = 0; i < LEVEL_W; i ++)
-			for(int j = 0; j < LEVEL_H; j ++) {
-				if(grid[i][j].unit instanceof Enemy) {
-					facing.frame = grid[i][j].unit.facing;
-					facing.pixel.set(grid[i][j].pixel);
-					facing.render(context);
-				}					
-				if(grid[i][j].unit != null)
+			for(int j = 0; j < LEVEL_H; j ++) {									
+				if(grid[i][j].unit != null) {
+					if(grid[i][j].unit.drawFacing) {
+						facing.frame = grid[i][j].unit.facing;
+						facing.pixel.set(grid[i][j].pixel);
+						facing.render(context);
+					}
 					grid[i][j].unit.render(context);
+				}
 			}
 	}
 	

@@ -19,6 +19,7 @@ public abstract class Unit extends Entity {
 		playerVisionRange,
 		entityVisionRange;	
 	public boolean
+		drawFacing,
 		blocksLight,
 		blocksPlayerVision,
 		blocksEntityVision = true;
@@ -31,7 +32,7 @@ public abstract class Unit extends Entity {
 		moveFrames,
 		attackFrames,
 		defendFrames,
-		deathFrames,
+		killFrames,
 		moveCooldown,
 		attackCooldown,
 		defendCooldown,
@@ -304,7 +305,7 @@ public abstract class Unit extends Entity {
 					exit();		
 				break;
 			case KILL:
-				if(frame >= deathFrames)
+				if(frame >= killFrames)
 					exit();
 		}
 		sprites.update(context);

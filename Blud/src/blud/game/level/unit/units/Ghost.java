@@ -29,16 +29,19 @@ public class Ghost extends Undead {
 		this.attackCooldown = 14;
 		this.defendCooldown = 0;
 		
-		this.maxHP = 1000;
-		this.curHP = 1000;
+		this.maxHP = Integer.MAX_VALUE;
+		this.curHP = Integer.MAX_VALUE;
 		
 		this.lightLevel = 1f;
 		this.lightRange = 7;
 		this.detectionRange = 0;
-		this.entityVisionRange = 0;	
+		this.entityVisionRange = 7;	
+		this.entityVisionDirection = -1;
 		
 		this.damage   = 0;
 		this.priority = 5;
+		
+		sprites.setSpriteTransparency(.5f);
 	}
 
 	@Override
@@ -127,7 +130,6 @@ public class Ghost extends Undead {
 				sprites.loop(1, 10f);
 				break;
 		}
-		this.entityVisionDirection = facing;
 	}
 
 }

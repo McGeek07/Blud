@@ -2,6 +2,7 @@ package blud.game.level.unit;
 
 import java.util.LinkedList;
 
+import blud.core.Engine;
 import blud.game.level.node.Node;
 import blud.game.level.node.Node.Check;
 import blud.game.level.unit.units.Player;
@@ -56,6 +57,7 @@ public abstract class Enemy extends Unit {
 	
 	public Enemy(float i, float j) {
 		super(i, j);
+		drawFacing = true;
 	}	
 	
 	//method to alert this unit
@@ -137,7 +139,7 @@ public abstract class Enemy extends Unit {
 			if(target != null) {
 				frame ++;
 				detect();
-				alert.play(10f, pixel.x(), pixel.y() - 8);
+				alert.play(Engine.TPS / alertFrames * 5, pixel.x(), pixel.y() - 8);
 				if(frame >= alertFrames) {					
 					this.target = target;
 					alert.stop();
@@ -145,6 +147,7 @@ public abstract class Enemy extends Unit {
 					return;
 				}
 			} else {
+				alert.stop();
 				frame = 0;
 				forget();
 			}

@@ -31,7 +31,7 @@ public class Gargoyle extends Undead{
 		
 		this.moveCooldown = 30;
 		this.attackCooldown = 30;
-		this.defendCooldown = 30;
+		this.defendCooldown =  0;
 		
 		this.maxHP = 2;
 		this.curHP = 2;
@@ -39,13 +39,16 @@ public class Gargoyle extends Undead{
 		this.lightLevel = 0;
 		this.lightRange = 0;
 		
-		this.entityVisionRange = 8;	
 		this.detectionRange    = 8;
-		this.entityVisionDirection = -1;
 		
 		this.damage   = 2;
-		this.priority = 1;
+		this.priority = 3;
 		
+		drawFacing = false;
+	}
+	
+	public void onAlert() {
+		drawFacing = true;
 	}
 	
 	
@@ -113,7 +116,6 @@ public class Gargoyle extends Undead{
 	
 	@Override
 	public void onIdle() {
-	
 	}
 	
 }

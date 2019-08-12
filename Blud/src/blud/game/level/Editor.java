@@ -13,7 +13,6 @@ import blud.game.level.entity.Entity;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.Trap;
 import blud.game.level.tile.tiles.Tiles;
-import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.Wall;
 import blud.game.level.unit.units.Units;
@@ -109,13 +108,14 @@ public class Editor extends Level {
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {
-						if(grid[i][j].unit instanceof Enemy) {
-							facing.frame = grid[i][j].unit.facing;
-							facing.pixel.set(grid[i][j].pixel);
-							facing.render(context);
-						}	
-						if(grid[i][j].unit != null)
+						if(grid[i][j].unit != null) {
+							if(grid[i][j].unit.drawFacing) {
+								facing.frame = grid[i][j].unit.facing;
+								facing.pixel.set(grid[i][j].pixel);
+								facing.render(context);
+							}
 							grid[i][j].unit.render(context);
+						}
 						if(brush.mode > 1 && i == brush.cursor.x() && j == brush.cursor.y())
 							brush.render(context);
 					}
@@ -132,13 +132,14 @@ public class Editor extends Level {
 					}
 				for(int i = 0; i < LEVEL_W; i ++)
 					for(int j = 0; j < LEVEL_H; j ++) {
-						if(grid[i][j].unit instanceof Enemy) {
-							facing.frame = grid[i][j].unit.facing;
-							facing.pixel.set(grid[i][j].pixel);
-							facing.render(context);
-						}								
-						if(grid[i][j].unit != null)
+						if(grid[i][j].unit != null) {
+							if(grid[i][j].unit.drawFacing) {
+								facing.frame = grid[i][j].unit.facing;
+								facing.pixel.set(grid[i][j].pixel);
+								facing.render(context);
+							}
 							grid[i][j].unit.render(context);
+						}
 					}
 				break;
 		}		

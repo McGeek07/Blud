@@ -1,7 +1,7 @@
 package blud;
 
 import blud.core.Engine;
-import blud.game.menu.menus.Menus;
+import blud.game.level.Editor;
 import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.sprites.Sprites;
 import blud.util.Version;
@@ -16,7 +16,7 @@ public class Blud {
 		Sprites.load();
 		Sounds .load();
 		
-		Engine.setScene(Menus.SPLASH);
+		Engine.setScene(new Editor("Level3-1"));
 		Engine.init();
 	}
 }
