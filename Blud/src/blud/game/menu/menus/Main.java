@@ -9,7 +9,7 @@ import blud.game.menu.component.components.Label;
 
 public class Main extends Menu {
 	public static final Action
-		PLAY_ACTION = () -> {
+		PLAY_ACTION = () -> {			
 			Engine.setScene(new Editor("level.txt"));
 		},
 		INFO_ACTION = () -> {

@@ -95,7 +95,7 @@ public class Level extends Scene {
 			for(int i = 0; i < LEVEL_W; i ++)
 				for(int j = 0; j < LEVEL_H; j ++) {									
 					if(grid[i][j].unit != null) {
-						if(grid[i][j].unit.drawFacing) {
+						if(grid[i][j].unit.drawFacing && grid[i][j].playerVision) {
 							facing.frame = grid[i][j].unit.facing;
 							facing.pixel.set(grid[i][j].pixel);
 							facing.render(context);
