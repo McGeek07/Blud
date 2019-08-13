@@ -76,7 +76,14 @@ FireGhostWalkDn,15,16
 FireGhostWalkUp,15,16
 FireGhostIdleUp,15,16
 FireGhostIdleDn,15,16
+BoardsLeft,15,16
+BoardsRight,15,16
+NecroIdleDn,15,16
+NecroIdleUp,15,16
+NecroWalkDn,15,16
+NecroWalkUp,15,16
 //Hell
 HellTile,15,16
 HellWall,15,16
 Lava,15,16
+GoldBrazier,15,16

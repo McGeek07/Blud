@@ -19,7 +19,7 @@ public class FireGhost extends Undead {
 				Sprites.get("FireGhostWalkUp")
 				);
 		
-		this.moveFrames   = 15;
+		this.moveFrames   = 20;
 		this.attackFrames = 15;
 		this.defendFrames = 12;
 		
@@ -47,8 +47,6 @@ public class FireGhost extends Undead {
 	@Override
 	public void whileRelaxed() {
 		//Walk around patrolling
-		if(engage(facing))
-			this.moveCounter = this.maxMove;
 				if(!move(facing))
 					failedMoveAttempts++;
 				if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+this.moveCooldown) {

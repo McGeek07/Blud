@@ -3,12 +3,11 @@ package blud.game.level.unit.units;
 import blud.game.level.unit.Unit;
 import blud.game.sprite.sprites.Sprites;
 
-public class BookShelfLeft extends Unit{
+public class BoardsLeft extends Unit{
 
-	public BookShelfLeft() {
+	public BoardsLeft() {
 		super();
-		sprites.add(Sprites.get("BookShelfLeft"));
-		
+		sprites.add(Sprites.get("BoardsLeft"));
 		this.curHP = 1;
 		this.maxHP = 1;
 		this.defendFrames = 12;

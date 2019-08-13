@@ -10,6 +10,7 @@ public class BookShelfRight extends Unit{
 		sprites.add(Sprites.get("BookShelfRight"));
 		this.curHP = 1;
 		this.maxHP = 1;
+		this.defendFrames = 12;
 	}
 	
 	@Override
