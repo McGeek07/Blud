@@ -68,6 +68,14 @@ SkeletonIdleDn,15,16
 SkeletonIdleUp,15,16
 SkeletonWalkDn,15,16
 SkeletonWalkUp,15,16
+ZombieIdleDn,15,16
+ZombieIdleUp,15,16
+ZombieWalkDn,15,16
+ZombieWalkUp,15,16
+FireGhostWalkDn,15,16
+FireGhostWalkUp,15,16
+FireGhostIdleUp,15,16
+FireGhostIdleDn,15,16
 //Hell
 HellTile,15,16
 HellWall,15,16
