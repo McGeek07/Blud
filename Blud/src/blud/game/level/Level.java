@@ -1,5 +1,6 @@
 package blud.game.level;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -73,6 +74,13 @@ public class Level extends Scene {
 	@Override
 	public void onRender(RenderContext context) {
 		context = context.push();
+			context.g2D.setColor(Color.BLACK);
+			context.g2D.fillRect(
+					0,
+					0,
+					context.canvas_w,
+					context.canvas_h
+					);
 			context.g2D.translate(
 					context.canvas_w / 2,
 					context.canvas_h / 2

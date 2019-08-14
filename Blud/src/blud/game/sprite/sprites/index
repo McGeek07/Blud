@@ -17,6 +17,7 @@ Sight,3,5
 //Level
 Vision,15,16
 CastleBackground,64,64
+Stairs,15,16
 //Editor
 Debug,15,16
 Facing,31,24
