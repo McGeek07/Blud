@@ -17,7 +17,7 @@ public class Blud {
 		
 		Sprites.load();
 		Sounds .load();
-		//Levels .load();
+		Levels .load();
 		
 	
 		Engine.setScene(Menus.MAIN);

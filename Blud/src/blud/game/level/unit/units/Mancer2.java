@@ -25,14 +25,14 @@ public class Mancer2 extends Living {
 		this.attackFrames = 8;
 		this.defendFrames = 12;
 		
-		this.alertFrames = 5;
+		this.alertFrames = 10;
 		this.relaxFrames = 5;
 		
 		this.aoeDetection = true;
 		this.detectThroughUnits = true;
 		
 		this.moveCooldown = 3;
-		this.attackCooldown = 14;
+		this.attackCooldown = 24;
 		this.defendCooldown = 0;
 		
 		this.maxHP = 1;
