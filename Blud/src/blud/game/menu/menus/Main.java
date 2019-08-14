@@ -10,7 +10,7 @@ import blud.game.menu.component.components.Label;
 public class Main extends Menu {
 	public static final Action
 		PLAY_ACTION = () -> {			
-			Engine.setScene(Levels.next());
+			Engine.setScene(Levels.get());
 		},
 		INFO_ACTION = () -> {
 			Engine.setScene(Menus.INFO);

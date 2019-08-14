@@ -16,16 +16,8 @@ public class Blud {
 		
 		Sprites.load();
 		Sounds .load();
-		Levels .load();
+		//Levels .load();
 		
-//		Level level = new Level("Sewer");
-//		for(int i = 0; i < Level.LEVEL_W; i ++)
-//			for(int j = 0; j < Level.LEVEL_H; j ++)
-//				level.grid[i][j].setTile(new SewerStoneTile());
-//		level.saveToFile("Sewer");
-		
-//		Level level = new Level("Sewer");
-//		level.loadFromFile("Sewer");		
 		Engine.setScene(new Editor("Sewer"));
 		Engine.init();
 	}

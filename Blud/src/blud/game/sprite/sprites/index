@@ -16,6 +16,7 @@ Light,5,4
 Sight,3,5
 //Level
 Vision,15,16
+Stairs,15,16
 //Editor
 Debug,15,16
 Facing,31,24
