@@ -3,6 +3,7 @@ package blud.game.level;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
 
 import blud.core.Engine;
 import blud.core.input.Input;
@@ -40,22 +41,18 @@ public class Level extends Scene {
 		updatePlayerVision = true,
 		updateEntityVision = true;	
 	public final Sprite
-		facing = Sprites.get("Facing");
+		facing = Sprites.get("Facing");	
 	
-	
-	protected float
-		name_transparency;
 	protected String
 		name;
-	protected File
-		file;
+	protected final LinkedList<String>
+		data  = new LinkedList<String>();
 	
 	public Level(String name) {
-		this.file = new File(this.name = name);
+		this.name = name;
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j] = new Node(this, i, j);
-		this.load();
 	}
 	
 	public Node at(Vector2f local) {
@@ -71,6 +68,8 @@ public class Level extends Scene {
 		return null;
 	}	
 	
+	protected float
+		transparency;	
 	@Override
 	public void onRender(RenderContext context) {
 		context = context.push();
@@ -88,12 +87,6 @@ public class Level extends Scene {
 				for(int j = 0; j < LEVEL_H; j ++) {
 					if(grid[i][j].tile != null)
 						grid[i][j].tile.render(context);
-	//				if(grid[i][j].lightLevel > 0 && grid[i][j].playerVision && grid[i][j].entityVision) {
-	//					float transparency = grid[i][j].lightLevel * (1f - lightFloor) + lightFloor;
-	//					danger.setBlackTransparency(grid[i][j].playerVision ? transparency: 0f);
-	//					vision.pixel.set(Game.localToPixel(i, j));
-	//					vision.render(context);
-	//				}
 				}									
 			for(int i = 0; i < LEVEL_W; i ++)
 				for(int j = 0; j < LEVEL_H; j ++) {									
@@ -108,9 +101,9 @@ public class Level extends Scene {
 				}
 			context = context.pull();
 			
-			if(name_transparency <= 1f) {			
-				Component.drawText(context, name, 0, 1, 57, 62, 62, Component.WHITE, name_transparency);
-				name_transparency += .01f;
+			if(transparency <= 1f) {			
+				Component.drawText(context, name, 0, 1, 57, 62, 62, Component.WHITE, transparency);
+				transparency += .01f;
 			}
 	}
 	
@@ -155,18 +148,14 @@ public class Level extends Scene {
 	}
 	
 	public void reset() {
-		this.load(this.file);
+		this.load(this.data);
 	}
 	
-	public void save() {
-		this.save(this.file);
+	public void saveToFile(String path) {
+		saveToFile(new File(path));
 	}
 	
-	public void save(String path) {
-		save(new File(path));
-	}
-	
-	public void save(File file  ) {
+	public void saveToFile(File file  ) {
 		try(PrintWriter out = Util.createPrintWriter(file, false)) {
 			if(bg != null)
 				out.println("bg:" + bg.name + "," + bg.speed);
@@ -181,23 +170,31 @@ public class Level extends Scene {
 		}
 	}
 	
-	public void load() {
-		this.load(this.file);
+	public void loadFromFile(String path) {
+		loadFromFile(new File(path));
 	}
 	
-	public void load(String path) {
-		load(new File(path));
+	public void loadFromFile(File file  ) {
+		this.data.clear();
+		Util.parseFromFile(file, this.data);
+		this.load(this.data);
 	}
 	
-	public void load(File file  ) {
-		name_transparency = 0f;
+	public void loadFromResource(Class<?> clazz, String name) {
+		this.data.clear();
+		Util.parseFromResource(clazz, name, this.data);
+		this.load(this.data);
+	}
+	
+	protected void load(List<String> data) {
+		transparency = 0f;
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j].isReserved = false;
 				grid[i][j].tile = null;
 				grid[i][j].unit = null;
 			}
-		for(String line: Util.parseFromFile(file, new LinkedList<String>())) {
+		for(String line: data) {
 			line = line.trim();
 			if(line.startsWith("bg:")) {
 				String[] temp = line.substring("bg:".length()).split("\\,");

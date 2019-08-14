@@ -47,6 +47,7 @@ public class Editor extends Level {
 	
 	public Editor(String name) {
 		super(name);
+		this.loadFromFile(this.name);
 		List<Tile> tiles = Tiles.load(new LinkedList<Tile>());
 		List<Unit> units = Units.load(new LinkedList<Unit>());		
 		for(Tile tile: tiles)
@@ -58,10 +59,8 @@ public class Editor extends Level {
 			if(unit instanceof Wall)
 				this.walls.add(unit);
 			else
-				this.units.add(unit);
-		//vision.loop(3f);
-		
-		brush = new Brush();
+				this.units.add(unit);		
+		this.brush = new Brush();
 	}	
 	
 	
@@ -172,7 +171,7 @@ public class Editor extends Level {
 			case EDIT:				
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
 					editorMode = PLAY;
-					save(this.file);	
+					saveToFile(this.name);	
 					return;
 				}
 				if(Input.isKeyDn(Logic.OR, Input.KEY_W, Input.KEY_UP_ARROW))
@@ -239,7 +238,7 @@ public class Editor extends Level {
 			case PLAY:
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {
 					editorMode = EDIT;
-					load(this.file);
+					loadFromFile(this.name);
 					return;
 				}
 				if(updateLighting || updatePlayerVision || updateEntityVision) {
@@ -279,7 +278,7 @@ public class Editor extends Level {
 	@Override
 	public void onExit() {
 		if(editorMode == EDIT)
-			save(this.file);
+			saveToFile(this.name);
 	}
 
 	public Vector2f getMousePixel(UpdateContext context) {

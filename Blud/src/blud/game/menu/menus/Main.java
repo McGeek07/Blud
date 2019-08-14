@@ -1,7 +1,7 @@
 package blud.game.menu.menus;
 
 import blud.core.Engine;
-import blud.game.level.Editor;
+import blud.game.level.levels.Levels;
 import blud.game.menu.Menu;
 import blud.game.menu.component.components.Button;
 import blud.game.menu.component.components.Button.Action;
@@ -10,7 +10,7 @@ import blud.game.menu.component.components.Label;
 public class Main extends Menu {
 	public static final Action
 		PLAY_ACTION = () -> {			
-			Engine.setScene(new Editor("level.txt"));
+			Engine.setScene(Levels.next());
 		},
 		INFO_ACTION = () -> {
 			Engine.setScene(Menus.INFO);
