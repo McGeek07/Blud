@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import blud.game.level.Level;
-import blud.game.sprite.sprites.Sprites;
 import blud.util.Util;
 
 public class Levels {
 	public static final String
-		INDEX = "INDEX",
-		SAVE  = "save.txt";
+		INDEX = "index",
+		SAVE  = "blud.sav";
 	private static final ArrayList<Level>
 		LEVELS = new ArrayList<Level>();
 	private static int
@@ -18,7 +17,7 @@ public class Levels {
 	
 	public static void load() {
 		LinkedList<String> list = new LinkedList<String>();
-		Util.parseFromResource(Sprites.class, INDEX, list);
+		Util.parseFromResource(Levels.class, INDEX, list);
 		for(String line: list)
 			if(!line.startsWith("//")) {
 				String name = line.trim();
@@ -35,10 +34,17 @@ public class Levels {
 		Util.printToFile(SAVE, false, level);
 	}
 	
+	public static Level get() {
+		Level level = LEVELS.get(Levels.level ++);
+		level.reset();
+		return level;
+	}
+	
 	public static Level next() {
 		Level level = LEVELS.get(Levels.level ++);
 		if(Levels.level >= LEVELS.size())
 			Levels.level = 0;
+		level.reset();
 		return level;
 	}
 	
@@ -46,6 +52,7 @@ public class Levels {
 		Level level = LEVELS.get(Levels.level --);
 		if(Levels.level < 0)
 			Levels.level = LEVELS.size() - 1;
+		level.reset();
 		return level;
 	}
 	

@@ -2,6 +2,7 @@ package blud;
 
 import blud.core.Engine;
 import blud.game.level.Editor;
+import blud.game.level.levels.Levels;
 import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.sprites.Sprites;
 import blud.util.Version;
@@ -15,7 +16,7 @@ public class Blud {
 		
 		Sprites.load();
 		Sounds .load();
-		//Levels .load();
+		Levels .load();
 		
 //		Level level = new Level("Sewer");
 //		for(int i = 0; i < Level.LEVEL_W; i ++)
@@ -23,6 +24,8 @@ public class Blud {
 //				level.grid[i][j].setTile(new SewerStoneTile());
 //		level.saveToFile("Sewer");
 		
+//		Level level = new Level("Sewer");
+//		level.loadFromFile("Sewer");		
 		Engine.setScene(new Editor("Sewer"));
 		Engine.init();
 	}
