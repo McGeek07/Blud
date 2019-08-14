@@ -15,7 +15,8 @@ public class Gargoyle extends Undead{
 				Sprites.get("GargoyleAggroUp"),
 				Sprites.get("GargoyleAggroDn"),
 				Sprites.get("GargoyleWalkUp"),
-				Sprites.get("GargoyleWalkDn")
+				Sprites.get("GargoyleWalkDn"),
+				Sprites.get("GargoyleIdleAggro")
 				);
 		this.sprites.set(0);
 		
@@ -59,25 +60,36 @@ public class Gargoyle extends Undead{
 	
 	@Override
 	public void whileAlerted() {
-		
 		if(this.target.curHP > 0) {
 			//makes the enemy look toward the player
 			if(this.node.local.y() == this.target.node.local.y()) {
 				if(this.node.local.x() < this.target.node.local.x()) {
 					this.facing = Game.EAST;
+					this.sprites.flop();
+					sprites.loop(4,2f);
 				}else {
 					this.facing = Game.WEST;
+					this.sprites.flip();
+					sprites.loop(3,2f);
 				}
 			}else if(this.node.local.x() == this.target.node.local.x()) {
 				if(this.node.local.y() < this.target.node.local.y()) {
 					this.facing = Game.NORTH;
+					this.sprites.flip();
+					sprites.loop(4,2f);
 				}else {
 					this.facing = Game.SOUTH;
+					this.sprites.flop();
+					sprites.loop(3, 2f);
 				}
 			}else if(this.node.local.x() < this.target.node.local.x()) {
 				this.facing = Game.EAST;
+				this.sprites.flop();
+				sprites.loop(4,2f);
 			}else if(this.node.local.x() > this.target.node.local.x()) {
 				this.facing = Game.WEST;
+				this.sprites.flip();
+				sprites.loop(3,2f);
 			}
 
 			if(!move(facing))

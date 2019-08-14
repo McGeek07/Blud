@@ -64,6 +64,7 @@ GargoyleAggroUp,15,16
 GargoyleAggroDn,15,16
 GargoyleWalkUp,15,16
 GargoyleWalkDn,15,16
+GargoyleIdleAggro,15,16
 SkeletonIdleDn,15,16
 SkeletonIdleUp,15,16
 SkeletonWalkDn,15,16
