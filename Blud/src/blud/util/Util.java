@@ -244,7 +244,7 @@ public class Util {
 	
 	@SafeVarargs
 	public static <T> void printToFile(String path, boolean append, T... list) {
-		printToFile(path, append, list);
+		printToFile(new File(path), append, list);
 	}
 	
 	@SafeVarargs
