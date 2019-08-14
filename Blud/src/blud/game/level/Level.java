@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
+import blud.core.Engine;
+import blud.core.input.Input;
 import blud.core.scene.Scene;
 import blud.game.Game;
 import blud.game.level.node.Node;
@@ -13,6 +15,7 @@ import blud.game.level.unit.Unit;
 import blud.game.level.unit.units.Units;
 import blud.game.menu.component.Component;
 import blud.game.menu.menus.Menus;
+import blud.game.menu.menus.Pause;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector2f;
@@ -113,6 +116,10 @@ public class Level extends Scene {
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
+		if(Input.isKeyDnAction(Input.KEY_ESCAPE)) {
+			Engine.setScene(new Pause(this));
+			return;
+		}
 		if(bg != null)
 			bg.update(context);
 		if(updateLighting || updatePlayerVision || updateEntityVision) {
@@ -183,6 +190,7 @@ public class Level extends Scene {
 	}
 	
 	public void load(File file  ) {
+		name_transparency = 0f;
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j].isReserved = false;

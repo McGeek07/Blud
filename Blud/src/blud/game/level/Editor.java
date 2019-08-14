@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
+import blud.core.Engine;
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.core.input.Input;
@@ -15,6 +16,7 @@ import blud.game.level.tile.tiles.Tiles;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.Wall;
 import blud.game.level.unit.units.Units;
+import blud.game.menu.menus.Pause;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -142,6 +144,10 @@ public class Editor extends Level {
 	
 	@Override
 	public void onUpdate(UpdateContext context) {
+		if(Input.isKeyDnAction(Input.KEY_ESCAPE)) {
+			Engine.setScene(new Pause(this));
+			return;
+		}
 		if(bg != null)
 			bg.update(context);	
 		if(Input.isKeyDnAction(Input.KEY_1)) {
