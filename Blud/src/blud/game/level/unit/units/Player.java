@@ -16,8 +16,8 @@ public class Player extends Unit {
 		sight = Sprites.get("Sight"),
 		cursor = Sprites.get("TileCursor2");
 	public float
-		cameraSpeedX = .2f,
-		cameraSpeedY = .3f;
+		cameraSpeedX = .3f,
+		cameraSpeedY = .4f;
 	
 	public Player() {
 		super();
@@ -29,7 +29,7 @@ public class Player extends Unit {
 				);
 		cursor.loop(4f);
 		
-		this.playerVisionRange = 6;
+		this.playerVisionRange = 8;
 		this.blocksPlayerVision = false;
 		this.blocksEntityVision = false;
 		this.moveFrames   = 5;

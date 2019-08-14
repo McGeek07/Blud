@@ -41,17 +41,19 @@ public class Levels {
 	}
 	
 	public static Level next() {
-		Level level = LEVELS.get(Levels.level ++);
+		Levels.level ++;
 		if(Levels.level >= LEVELS.size())
 			Levels.level = 0;
+		Level level = LEVELS.get(Levels.level);
 		level.reset();
 		return level;
 	}
 	
 	public static Level prev() {
-		Level level = LEVELS.get(Levels.level --);
-		if(Levels.level < 0)
-			Levels.level = LEVELS.size() - 1;
+		Levels.level --;
+		if(Levels.level >= LEVELS.size())
+			Levels.level = 0;
+		Level level = LEVELS.get(Levels.level);
 		level.reset();
 		return level;
 	}
