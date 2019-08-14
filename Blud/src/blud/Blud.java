@@ -2,6 +2,7 @@ package blud;
 
 import blud.core.Engine;
 import blud.game.level.Editor;
+import blud.game.menu.menus.Menus;
 import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.sprites.Sprites;
 import blud.util.Version;
@@ -23,7 +24,7 @@ public class Blud {
 //				level.grid[i][j].setTile(new SewerStoneTile());
 //		level.saveToFile("Sewer");
 		
-		Engine.setScene(new Editor("Sewer"));
+		Engine.setScene(Menus.MAIN);
 		Engine.init();
 	}
 }

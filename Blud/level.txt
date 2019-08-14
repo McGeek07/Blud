@@ -47,7 +47,7 @@ grid:<2.0, 13.0>&SewerPlankTile&
 grid:<2.0, 14.0>&SewerStoneTile&
 grid:<2.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<3.0, 0.0>&SewerStoneTile&SewerStoneWall:0
-grid:<3.0, 1.0>&SewerStoneTile&
+grid:<3.0, 1.0>&SewerStoneTile&Ghost:0
 grid:<3.0, 2.0>&SewerStoneTile&
 grid:<3.0, 3.0>&SewerStoneTile&
 grid:<3.0, 4.0>&SewerStoneTile&
@@ -63,7 +63,7 @@ grid:<3.0, 13.0>&SewerPlankTile&
 grid:<3.0, 14.0>&SewerStoneTile&
 grid:<3.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<4.0, 0.0>&SewerStoneTile&SewerGrateWall:0
-grid:<4.0, 1.0>&SewerStoneTile&
+grid:<4.0, 1.0>&SewerStoneTile&DebugWall:0
 grid:<4.0, 2.0>&SewerStoneTile&
 grid:<4.0, 3.0>&SewerStoneTile&
 grid:<4.0, 4.0>&SewerStoneTile&
@@ -79,7 +79,7 @@ grid:<4.0, 13.0>&SewerStoneTile&SewerLanternWall:0
 grid:<4.0, 14.0>&SewerStoneTile&SewerStoneWall:0
 grid:<4.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<5.0, 0.0>&SewerStoneTile&SewerStoneWall:0
-grid:<5.0, 1.0>&SewerStoneTile&
+grid:<5.0, 1.0>&SewerStoneTile&Gargoyle:0
 grid:<5.0, 2.0>&SewerStoneTile&
 grid:<5.0, 3.0>&SewerStoneTile&
 grid:<5.0, 4.0>&SewerStoneTile&
@@ -95,7 +95,7 @@ grid:<5.0, 13.0>&SewerStoneTile&
 grid:<5.0, 14.0>&SewerStoneTile&
 grid:<5.0, 15.0>&SewerStoneTile&SewerStoneWall:0
 grid:<6.0, 0.0>&SewerStoneTile&CastleWall:0
-grid:<6.0, 1.0>&CastleTile&
+grid:<6.0, 1.0>&CastleTile&DebugWall:0
 grid:<6.0, 2.0>&CastleTile&
 grid:<6.0, 3.0>&CastleTile&
 grid:<6.0, 4.0>&SewerStoneTile&
