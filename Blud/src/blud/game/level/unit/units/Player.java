@@ -8,7 +8,6 @@ import blud.game.level.unit.Wall;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
-import blud.util.Util;
 
 public class Player extends Unit {
 	protected final Sprite
@@ -17,8 +16,8 @@ public class Player extends Unit {
 		sight = Sprites.get("Sight"),
 		cursor = Sprites.get("TileCursor2");
 	public float
-		cameraSpeedX = 1,
-		cameraSpeedY = 2;
+		cameraSpeedX = .2f,
+		cameraSpeedY = .3f;
 	
 	public Player() {
 		super();
@@ -89,10 +88,8 @@ public class Player extends Unit {
 	@Override
 	public void onUpdate1(UpdateContext context) {
 		float
-			dx = pixel.x() - node.level.camera.x(),
-			dy = pixel.y() - node.level.camera.y();
-		dx = Util.box(dx, -cameraSpeedX, cameraSpeedX);
-		dy = Util.box(dy, -cameraSpeedY, cameraSpeedY);
+			dx = (pixel.x() - node.level.camera.x()) * cameraSpeedX,
+			dy = (pixel.y() - node.level.camera.y()) * cameraSpeedY;
 		Vector.add(node.level.camera, dx, dy);
 		
 		int
