@@ -47,6 +47,7 @@ public class Zombie extends Undead{
 	public void whileRelaxed() {
 		this.entityVisionDirection = this.facing;
 		this.moveFrames = 25;
+		this.moveCooldown = 10;
 		//patrol
 		if(!move(facing))
 			failedMoveAttempts++;
@@ -62,6 +63,7 @@ public class Zombie extends Undead{
 	public void whileAlerted() {
 		this.entityVisionDirection = this.facing;
 		this.moveFrames = 10;
+		this.moveCooldown = 3;
 		if(!move(facing))
 			engage(facing);
 	}

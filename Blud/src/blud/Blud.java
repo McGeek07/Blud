@@ -20,7 +20,7 @@ public class Blud {
 		
 		//Engine.setScene(Levels.load("Level3-1"));
 
-		Engine.setScene(new Editor("Sewer"));
+		Engine.setScene(new Editor("Level2-1"));
 		Engine.init();
 	}
 }

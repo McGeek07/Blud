@@ -924,7 +924,7 @@ grid:<28.0, 25.0>&CastleTile&
 grid:<28.0, 26.0>&CastleTile&CastleWall:3
 grid:<28.0, 27.0>&CastleTile&
 grid:<28.0, 28.0>&CastleTile&
-grid:<28.0, 29.0>&CastleTile&
+grid:<28.0, 29.0>&CastleTile&Stairs:3
 grid:<28.0, 30.0>&CastleTile&
 grid:<28.0, 31.0>&CastleTile&CastleWall:0
 grid:<29.0, 0.0>&CastleTile&CastleWall:0

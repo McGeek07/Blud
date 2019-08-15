@@ -16,7 +16,7 @@ public class Slime extends Undead {
 				Sprites.get("SlimeWalkUp")
 				);
 		
-		this.moveFrames   = 15;
+		this.moveFrames   = 25;
 		this.attackFrames = 15;
 		this.defendFrames = 12;
 		
@@ -32,7 +32,7 @@ public class Slime extends Undead {
 		this.entityVisionRange = 4;	
 		this.detectionRange    = 4;
 		
-		this.damage   = 0;
+		this.damage   = 1;
 		this.priority = 1;
 	}
 

@@ -8,8 +8,8 @@ public class TorchWall extends Wall {
 	public TorchWall() {
 		super();
 		sprites.add(Sprites.get("TorchWall"));
-		this.lightLevel = 1;
-		this.lightRange = 4;
+		this.lightLevel = .75f;
+		this.lightRange = 6;
 		this.sprites.loop(0, 2.5f);
 	}
 	

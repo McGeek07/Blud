@@ -35,7 +35,7 @@ public class Levels {
 	}
 	
 	public static Level get() {
-		Level level = LEVELS.get(Levels.level ++);
+		Level level = LEVELS.get(Levels.level);
 		level.reset();
 		return level;
 	}
