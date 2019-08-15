@@ -19,7 +19,7 @@ public class FireGhost extends Undead {
 				Sprites.get("FireGhostWalkUp")
 				);
 		
-		this.moveFrames   = 20;
+		this.moveFrames   = 25;
 		this.attackFrames = 15;
 		this.defendFrames = 12;
 		
@@ -52,19 +52,19 @@ public class FireGhost extends Undead {
 				if(moveCounter == maxMove || failedMoveAttempts > this.moveFrames+this.moveCooldown) {
 					switch(this.facing) {
 						case 0:
-							this.facing = 1;
-							moveCounter = 0;
-							break;
-						case 1:
 							this.facing = 2;
 							moveCounter = 0;
 							break;
-						case 2:
+						case 1:
 							this.facing = 3;
 							moveCounter = 0;
 							break;
-						case 3:
+						case 2:
 							this.facing = 0;
+							moveCounter = 0;
+							break;
+						case 3:
+							this.facing = 1;
 							moveCounter = 0;
 							break;
 					}

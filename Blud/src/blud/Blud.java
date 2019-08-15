@@ -2,7 +2,9 @@ package blud;
 
 import blud.core.Engine;
 import blud.game.level.Editor;
-import blud.game.level.levels.Levels;
+import blud.game.level.Level;
+import blud.game.level.tile.tiles.HellTile;
+import blud.game.level.unit.units.HellWall;
 import blud.game.menu.menus.Menus;
 import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.sprites.Sprites;
@@ -20,8 +22,8 @@ public class Blud {
 		//Levels .load();
 		
 		Engine.setScene(Menus.SPLASH);
-
-		Engine.setScene(new Editor("Level2-1"));
+		
+		Engine.setScene(new Editor("Throne Room"));
 		//Engine.setScene(new Editor("Sewer"));
 		
 		Engine.init();

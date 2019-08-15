@@ -9,7 +9,7 @@ public class GoldBrazier extends Unit {
 		super();
 		sprites.add(Sprites.get("GoldBrazier"));
 		lightLevel = 1;
-		lightRange = 4;
+		lightRange = 5;
 		sprites.loop(0, 3f);
 		
 		this.defendFrames = 12;
