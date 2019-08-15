@@ -43,6 +43,6 @@ public class Main extends Menu {
 	public void onAttach() {
 		super.onAttach();
 		if(!Menus.TRACK0.isPlaying())
-			Menus.TRACK0.loop(1f);
+			Menus.TRACK0.loop(.9f);
 	}
 }

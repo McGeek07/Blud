@@ -10,5 +10,6 @@ public class Menus {
 	public static final Menu
 		SPLASH = new Splash(),
 		MAIN = new Main(),
-		INFO = new Info();
+		INFO = new Info(),
+		CREDITS = new Credits();
 }

@@ -1,7 +1,6 @@
 package blud;
 
 import blud.core.Engine;
-import blud.game.level.Editor;
 import blud.game.level.levels.Levels;
 import blud.game.menu.menus.Menus;
 import blud.game.sound.sounds.Sounds;
@@ -19,10 +18,7 @@ public class Blud {
 		Sounds .load();
 		Levels .load();
 		
-		Engine.setScene(Menus.SPLASH);
-		
-		Engine.setScene(new Editor("Throne Room"));
-		//Engine.setScene(new Editor("Sewer"));
+		Engine.setScene(Menus.CREDITS);
 		
 		Engine.init();
 	}
