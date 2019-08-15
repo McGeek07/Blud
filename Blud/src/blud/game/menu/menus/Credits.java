@@ -122,6 +122,8 @@ public class Credits extends Menu {
 			splash.update(context);
 		else
 			offset -= context.dt * scroll;
+		if(!track.isPlaying())
+			Engine.setScene(Menus.MAIN);
 	}
 	
 	@Override
@@ -129,7 +131,7 @@ public class Credits extends Menu {
 		splash.frame = 0;
 		splash.play(4f);
 		offset = 64f;
-		track.loop(.9f);
+		track.play(.9f);
 	}
 	
 	@Override
