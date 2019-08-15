@@ -182,19 +182,22 @@ public class Level extends Scene {
 	}
 	
 	public void saveToFile(File file  ) {
+		this.data.clear();
+		if(bg != null)
+			this.data.add("bg:" + bg.name + "," + bg.speed);
+		if(track != null)
+			this.data.add("track:" + track.name);
+		for(int i = 0; i < LEVEL_W; i ++)
+			for(int j = 0; j < LEVEL_H ; j ++)
+				if(grid[i][j].tile != null || grid[i][j].unit != null)
+					this.data.add(
+							"grid:" + grid[i][j].local 
+							+ "&" + (grid[i][j].tile != null ? grid[i][j].tile.getClassName()                                : "") 
+							+ "&" + (grid[i][j].unit != null ? grid[i][j].unit.getClassName() + ":" + grid[i][j].unit.facing : "")
+							);
 		try(PrintWriter out = Util.createPrintWriter(file, false)) {
-			if(bg != null)
-				out.println("bg:" + bg.name + "," + bg.speed);
-			if(track != null)
-				out.println("track:" + track.name);
-			for(int i = 0; i < LEVEL_W; i ++)
-				for(int j = 0; j < LEVEL_H ; j ++)
-					if(grid[i][j].tile != null || grid[i][j].unit != null)
-						out.println(
-								"grid:" + grid[i][j].local 
-								+ "&" + (grid[i][j].tile != null ? grid[i][j].tile.getClassName()                                : "") 
-								+ "&" + (grid[i][j].unit != null ? grid[i][j].unit.getClassName() + ":" + grid[i][j].unit.facing : "")
-								);
+			for(String line: this.data)
+				out.println(line);			
 		}
 	}
 	

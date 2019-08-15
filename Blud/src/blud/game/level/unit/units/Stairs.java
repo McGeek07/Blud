@@ -12,8 +12,9 @@ public class Stairs extends Unit {
 		super();
 		sprites.add(Sprites.get("Stairs"));
 		
-		this.blocksPlayerVision = true;
-		this.blocksEntityVision = true;
+		this.blocksLight = false;
+		this.blocksPlayerVision = false;
+		this.blocksEntityVision = false;
 		this.curHP = Integer.MAX_VALUE;
 		this.maxHP = Integer.MAX_VALUE;
 	}

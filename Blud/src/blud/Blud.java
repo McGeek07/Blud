@@ -2,9 +2,7 @@ package blud;
 
 import blud.core.Engine;
 import blud.game.level.Editor;
-import blud.game.level.Level;
-import blud.game.level.tile.tiles.HellTile;
-import blud.game.level.unit.units.HellWall;
+import blud.game.level.levels.Levels;
 import blud.game.menu.menus.Menus;
 import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.sprites.Sprites;
@@ -19,7 +17,7 @@ public class Blud {
 		
 		Sprites.load();
 		Sounds .load();
-		//Levels .load();
+		Levels .load();
 		
 		Engine.setScene(Menus.SPLASH);
 		
