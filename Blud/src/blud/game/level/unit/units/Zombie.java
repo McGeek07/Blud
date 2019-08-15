@@ -37,7 +37,6 @@ public class Zombie extends Undead{
 		this.entityVisionRange = 4;	
 		this.detectionRange    = 4;
 		
-		this.entityVisionDirection = this.facing;
 		
 		this.damage   = 1;
 		this.priority = 1;
