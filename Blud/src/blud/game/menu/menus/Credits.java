@@ -17,7 +17,7 @@ public class Credits extends Menu {
 		track = Sounds.get("Track4-3");
 	public final String
 		text =  
-				"  CREDIT  " +
+				" CREDITS  " +
 				"          " +
 				"CONCEPT   " +
 				" CAEDEN   " +
@@ -46,33 +46,40 @@ public class Credits extends Menu {
 				" JUDGEFIRE" +
 				"          " +
 				"          " +
+				"          " +
+				"          " +
 				"THANK YOU " +
 				"   FOR    " + 
-				" PLAYING  " +
-			    "          " +
-			    "          " +
-			    "          " +
-			    "          " +
-			    "          " +
-			    "          " +
-			    "          " +
-			    "          " +		
-			    "          " +	
-			    "          " +	
-			    "          " +	
-			    "          " +
-				"CATERING  " +
-				" MOM      " + 
-				"          " +
-				"CARRY     " +
-				" HANZO    " +
-				" HANZO    " +
-				" HANZO    " +
-				" HANZO    " +
-				" BASTION  " +
-				"          " + 
-				"SUPPORT   " +
-				" MERCY    ";
+				" PLAYING  ";// +
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "          " +		
+//			    "          " +	
+//			    "          " +	
+//			    "          " +	
+//			    "          " +
+//			    "          " +
+//			    "          " +
+//			    "SCREENPLAY" +
+//			    " YOUR MOM " +
+//			    "          " +
+//				"EDITOR    " +
+//				" YOURE MOM" + 
+//				"          " +
+//				"CARRY     " +
+//				" HANZO    " +
+//				" HANZO    " +
+//				" HANZO    " +
+//				" HANZO    " +
+//				" HANZO    " +
+//				"          " + 
+//				"SUPPORT   " +
+//				" MERCY    ";
 				
 				
 	public float
