@@ -19,6 +19,8 @@ import blud.game.level.unit.units.Units;
 import blud.game.menu.component.Component;
 import blud.game.menu.menus.Menus;
 import blud.game.menu.menus.Pause;
+import blud.game.sound.Sound;
+import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector2f;
@@ -30,6 +32,8 @@ public class Level extends Scene {
 		LEVEL_H = 32;	
 	public Sprite
 		bg;
+	public Sound
+		track;
 	public final Node[][]
 		grid = new Node
 				[LEVEL_W]
@@ -159,6 +163,14 @@ public class Level extends Scene {
 	@Override
 	public void onAttach() {
 		Menus.TRACK0.stop();
+		if(track != null)
+			track.loop(1f);
+	}
+	
+	@Override
+	public void onDetach() {
+		if(track != null)
+			track.stop();
 	}
 	
 	public void reset() {
@@ -173,6 +185,8 @@ public class Level extends Scene {
 		try(PrintWriter out = Util.createPrintWriter(file, false)) {
 			if(bg != null)
 				out.println("bg:" + bg.name + "," + bg.speed);
+			if(track != null)
+				out.println("track:" + track.name);
 			for(int i = 0; i < LEVEL_W; i ++)
 				for(int j = 0; j < LEVEL_H ; j ++)
 					if(grid[i][j].tile != null || grid[i][j].unit != null)
@@ -210,13 +224,18 @@ public class Level extends Scene {
 			}
 		for(String line: data) {
 			line = line.trim();
-			if(line.startsWith("bg:")) {
+			if(line.startsWith("bg:") && bg == null) {
 				String[] temp = line.substring("bg:".length()).split("\\,");
 				String
 					name  = temp.length > 0 ? temp[0] : "",
 					speed = temp.length > 1 ? temp[1] : "";
 				bg = Sprites.get(name);
 				bg.loop(Util.stringToFloat(speed));
+			}
+			if(line.startsWith("track:") && track == null) {
+				String name = line.substring("track:".length());
+				track = Sounds.get(name);
+				track.loop(1f);
 			}
 			if(line.startsWith("grid:")) {
 				String[] 

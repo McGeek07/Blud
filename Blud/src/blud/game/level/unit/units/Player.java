@@ -3,8 +3,11 @@ package blud.game.level.unit.units;
 import blud.core.input.Input;
 import blud.game.Game;
 import blud.game.level.node.Node;
+import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.Wall;
+import blud.game.sound.Sound;
+import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -19,6 +22,13 @@ public class Player extends Unit {
 		cameraSpeedX = .3f,
 		cameraSpeedY = .4f;
 	
+	public Sound
+		gud = Sounds.get("gud"),
+		bad = Sounds.get("bad"),
+		dash = Sounds.get("dash"),
+		slash = Sounds.get("slash"),
+		smash = Sounds.get("smash");
+	
 	public Player() {
 		super();
 		sprites.add(
@@ -26,6 +36,9 @@ public class Player extends Unit {
 				Sprites.get("PlayerIdleUp"),
 				Sprites.get("PlayerWalkDn"),
 				Sprites.get("PlayerWalkUp")
+				);
+		effects.add(
+				Sprites.get("Slash")
 				);
 		cursor.loop(4f);
 		
@@ -47,9 +60,15 @@ public class Player extends Unit {
 		this.priority = 2;
 	}
 	
+	protected boolean
+		moveTrigger;
 	public void take(int facing) {
-		if(!move(facing))
-			engage(facing);
+		if(!move(facing)) {
+			if(!engage(facing) && state == IDLE && moveTrigger) {
+				moveTrigger = false;
+				bad.play();
+			}
+		}
 	}
 	
 	@Override
@@ -91,7 +110,14 @@ public class Player extends Unit {
 			dx = (pixel.x() - node.level.camera.x()) * cameraSpeedX,
 			dy = (pixel.y() - node.level.camera.y()) * cameraSpeedY;
 		Vector.add(node.level.camera, dx, dy);
-		
+		if(
+				Input.isKeyDnAction(Input.KEY_W) || Input.isKeyUpAction(Input.KEY_W) ||
+				Input.isKeyDnAction(Input.KEY_A) || Input.isKeyUpAction(Input.KEY_A) ||
+				Input.isKeyDnAction(Input.KEY_S) || Input.isKeyUpAction(Input.KEY_S) ||
+				Input.isKeyDnAction(Input.KEY_D) || Input.isKeyUpAction(Input.KEY_D) ){
+					moveTrigger = true;
+				}
+				
 		int
 			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
 			a = Input.isKeyDn(Input.KEY_A) ? 2 : 0,
@@ -128,6 +154,7 @@ public class Player extends Unit {
 	
 	@Override 
 	public void onMove(Node node) {
+		dash.play();
 		Node
 			src1 = srcNode.level.at(Vector.add(srcNode.local, 0, 1)),
 			src2 = srcNode.level.at(Vector.add(srcNode.local, 1, 1)),
@@ -178,5 +205,24 @@ public class Player extends Unit {
 	@Override
 	public void onKillExit() {
 		node.level.reset();
+	}
+	
+	@Override
+	public void onAttack(Node node) {
+		if(!(node.unit instanceof Enemy))
+			smash.play();
+		slash.play();
+		switch(facing) {
+			case Game.SOUTH:
+			case Game.EAST: effects.flop(); break;
+			case Game.NORTH: 
+			case Game.WEST: effects.flip(); break;
+		}
+		effects.play(0, 10f, node.pixel);
+	}
+	
+	@Override
+	public void onDefend(Node node) {
+		smash.play();
 	}
 }

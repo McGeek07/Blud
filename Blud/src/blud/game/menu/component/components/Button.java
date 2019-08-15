@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import blud.core.input.Input;
 import blud.game.menu.component.Component;
+import blud.game.sound.Sound;
+import blud.game.sound.sounds.Sounds;
 
 public class Button extends Component {
 	public boolean
@@ -11,6 +13,9 @@ public class Button extends Component {
 	public Color
 		color1 = Color.BLACK,
 		color2 = Color.RED;
+	public Sound
+		gud = Sounds.get("gud"),
+		bad = Sounds.get("bad");
 	public Action
 		action;
 	
@@ -33,6 +38,7 @@ public class Button extends Component {
 	public void onBtnDnAction(int btn) {
 		if(btn == Input.BTN_1)
 			hasPress = true;
+		gud.play();
 	}
 	
 	@Override

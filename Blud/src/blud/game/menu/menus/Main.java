@@ -42,6 +42,7 @@ public class Main extends Menu {
 	@Override
 	public void onAttach() {
 		super.onAttach();
-		Menus.TRACK0.loop(1f);
+		if(!Menus.TRACK0.isPlaying())
+			Menus.TRACK0.loop(1f);
 	}
 }

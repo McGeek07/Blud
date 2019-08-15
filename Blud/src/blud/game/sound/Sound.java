@@ -11,8 +11,8 @@ import blud.util.Copyable;
 public class Sound implements Copyable<Sound> {
 	public final String
 		name;
-	public final Clip
-		clip;
+	protected ArrayList<Clip>
+		clips = new ArrayList<>();
 	
 	public float
 		volume = 1f;
@@ -21,24 +21,26 @@ public class Sound implements Copyable<Sound> {
 			Sound sound
 			) {
 		this(
-				sound.name,
-				Sounds.createClip(sound.name)
+				sound.name
 				);
 	}
 	
 	public Sound(
-			String name,
-			Clip   clip
+			String name
 			) {
 		this.name = name;
-		this.clip = clip;
+		clips.add(Sounds.createClip(this.name));
+		clips.add(Sounds.createClip(this.name));
+		setVolume(volume);
 	}
 	
 	public void setVolume(float volume) {
-		FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-		float range = gainControl.getMaximum() - gainControl.getMinimum();
-		float gain = (range * volume) + gainControl.getMinimum();
-		gainControl.setValue(gain);
+		for(Clip clip: this.clips) {
+			FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			float range = gainControl.getMaximum() - gainControl.getMinimum();
+			float gain = (range * volume) + gainControl.getMinimum();
+			gainControl.setValue(gain);
+		}
 	}
 	
 	public void play(float volume) {
@@ -52,21 +54,53 @@ public class Sound implements Copyable<Sound> {
 	}
 	
 	public void play() {
-		if(!clip.isRunning()) {
-			clip.setFramePosition(0);
-			clip.loop(0);
-		}
+		for(Clip clip: clips)
+			if(!clip.isRunning()) {
+				clip.setFramePosition(0);
+				clip.loop(0);
+				return;
+			}
+		
+		Clip clip = Sounds.createClip(this.name);
+		FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float range = gainControl.getMaximum() - gainControl.getMinimum();
+		float gain = (range * volume) + gainControl.getMinimum();
+		gainControl.setValue(gain);
+		clip.setFramePosition(0);
+		clip.loop(0);
+		
+		clips.add(clip);		
 	}
 	
 	public void loop() {
-		if(!clip.isRunning()) {
-			clip.setFramePosition(0);
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
-		}
+		for(Clip clip: clips)
+			if(!clip.isRunning()) {
+				clip.setFramePosition(0);
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+				return;
+			}
+		
+		Clip clip = Sounds.createClip(this.name);
+		FloatControl gainControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float range = gainControl.getMaximum() - gainControl.getMinimum();
+		float gain = (range * volume) + gainControl.getMinimum();
+		gainControl.setValue(gain);
+		clip.setFramePosition(0);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		
+		clips.add(clip);
 	}
 	
 	public void stop() {
-		clip.stop();
+		for(Clip clip: clips)
+			clip.stop();
+	}
+	
+	public boolean isPlaying() {
+		for(Clip clip: clips)
+			if(clip.isRunning())
+				return true;
+		return false;
 	}
 
 	@Override

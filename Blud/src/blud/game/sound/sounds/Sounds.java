@@ -30,11 +30,7 @@ public class Sounds {
 	}
 	
 	public static Sound load(String name) {
-		Clip clip = createClip(name);
-		Sound sound = new Sound(
-				name,
-				clip
-				);
+		Sound sound = new Sound(name);
 		SOUNDS.put(name, sound);
 		return sound;
 	}
