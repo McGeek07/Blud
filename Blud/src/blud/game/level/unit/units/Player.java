@@ -23,11 +23,7 @@ public class Player extends Unit {
 		cameraSpeedY = .4f;
 	
 	public Sound
-		gud = Sounds.get("gud"),
-		bad = Sounds.get("bad"),
-		dash = Sounds.get("dash"),
-		slash = Sounds.get("slash"),
-		smash = Sounds.get("smash");
+		slash = Sounds.get("slash");
 	
 	public Player() {
 		super();
@@ -60,15 +56,9 @@ public class Player extends Unit {
 		this.priority = 2;
 	}
 	
-	protected boolean
-		moveTrigger;
 	public void take(int facing) {
-		if(!move(facing)) {
-			if(!engage(facing) && state == IDLE && moveTrigger) {
-				moveTrigger = false;
-				bad.play();
-			}
-		}
+		if(!move(facing))
+			engage(facing);
 	}
 	
 	@Override
@@ -110,13 +100,6 @@ public class Player extends Unit {
 			dx = (pixel.x() - node.level.camera.x()) * cameraSpeedX,
 			dy = (pixel.y() - node.level.camera.y()) * cameraSpeedY;
 		Vector.add(node.level.camera, dx, dy);
-		if(
-				Input.isKeyDnAction(Input.KEY_W) || Input.isKeyUpAction(Input.KEY_W) ||
-				Input.isKeyDnAction(Input.KEY_A) || Input.isKeyUpAction(Input.KEY_A) ||
-				Input.isKeyDnAction(Input.KEY_S) || Input.isKeyUpAction(Input.KEY_S) ||
-				Input.isKeyDnAction(Input.KEY_D) || Input.isKeyUpAction(Input.KEY_D) ){
-					moveTrigger = true;
-				}
 				
 		int
 			w = Input.isKeyDn(Input.KEY_W) ? 1 : 0,
@@ -154,7 +137,6 @@ public class Player extends Unit {
 	
 	@Override 
 	public void onMove(Node node) {
-		dash.play();
 		Node
 			src1 = srcNode.level.at(Vector.add(srcNode.local, 0, 1)),
 			src2 = srcNode.level.at(Vector.add(srcNode.local, 1, 1)),
@@ -209,8 +191,6 @@ public class Player extends Unit {
 	
 	@Override
 	public void onAttack(Node node) {
-		if(!(node.unit instanceof Enemy))
-			smash.play();
 		slash.play();
 		switch(facing) {
 			case Game.SOUTH:
@@ -219,10 +199,5 @@ public class Player extends Unit {
 			case Game.WEST: effects.flip(); break;
 		}
 		effects.play(0, 10f, node.pixel);
-	}
-	
-	@Override
-	public void onDefend(Node node) {
-		smash.play();
 	}
 }
