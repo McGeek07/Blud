@@ -163,7 +163,7 @@ public class Level extends Scene {
 	@Override
 	public void onAttach() {
 		Menus.TRACK0.stop();
-		if(track != null)
+		if(track != null && !track.isPlaying())
 			track.loop(1f);
 	}
 	
@@ -235,7 +235,6 @@ public class Level extends Scene {
 			if(line.startsWith("track:") && track == null) {
 				String name = line.substring("track:".length());
 				track = Sounds.get(name);
-				track.loop(1f);
 			}
 			if(line.startsWith("grid:")) {
 				String[] 
