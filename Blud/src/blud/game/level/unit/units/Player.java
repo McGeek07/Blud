@@ -3,11 +3,8 @@ package blud.game.level.unit.units;
 import blud.core.input.Input;
 import blud.game.Game;
 import blud.game.level.node.Node;
-import blud.game.level.unit.Enemy;
 import blud.game.level.unit.Unit;
 import blud.game.level.unit.Wall;
-import blud.game.sound.Sound;
-import blud.game.sound.sounds.Sounds;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 import blud.geom.Vector;
@@ -21,9 +18,6 @@ public class Player extends Unit {
 	public float
 		cameraSpeedX = .3f,
 		cameraSpeedY = .4f;
-	
-	public Sound
-		slash = Sounds.get("slash");
 	
 	public Player() {
 		super();
@@ -191,7 +185,6 @@ public class Player extends Unit {
 	
 	@Override
 	public void onAttack(Node node) {
-		slash.play();
 		switch(facing) {
 			case Game.SOUTH:
 			case Game.EAST: effects.flop(); break;
