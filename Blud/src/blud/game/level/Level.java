@@ -164,7 +164,7 @@ public class Level extends Scene {
 	public void onAttach() {
 		Menus.TRACK0.stop();
 		if(track != null && !track.isPlaying())
-			track.loop(1f);
+			track.loop(.9f);
 	}
 	
 	@Override
