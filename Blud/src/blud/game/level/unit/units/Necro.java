@@ -4,15 +4,12 @@ import blud.core.Engine;
 import blud.game.Game;
 import blud.game.level.levels.Levels;
 import blud.game.level.node.Node;
-import blud.game.level.unit.Living;
+import blud.game.level.unit.Boss;
 import blud.game.menu.menus.Menus;
 import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 
-public class Necro extends Living{
-	public final Sprite
-		meter = Sprites.get("Meter");
-
+public class Necro extends Boss {
 	int moveCounter = 0;
 	int maxMove = 10;
 	int failedMoveAttempts = 0;
@@ -56,24 +53,6 @@ public class Necro extends Living{
 		drawFacing = true;
 	}
 	
-	@Override
-	public void onRender2(RenderContext context) {
-		if(node != null) {
-			context = context.push();
-			context.g2D.translate(
-				node.level.camera.x() - context.canvas_w / 2,
-				node.level.camera.y() - context.canvas_h / 2
-				);
-			
-			meter.frame = curHP;
-			meter.pixel.set(36, 4);
-			meter.render(context);
-			
-			context = context.pull();
-		}
-	}
-
-
 	@Override
 	public void whileRelaxed() {
 		this.moveFrames = 15;

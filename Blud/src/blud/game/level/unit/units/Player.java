@@ -11,9 +11,6 @@ import blud.geom.Vector;
 
 public class Player extends Unit {
 	protected final Sprite
-		heart = Sprites.get("Heart"),
-		light = Sprites.get("Light"),
-		sight = Sprites.get("Sight"),
 		cursor = Sprites.get("TileCursor2");
 	public float
 		cameraSpeedX = .3f,
@@ -63,31 +60,6 @@ public class Player extends Unit {
 		}
 	}
 	
-	@Override
-	public void onRender2(RenderContext context) {
-		if(node != null) {
-			context = context.push();
-			context.g2D.translate(
-				node.level.camera.x() - context.canvas_w / 2,
-				node.level.camera.y() - context.canvas_h / 2
-				);
-			for(int i = 0; i < curHP; i ++) {
-				heart.pixel.set(3 + i * 6, 4);
-				heart.render(context);
-			}
-			
-			light.pixel.set( context.canvas_w - 8, 4);
-			light.frame = node.lightLevel > 0 ? 1 : 0;				
-			light.render(context);
-			
-			sight.pixel.set( context.canvas_w - 3, 3);
-			sight.frame = node.entityVision   ? 1 : 0;
-			sight.render(context);
-			
-			context = context.pull();
-		}
-	}
-
 	@Override
 	public void onUpdate1(UpdateContext context) {
 		float

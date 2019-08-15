@@ -14,7 +14,9 @@ import blud.game.level.levels.Levels;
 import blud.game.level.node.Node;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
+import blud.game.level.unit.Boss;
 import blud.game.level.unit.Unit;
+import blud.game.level.unit.units.Player;
 import blud.game.level.unit.units.Units;
 import blud.game.menu.component.Component;
 import blud.game.menu.menus.Menus;
@@ -32,6 +34,15 @@ public class Level extends Scene {
 		LEVEL_H = 32;	
 	public Sprite
 		bg;
+	public Sprite
+		heart = Sprites.get("Heart"),
+		light = Sprites.get("Light"),
+		sight = Sprites.get("Sight"),
+		meter = Sprites.get("Meter");
+	public Player
+		player;
+	public Boss
+		boss;
 	public Sound
 		track;
 	public final Node[][]
@@ -113,6 +124,27 @@ public class Level extends Scene {
 					}
 				}
 			context = context.pull();
+			
+			if(player != null && player.node != null) {
+				for(int i = 0; i < player.curHP; i ++) {
+					heart.pixel.set(3 + i * 6, 4);
+					heart.render(context);
+				}
+				
+				light.pixel.set( context.canvas_w - 8, 4);
+				light.frame = player.node.lightLevel > 0 ? 1 : 0;				
+				light.render(context);
+				
+				sight.pixel.set( context.canvas_w - 3, 3);
+				sight.frame = player.node.entityVision   ? 1 : 0;
+				sight.render(context);
+			}
+			
+			if(boss != null) {				
+				meter.frame = boss.curHP;
+				meter.pixel.set(36, 4);
+				meter.render(context);
+			}
 			
 			if(transparency <= 1f) {			
 				Component.drawText(context, name, 0, 1, 57, 62, 62, Component.WHITE, transparency);
@@ -219,6 +251,8 @@ public class Level extends Scene {
 	
 	protected void load(List<String> data) {
 		transparency = 0f;
+		player = null;
+		boss = null;
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++) {
 				grid[i][j].isReserved = false;
@@ -267,6 +301,11 @@ public class Level extends Scene {
 						u.facing = Util.stringToInt(face);
 						u.state = -1;
 						u.idle();
+						
+						if(u instanceof Player)
+							player = (Player)u;
+						if(u instanceof Boss)
+							boss = (Boss)u;
 					}
 				}
 			}			
