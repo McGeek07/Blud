@@ -92,8 +92,10 @@ public class Gargoyle extends Undead{
 				sprites.loop(3,2f);
 			}
 
-			if(!move(facing))
-				engage(facing);
+			if(!move(facing)) {
+				if(node.neighbor[facing] != null && !(node.neighbor[facing].unit instanceof Necro || node.neighbor[facing].unit instanceof FireGhost))
+				    engage(facing);
+			}
 		}
 	}
 	
