@@ -10,6 +10,7 @@ import blud.core.Engine;
 import blud.core.input.Input;
 import blud.core.scene.Scene;
 import blud.game.Game;
+import blud.game.level.levels.Levels;
 import blud.game.level.node.Node;
 import blud.game.level.tile.Tile;
 import blud.game.level.tile.tiles.Tiles;
@@ -148,6 +149,11 @@ public class Level extends Scene {
 		for(int i = 0; i < LEVEL_W; i ++)
 			for(int j = 0; j < LEVEL_H; j ++)
 				grid[i][j].update(context);	
+	}
+	
+	@Override
+	public void onExit() {
+		Levels.save();
 	}
 	
 	@Override
