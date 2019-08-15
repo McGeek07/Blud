@@ -85,6 +85,7 @@ NecroIdleDn,15,16
 NecroIdleUp,15,16
 NecroWalkDn,15,16
 NecroWalkUp,15,16
+Meter,30,4
 DemonIdleDn,15,16
 DemonIdleUp,15,16
 DemonWalkDn,15,16

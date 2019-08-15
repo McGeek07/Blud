@@ -1,14 +1,17 @@
 package blud.game.level.unit.units;
 
+import blud.core.Engine;
 import blud.game.Game;
+import blud.game.level.levels.Levels;
 import blud.game.level.node.Node;
 import blud.game.level.unit.Living;
-import blud.game.level.unit.Unit;
-import blud.game.level.unit.Wall;
+import blud.game.menu.menus.Menus;
+import blud.game.sprite.Sprite;
 import blud.game.sprite.sprites.Sprites;
 
 public class Necro extends Living{
-
+	public final Sprite
+		meter = Sprites.get("Meter");
 
 	int moveCounter = 0;
 	int maxMove = 10;
@@ -51,6 +54,23 @@ public class Necro extends Living{
 
 	public void onAlert() {
 		drawFacing = true;
+	}
+	
+	@Override
+	public void onRender2(RenderContext context) {
+		if(node != null) {
+			context = context.push();
+			context.g2D.translate(
+				node.level.camera.x() - context.canvas_w / 2,
+				node.level.camera.y() - context.canvas_h / 2
+				);
+			
+			meter.frame = curHP;
+			meter.pixel.set(36, 4);
+			meter.render(context);
+			
+			context = context.pull();
+		}
 	}
 
 
@@ -159,8 +179,12 @@ public class Necro extends Living{
 			break;
 		}
 	}
-
-
-
-
+	
+	@Override
+	public void onKillExit() {
+		super.onKillExit();
+		Engine.setScene(Menus.CREDITS);
+		Levels.level = 0;
+		Levels.save();
+	}
 }

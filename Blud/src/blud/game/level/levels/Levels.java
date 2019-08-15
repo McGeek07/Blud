@@ -12,7 +12,7 @@ public class Levels {
 		SAVE  = "blud.sav";
 	private static final ArrayList<Level>
 		LEVELS = new ArrayList<Level>();
-	private static int
+	public static int
 		level;
 	
 	public static void load() {
