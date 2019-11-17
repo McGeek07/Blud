@@ -46,7 +46,15 @@ public class Util {
 		return a >= b ? a : b;
 	}
 	
-	public static final float box(float x, float a, float b) {
+	public static final float clamp(float x, float a, float b) {
+		if(x < a)
+			x = a;
+		if(x > b)
+			x = b;
+		return x;
+	}
+	
+	public static final long clamp(long x, long a, long b) {
 		if(x < a)
 			x = a;
 		if(x > b)

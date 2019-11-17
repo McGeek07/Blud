@@ -40,9 +40,12 @@ public class Engine implements Runnable {
 		running;
 	protected Thread
 		thread;
-	protected long
-		fps,
-		tps;	
+	protected int
+		render_hz,
+		update_hz;
+	protected float
+		render_dt,
+		update_dt;
 	
 	protected Engine() {
 		//do nothing
@@ -134,68 +137,101 @@ public class Engine implements Runnable {
 		this.window.onExit();
 	}
 	
-	private void render(float dt, float t) {
+	private void render(float t, float dt, float fixed_dt) {
 		if(this.scene != null)
 			this.canvas.render(dt, t, this.scene);
 	}
 	
-	private void update(float dt, float t) {
+	private void update(float t, float dt, float fixed_dt) {
 		Input.INSTANCE.poll();
 		if(this.scene != null)
 			this.canvas.update(dt, t, this.scene);
 	}
 	
 	private static final long
-		ONE_SECOND = 1000000000L;
+		ONE_SECOND = 1000000000L,
+		ONE_MILLIS =    1000000L;
 
 	@SuppressWarnings("unused")
 	@Override
 	public void run() {
 		try {
-			this.onInit();
+			onInit();
 			long
-				f_time = FPS > 0 ? ONE_SECOND / FPS : 0,
-				t_time = TPS > 0 ? ONE_SECOND / TPS : 0,
-				f_elapsed = 0,
-				t_elapsed = 0,
-				elapsed1 = 0,	
-				elapsed2 = 0,
-				f_ct = 0,
-				t_ct = 0,
-				t = System.nanoTime();			
-			this.update(0f, 0f);
-			this.render(0f, 0f);
+				render_fixed_nanos = FPS > 0 ? (long)(ONE_SECOND / FPS) : 0,               //fixed time-per-render in nanoseconds
+				update_fixed_nanos = TPS > 0 ? (long)(ONE_SECOND / TPS) : 0;               //fixed time-per-update in nanoseconds
+			float
+				render_fixed_dt = (float)render_fixed_nanos / ONE_SECOND, 				   //fixed time-per-render in seconds
+				update_fixed_dt = (float)update_fixed_nanos / ONE_SECOND; 				   //fixed time-per-update in seconds
+			long
+				render_lag_nanos = 0,													   //dynamic render lag in nanoseconds
+				update_lag_nanos = 0,													   //dynamic update lag in nanoseconds
+				render_avg_nanos = 0,													   //dynamic average time-per-render in nanoseconds
+				update_avg_nanos = 0,													   //dynamic average time-per-update in nanoseconds
+				render_nanos = 0,                                                          //elapsed render time in nanoseconds				
+				update_nanos = 0;														   //elapsed update time in nanoseconds
+			int
+				render_count = 0,														   //number of render calls in the last one second
+				update_count = 0;														   //number of update calls in the last one second
+			long
+				elapsed_nanos = 0,                                                         //current elapsed time in nanoseconds
+				current_nanos = System.nanoTime();										   //current time in nanoseconds
 			while(running) {
-				long dt = - t + (t = System.nanoTime());
-				f_elapsed += dt;
-				t_elapsed += dt;
-				elapsed1 += dt;
-				elapsed2 += dt;
-				if(t_elapsed >= t_time) {
-					this.update((float)t_elapsed / ONE_SECOND, (float)elapsed2 / ONE_SECOND);
-					t_elapsed = 0;
-					t_ct ++;
+				long delta_nanos = - current_nanos + (current_nanos = System.nanoTime());  //delta time in nanoseconds
+				render_nanos  += delta_nanos;
+				update_nanos  += delta_nanos;
+				elapsed_nanos += delta_nanos;
+				
+				if(update_nanos + update_lag_nanos >= update_fixed_nanos) {
+					float
+						update_t  = (float)current_nanos / ONE_SECOND,
+						update_dt = (float) update_nanos / ONE_SECOND;					
+					update(update_t, update_dt, update_fixed_dt);
+					
+					update_lag_nanos = Util.clamp(update_lag_nanos + update_nanos - update_fixed_nanos, - update_fixed_nanos, update_fixed_nanos);
+					update_avg_nanos += update_nanos;
+					update_nanos = 0;
+					update_count ++;
 				}
-				if(f_elapsed >= f_time) {
-					this.render((float)f_elapsed / ONE_SECOND, (float)elapsed2 / ONE_SECOND);
-					f_elapsed = 0;
-					f_ct ++;
-				}				
-				if(elapsed1 > ONE_SECOND) {
-					System.out.println("FPS: " + (this.fps = f_ct));
-					System.out.println("TPS: " + (this.tps = t_ct));
-					elapsed1 = 0;
-					f_ct = 0;
-					t_ct = 0;
+				
+				if(render_nanos + render_lag_nanos >= render_fixed_nanos) {
+					float
+						render_t  = (float)current_nanos / ONE_SECOND,
+						render_dt = (float) render_nanos / ONE_SECOND;
+					render(render_t, render_dt, render_fixed_dt);		
+					
+					render_lag_nanos = Util.clamp(render_lag_nanos + render_nanos - render_fixed_nanos, - render_fixed_nanos, render_fixed_nanos);
+					render_avg_nanos += render_nanos;
+					render_nanos = 0;
+					render_count ++;
 				}
-				Thread.sleep(1);
+				
+				if(elapsed_nanos >= ONE_SECOND) {
+					render_dt = (float)render_avg_nanos / render_count / ONE_MILLIS;
+					update_dt = (float)update_avg_nanos / update_count / ONE_MILLIS;
+					render_hz = render_count;
+					update_hz = update_count;
+					render_avg_nanos = 0;
+					update_avg_nanos = 0;
+					render_count  = 0;
+					update_count  = 0;					
+					elapsed_nanos = 0;
+					
+					System.out.printf("FPS: %1$d hz @ %2$.2f ms%n", render_hz, render_dt);
+					System.out.printf("TPS: %1$d hz @ %2$.2f ms%n", update_hz, update_dt);
+				}
+				
+				long sync = Math.min(
+					render_fixed_nanos - render_nanos - render_lag_nanos,
+					update_fixed_nanos - update_nanos - update_lag_nanos
+					) / ONE_MILLIS - 1;
+				if(sync > 0) Thread.sleep(1);
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			this.running = false;
 		} finally {
-			this.onExit();
-		}		
+			onExit();
+		}			
 	}
 	
 	public static class Window {

@@ -9,7 +9,7 @@ import blud.util.Version;
 
 public class Blud {
 	public static final Version
-		VERSION = new Version("Blud", 1, 0, 3);
+		VERSION = new Version("Blud", 1, 0, 4);
 	
 	public static void main(String[] args) {
 		System.out.println(VERSION);		
