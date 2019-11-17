@@ -34,6 +34,8 @@ public class Engine implements Runnable {
 		window = new Window(this);
 	
 	protected Scene
+		queue;	
+	protected Scene
 		scene;
 	
 	protected boolean
@@ -66,11 +68,7 @@ public class Engine implements Runnable {
 	}
 	
 	public static void setScene(Scene scene) {
-		if(INSTANCE.scene != null)
-			INSTANCE.scene.onDetach();
-		INSTANCE.scene = scene;
-		if(INSTANCE.scene != null)
-			INSTANCE.scene.onAttach();
+		INSTANCE.queue = scene;
 	}
 	
 	public static Vector2f windowToCanvas(Vector2f v) {
@@ -144,6 +142,14 @@ public class Engine implements Runnable {
 	
 	private void update(float t, float dt, float fixed_dt) {
 		Input.INSTANCE.poll();
+		if(this.queue != null) {
+			this.scene.onDetach();
+			
+			this.scene = queue;
+			this.queue = null;
+			
+			this.scene.onAttach();
+		}
 		if(this.scene != null)
 			this.canvas.update(dt, t, this.scene);
 	}
