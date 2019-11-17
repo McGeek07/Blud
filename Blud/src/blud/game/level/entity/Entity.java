@@ -43,22 +43,26 @@ public abstract class Entity implements Renderable, Updateable {
 
 	@Override
 	public void render(RenderContext context) {
-		onRender1(context);
-		sprites.setPixel(pixel);
-		sprites.render(context);		
-		if(effects.sprites.size() > 0 && effects.get().mode > 0)
-			effects.render(context);
-		onRender2(context);
+		if(node.isRenderable()) {
+			onRender1(context);
+			sprites.setPixel(pixel);
+			sprites.render(context);		
+			if(effects.sprites.size() > 0 && effects.get().mode > 0)
+				effects.render(context);
+			onRender2(context);
+		}
 	}
 
 	@Override
 	public void update(UpdateContext context) {
-		onUpdate1(context);
-		sprites.setPixel(pixel);
-		sprites.update(context);
-		if(effects.sprites.size() > 0 && effects.get().mode > 0)
-			effects.update(context);
-		onUpdate2(context);
+		if(node.isUpdateable()) {
+			onUpdate1(context);
+			sprites.setPixel(pixel);
+			sprites.update(context);
+			if(effects.sprites.size() > 0 && effects.get().mode > 0)
+				effects.update(context);
+			onUpdate2(context);
+		}
 	}
 	
 	public String getClassName() {

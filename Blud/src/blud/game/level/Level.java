@@ -123,7 +123,7 @@ public class Level extends Scene {
 						grid[i][j].unit.render(context);
 					}
 				}
-			context = context.pull();
+			context = context.pop();
 			
 			if(player != null && player.node != null) {
 				for(int i = 0; i < player.curHP; i ++) {

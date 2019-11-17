@@ -2,6 +2,7 @@ package blud.game.level.node;
 
 import java.util.List;
 
+import blud.core.Engine;
 import blud.core.Renderable;
 import blud.core.Updateable;
 import blud.game.Game;
@@ -95,6 +96,18 @@ public class Node implements Renderable, Updateable {
 	
 	public boolean blocksEntityVision() {
 		return unit != null && unit.blocksEntityVision;
+	}
+	
+	public boolean isRenderable() {
+		return
+				pixel.X() >= level.camera.X() - Engine.CANVAS_W / 2 - 6 &&
+				pixel.X() <= level.camera.X() + Engine.CANVAS_W / 2 + 6 &&
+				pixel.Y() >= level.camera.Y() - Engine.CANVAS_H / 2 - 6 &&
+				pixel.Y() <= level.camera.Y() + Engine.CANVAS_H / 2 + 6;
+	}
+	
+	public boolean isUpdateable() {
+		return true;
 	}
 	
 	public void setSpriteTransparency(float transparency) {

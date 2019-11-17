@@ -22,13 +22,13 @@ public class Scene implements Renderable, Updateable {
 	public void render(RenderContext context) {
 		context = context.push();
 		this.onRender(context);
-		context = context.pull();
+		context = context.pop();
 	}
 
 	@Override
 	public void update(UpdateContext context) {
 		context = context.push();
 		this.onUpdate(context);
-		context = context.pull();
+		context = context.pop();
 	}
 }

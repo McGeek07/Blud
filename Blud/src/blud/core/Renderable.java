@@ -26,11 +26,14 @@ public interface Renderable {
 			return copy;
 		}
 		
-		public RenderContext pull() {
-			if(this.parent != null) {
-				this.g2D.dispose();
-				return this.parent;
-			}
+		public RenderContext pop() {
+			if(this.parent != null)
+				try {
+					this.g2D.dispose();
+					return this.parent;
+				} finally {
+					this.parent = null;
+				}		
 			return this;
 		}
 

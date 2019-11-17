@@ -22,10 +22,13 @@ public interface Updateable {
 			return copy;
 		}
 		
-		public UpdateContext pull() {
-			if(this.parent != null) {
-				return this.parent;
-			}
+		public UpdateContext pop() {
+			if(this.parent != null)
+				try {
+					return this.parent;
+				} finally {
+					this.parent = null;
+				}
 			return this;
 		}
 

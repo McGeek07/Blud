@@ -29,7 +29,7 @@ public class Sound implements Copyable<Sound> {
 			String name
 			) {
 		this.name = name;
-		clips.add(Sounds.createClip(this.name));
+		//clips.add(Sounds.createClip(this.name));
 		clips.add(Sounds.createClip(this.name));
 		setVolume(volume);
 	}

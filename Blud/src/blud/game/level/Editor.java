@@ -91,7 +91,7 @@ public class Editor extends Level {
 							debug.pixel.set(grid[i][j].pixel);
 							debug.frame = (i + j) & 1;
 							debug.render(context);					
-						context = context.pull();
+						context = context.pop();
 						
 						if(grid[i][j].tile != null)
 							grid[i][j].tile.render(context);
@@ -233,7 +233,7 @@ public class Editor extends Level {
 								grid[i][j].unit.setSpriteTransparency( 0f);									
 				context = context.push();
 				brush.update(context);		
-				context = context.pull();
+				context = context.pop();
 				break;
 			case PLAY:
 				if(Input.isKeyDnAction(Input.KEY_RETURN)) {

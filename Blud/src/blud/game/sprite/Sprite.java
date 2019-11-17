@@ -38,6 +38,11 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	public final Vector2f.Mutable
 		pixel = new Vector2f.Mutable();
 	
+	private AlphaComposite
+		spriteComposite,
+		whiteComposite,
+		blackComposite;
+	
 	public Sprite(Sprite sprite) {
 		this(
 				sprite.name,
@@ -66,15 +71,24 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 	}
 	
 	public void setSpriteTransparency(float transparency) {
-		this.spriteTransparency = transparency;
+		if(this.spriteTransparency != transparency) {
+			this.spriteTransparency = transparency;
+			this.spriteComposite = null;
+		}
 	}
 	
 	public void setWhiteTransparency(float transparency) {
-		this.whiteTransparency = transparency;
+		if(this.whiteTransparency != transparency) {
+			this.whiteTransparency = transparency;
+			this.whiteComposite = null;
+		}
 	}
 	
 	public void setBlackTransparency(float transparency) {
-		this.blackTransparency = transparency;
+		if(this.blackTransparency != transparency) {
+			this.blackTransparency = transparency;
+			this.blackComposite = null;
+		}
 	}
 	
 	public void play(float speed) {	
@@ -151,18 +165,21 @@ public class Sprite implements Renderable, Updateable, Copyable<Sprite> {
 				- h / 2
 				);
 		if(spriteTransparency < 1) {
-			context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - spriteTransparency));
+			if(spriteComposite == null) spriteComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - spriteTransparency);
+			context.g2D.setComposite(spriteComposite);
 			context.g2D.drawImage(spriteFrames[(int)frame], null, 0,  0);
 		}
 		if(blackTransparency < 1) {
-			context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - blackTransparency));
+			if(blackComposite == null) blackComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - blackTransparency);
+			context.g2D.setComposite(blackComposite);
 			context.g2D.drawImage(blackFrames[(int)frame], null, 0,  0);
 		}
 		if(whiteTransparency < 1) {
-			context.g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - whiteTransparency));
+			if(whiteComposite == null) whiteComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - whiteTransparency);
+			context.g2D.setComposite(whiteComposite);
 			context.g2D.drawImage(whiteFrames[(int)frame], null, 0,  0);
 		}
-		context = context.pull();
+		context.pop();
 	}
 	
 	@Override
