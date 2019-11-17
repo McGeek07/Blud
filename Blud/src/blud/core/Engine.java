@@ -143,12 +143,14 @@ public class Engine implements Runnable {
 	private void update(float t, float dt, float fixed_dt) {
 		Input.INSTANCE.poll();
 		if(this.queue != null) {
-			this.scene.onDetach();
+			if(this.scene != null)
+				this.scene.onDetach();
 			
 			this.scene = queue;
-			this.queue = null;
+			this.queue =  null;
 			
-			this.scene.onAttach();
+			if(this.scene != null)			
+				this.scene.onAttach();
 		}
 		if(this.scene != null)
 			this.canvas.update(dt, t, this.scene);
