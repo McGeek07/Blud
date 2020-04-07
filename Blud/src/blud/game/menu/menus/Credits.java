@@ -122,7 +122,7 @@ public class Credits extends Menu {
 			splash.update(context);
 		else
 			offset -= context.dt * scroll;
-		if(!track.isPlaying())
+		if(offset < -35 * 6)
 			Engine.setScene(Menus.MAIN);
 	}
 	
